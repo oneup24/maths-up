@@ -233,7 +233,7 @@ export default function App(){
 
   /* ════════ AUTH LOADING ════════ */
   if(authLoading) return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 p-4 pb-20">
+    <div className="min-h-screen bg-[#FFF4EC] p-4 pb-20">
       <div className="max-w-lg mx-auto">
         <div className="flex justify-between items-center mb-1">
           {[1,2,3].map(i=><div key={i} className="w-11 h-11 rounded-xl bg-white/60 animate-pulse"/>)}
@@ -293,7 +293,7 @@ export default function App(){
   /* ════════ EXAM ════════ */
   return(
     <motion.div key="exam" {...pageTransition}>
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 p-3 pb-24">
+    <div className="min-h-screen bg-[#FFF4EC] p-3 pb-24">
       <SubmitModal isOpen={showSubmit} onClose={()=>setShowSubmit(false)} onConfirm={markExam} answeredQs={answeredQs} totalQs={totalQs} L={L}/>
       <PrintModal isOpen={showPrint} onClose={()=>setShowPrint(false)} studentName={studentName} onNameChange={setStudentName} printAns={printAns} setPrintAns={setPrintAns} onPrint={()=>{printExam(sections,grade,printAns,studentName,difficulty);setShowPrint(false)}} L={L}/>
       <SignUpPromptModal isOpen={showSignUpPrompt} onClose={()=>setShowSignUpPrompt(false)} onSignUp={()=>{setShowSignUpPrompt(false);setSkippedLogin(false);track('guest_signup_prompt_clicked');}} lang={lang}/>
