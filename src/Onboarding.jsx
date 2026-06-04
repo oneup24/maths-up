@@ -113,7 +113,7 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
 
   var sq=SAMPLE_QS[grade||4];
   var showCard=step>=1;
-  var cardPt=step===3?'pt-16':step===5&&authMode?'pt-8':'pt-20';
+  var cardPt=step===3?'pt-16':step===1?'pt-0':step===5&&authMode?'pt-8':'pt-20';
 
   return(
     <div className="min-h-screen bg-gradient-to-b from-orange-500 to-amber-400 flex flex-col items-center justify-center p-5">
@@ -139,35 +139,15 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
           <motion.div key="lang" variants={slideVariants} initial="enter" animate="center" exit="exit"
             className="flex flex-col items-center text-center w-full max-w-sm px-2">
 
-            {/* Characters + globe */}
-            <div className="relative flex items-center justify-center gap-6 mb-8 mt-6">
-              {/* Bear */}
-              <motion.div
-                initial={{opacity:0,y:24,rotate:-10}} animate={{opacity:1,y:0,rotate:-8}}
-                transition={{delay:0.1,type:'spring',stiffness:180,damping:14}}
-                className="w-32 h-32 rounded-full overflow-hidden shadow-2xl"
-                style={{boxShadow:'0 12px 36px rgba(180,80,0,0.30)'}}
-              >
-                <img src="/avatar-bear.webp" alt="Curlboo Bear" className="w-full h-full object-cover scale-110"/>
-              </motion.div>
-
-              {/* Globe — centered between */}
-              <motion.div
-                initial={{scale:0,opacity:0}} animate={{scale:1,opacity:1}}
-                transition={{delay:0.4,type:'spring',stiffness:300}}
-                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4 text-4xl drop-shadow-lg select-none z-10"
-              >🌍</motion.div>
-
-              {/* Bunny */}
-              <motion.div
-                initial={{opacity:0,y:24,rotate:10}} animate={{opacity:1,y:0,rotate:8}}
-                transition={{delay:0.2,type:'spring',stiffness:180,damping:14}}
-                className="w-32 h-32 rounded-full overflow-hidden shadow-2xl"
-                style={{boxShadow:'0 12px 36px rgba(220,80,120,0.30)'}}
-              >
-                <img src="/avatar-bunny.webp" alt="Fluffy Bunny" className="w-full h-full object-cover scale-110"/>
-              </motion.div>
-            </div>
+            {/* Hero image */}
+            <motion.div
+              initial={{opacity:0,y:20,scale:0.95}} animate={{opacity:1,y:0,scale:1}}
+              transition={{delay:0.1,type:'spring',stiffness:160,damping:18}}
+              className="w-full mb-4 mt-4 rounded-3xl overflow-hidden"
+              style={{boxShadow:'0 16px 48px rgba(180,80,0,0.22)'}}
+            >
+              <img src="/onboarding-hero.png" alt="Curlboo Bear and Friends" className="w-full block"/>
+            </motion.div>
 
             {/* Title */}
             <motion.h1
@@ -205,8 +185,8 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
       {showCard&&(
         <div className="relative w-full max-w-sm">
 
-          {/* Mascot overlapping card top */}
-          {step!==5||!authMode?(
+          {/* Mascot overlapping card top — not shown for step 1 (has banner image instead) */}
+          {(step!==5||!authMode)&&step!==1?(
             step===3?(
               <CardMascot write small/>
             ):(
@@ -222,6 +202,10 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
               {step===1&&(
                 <motion.div key="value" variants={slideVariants} initial="enter" animate="center" exit="exit"
                   className="flex flex-col items-center text-center">
+                  {/* Hero banner — bleeds to card edges */}
+                  <div className="-mx-6 w-[calc(100%+3rem)] mb-5 rounded-t-3xl overflow-hidden">
+                    <img src="/onboarding-hero.png" alt="Curlboo Bear and Friends" className="w-full block"/>
+                  </div>
                   <h1 className="text-2xl font-black text-gray-800 mb-5 leading-snug">{L('obMathMadeFun')}</h1>
                   <div className="grid grid-cols-3 gap-3 w-full mb-6">
                     {[
