@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-// eslint-disable-next-line no-unused-vars -- motion is used as <motion.div> in JSX
-import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+
+// ── swap this to '/login-banner.png' once the forest image is in public/ ──
+const BANNER = '/curlboo_herobanner.png';
 
 export default function Login({ onAuth, lang = 'zh' }) {
-  // modes: 'login' | 'signup' | 'forgot' | 'update'
   const [mode, setMode] = useState(onAuth.isRecovery ? 'update' : 'login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPw, setShowPw] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [signupDone, setSignupDone] = useState(false);
@@ -21,161 +23,164 @@ export default function Login({ onAuth, lang = 'zh' }) {
     setError('');
     setLoading(true);
     try {
-      if (mode === 'signup') {
-        await onAuth.signUp(email, password);
-        setSignupDone(true);
-      } else if (mode === 'login') {
-        await onAuth.signIn(email, password);
-      } else if (mode === 'forgot') {
-        await onAuth.resetPassword(email);
-        setResetSent(true);
-      } else if (mode === 'update') {
+      if (mode === 'signup') { await onAuth.signUp(email, password); setSignupDone(true); }
+      else if (mode === 'login') { await onAuth.signIn(email, password); }
+      else if (mode === 'forgot') { await onAuth.resetPassword(email); setResetSent(true); }
+      else if (mode === 'update') {
         await onAuth.updatePassword(password);
         setPasswordUpdated(true);
         setTimeout(() => { setPasswordUpdated(false); setMode('login'); }, 2000);
       }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    } catch (err) { setError(err.message); }
+    finally { setLoading(false); }
   };
 
-  if (signupDone) {
+  /* ── Success states ── */
+  if (signupDone || resetSent) {
+    const icon = signupDone ? '📧' : '📬';
+    const title = signupDone
+      ? (zh ? '請查看電郵！' : 'Check your email!')
+      : (zh ? '重設連結已發送' : 'Reset link sent');
+    const body = signupDone
+      ? (zh ? `確認連結已發送至 ${email}，請點擊啟用帳戶。` : `We sent a confirmation link to ${email}.`)
+      : (zh ? `重設連結已發送至 ${email}。` : `Check ${email} for the reset link.`);
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 p-4">
-        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-          className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
-          <span className="text-5xl">📧</span>
-          <h2 className="text-xl font-bold mt-4 text-gray-800">Check your email!</h2>
-          <p className="text-gray-500 mt-2 text-sm">
-            We sent a confirmation link to <strong>{email}</strong>. Click it to activate your account.
-          </p>
-          <button onClick={() => { setSignupDone(false); setMode('login'); }}
-            className="mt-6 text-orange-600 font-semibold text-sm hover:underline transition-all duration-200">
-            {zh ? '返回登入' : 'Back to Login'}
+      <div className="min-h-screen flex items-center justify-center p-4"
+        style={{background:'linear-gradient(160deg,#FF8C42 0%,#FFA850 60%,#FFB347 100%)'}}>
+        <motion.div initial={{scale:0.9,opacity:0}} animate={{scale:1,opacity:1}}
+          className="bg-white rounded-3xl shadow-2xl p-8 w-full max-w-sm text-center">
+          <span className="text-5xl">{icon}</span>
+          <h2 className="text-xl font-black mt-4 text-gray-800">{title}</h2>
+          <p className="text-gray-500 mt-2 text-sm leading-relaxed">{body}</p>
+          <button onClick={()=>{setSignupDone(false);setResetSent(false);setMode('login');}}
+            className="mt-6 text-orange-500 font-bold text-sm hover:underline cursor-pointer">
+            {zh?'返回登入':'Back to Login'}
           </button>
         </motion.div>
       </div>
     );
   }
-
-  if (resetSent) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 p-4">
-        <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
-          className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
-          <span className="text-5xl">📬</span>
-          <h2 className="text-xl font-bold mt-4 text-gray-800">
-            {zh ? '重設連結已發送' : 'Reset link sent'}
-          </h2>
-          <p className="text-gray-500 mt-2 text-sm">
-            {zh ? `重設連結已發送至 ` : `Check `}<strong>{email}</strong>
-            {zh ? `，請查看電郵。` : ` for the reset link.`}
-          </p>
-          <button onClick={() => { setResetSent(false); setMode('login'); }}
-            className="mt-6 text-orange-600 font-semibold text-sm hover:underline transition-all duration-200">
-            {zh ? '返回登入' : 'Back to Login'}
-          </button>
-        </motion.div>
-      </div>
-    );
-  }
-
-  const titles = {
-    login:  zh ? '歡迎回來！' : 'Welcome back!',
-    signup: zh ? '建立帳戶' : 'Create your account',
-    forgot: zh ? '忘記密碼' : 'Forgot Password',
-    update: zh ? '設定新密碼' : 'Set New Password',
-  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 p-4">
-      <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }}
-        className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4"
+      style={{background:'linear-gradient(160deg,#FF8C42 0%,#FFA850 60%,#FFB347 100%)'}}>
 
-        <div className="text-center mb-6">
-          <img src="/mascot.webp" alt="Curlboo" className="w-20 h-20 object-cover rounded-2xl mx-auto shadow-md"/>
-          <h1 className="text-2xl font-bold mt-2 text-gray-800">Maths Quests</h1>
-          <p className="text-gray-400 text-sm">{titles[mode]}</p>
+      <motion.div initial={{y:24,opacity:0}} animate={{y:0,opacity:1}}
+        transition={{type:'spring',stiffness:200,damping:22}}
+        className="bg-white w-full max-w-sm overflow-hidden"
+        style={{borderRadius:'28px',boxShadow:'0 20px 60px rgba(200,80,0,0.25)'}}>
+
+        {/* ── Banner image ── */}
+        <div className="relative w-full overflow-hidden bg-amber-50" style={{height:'220px'}}>
+          <img
+            src={BANNER}
+            alt="Curlboo Bear and Friends"
+            className="w-full h-full object-cover object-center"
+            style={{transform:'scale(1.05)'}}
+          />
+          {/* Soft fade at bottom */}
+          <div className="absolute inset-x-0 bottom-0 h-12"
+            style={{background:'linear-gradient(to bottom,transparent,white)'}}/>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {mode !== 'update' && (
-            <input type="email" placeholder={zh ? '電郵地址' : 'Email'} value={email}
-              onChange={e => setEmail(e.target.value)} required
-              aria-label="Email address"
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm" />
-          )}
+        {/* ── Form ── */}
+        <div className="px-6 pb-8 pt-2">
 
-          {(mode === 'login' || mode === 'signup' || mode === 'update') && (
-            <input type="password"
-              placeholder={mode === 'update'
-                ? (zh ? '新密碼（至少6位）' : 'New password (min 6 chars)')
-                : (zh ? '密碼（至少6位）' : 'Password (min 6 chars)')}
-              value={password}
-              onChange={e => setPassword(e.target.value)} required minLength={6}
-              aria-label="Password"
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm" />
-          )}
-
-          {mode === 'login' && (
-            <div className="text-right">
-              <button type="button" onClick={() => { setMode('forgot'); setError(''); }}
-                className="text-xs text-orange-500 hover:underline transition-all duration-200">
-                {zh ? '忘記密碼？' : 'Forgot password?'}
-              </button>
-            </div>
-          )}
-
-          {error && (
-            <p className="text-red-500 text-xs text-center bg-red-50 rounded-lg p-2">{error}</p>
-          )}
-
-          {passwordUpdated && (
-            <p className="text-emerald-600 text-xs text-center bg-emerald-50 rounded-lg p-2">
-              {zh ? '密碼已更新，請重新登入' : 'Password updated — please log in'}
+          {/* Title */}
+          <div className="text-center mb-5">
+            <h1 className="text-2xl font-black text-gray-800">
+              {mode === 'login'  ? (zh ? '歡迎回來！'  : 'Welcome back!')     :
+               mode === 'signup' ? (zh ? '建立帳戶'    : 'Create account')    :
+               mode === 'forgot' ? (zh ? '忘記密碼？'  : 'Forgot password?')  :
+                                   (zh ? '設定新密碼'  : 'Set new password')}
+            </h1>
+            <p className="text-gray-400 text-xs mt-0.5">
+              {zh ? '文勁青蒲小學生沼國媽數學練' : 'Curlboo Bear Maths Trainer'}
             </p>
-          )}
-
-          <button type="submit" disabled={loading}
-            className="w-full py-3 rounded-xl bg-orange-500 text-white font-bold text-sm hover:bg-orange-600 active:scale-95 transition-all duration-200 disabled:opacity-50">
-            {loading ? <Loader2 size={16} className="animate-spin mx-auto"/> : (
-              mode === 'login'  ? (zh ? '登入' : 'Log In') :
-              mode === 'signup' ? (zh ? '建立帳戶' : 'Sign Up') :
-              mode === 'forgot' ? (zh ? '發送重設連結' : 'Send Reset Link') :
-                                  (zh ? '設定新密碼' : 'Set New Password')
-            )}
-          </button>
-        </form>
-
-        <div className="mt-4 text-center text-sm text-gray-400">
-          {mode === 'login' && (
-            <p>{zh ? '沒有帳戶？' : 'No account?'}{' '}
-              <button onClick={() => { setMode('signup'); setError(''); }}
-                className="text-orange-600 font-semibold hover:underline transition-all duration-200">
-                {zh ? '立即註冊' : 'Sign Up'}
-              </button>
-            </p>
-          )}
-          {(mode === 'signup' || mode === 'forgot') && (
-            <p>
-              <button onClick={() => { setMode('login'); setError(''); }}
-                className="text-orange-600 font-semibold hover:underline transition-all duration-200">
-                {zh ? '返回登入' : 'Back to Login'}
-              </button>
-            </p>
-          )}
-        </div>
-
-        {(mode === 'login' || mode === 'signup') && (
-          <div className="mt-6 pt-4 border-t border-gray-100 text-center">
-            <button onClick={onAuth.skip}
-              className="text-gray-400 text-xs hover:text-gray-600 transition-all duration-200">
-              {zh ? '先跳過 — 以訪客身份繼續' : 'Skip for now — continue without account'}
-            </button>
           </div>
-        )}
+
+          <form onSubmit={handleSubmit} className="space-y-3">
+            {/* Email */}
+            {mode !== 'update' && (
+              <div className="relative">
+                <Mail size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none"/>
+                <input type="email" placeholder={zh?'電郵地址':'Email address'}
+                  value={email} onChange={e=>setEmail(e.target.value)} required
+                  aria-label="Email"
+                  className="w-full pl-10 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 bg-gray-50 text-sm font-medium focus:outline-none focus:border-orange-300 focus:bg-white transition-all duration-200"/>
+              </div>
+            )}
+
+            {/* Password */}
+            {(mode === 'login' || mode === 'signup' || mode === 'update') && (
+              <div className="relative">
+                <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none"/>
+                <input type={showPw?'text':'password'}
+                  placeholder={mode==='update'?(zh?'新密碼（至少6位）':'New password (min 6)'):(zh?'密碼':'Password')}
+                  value={password} onChange={e=>setPassword(e.target.value)} required minLength={6}
+                  aria-label="Password"
+                  className="w-full pl-10 pr-12 py-3.5 rounded-2xl border-2 border-gray-100 bg-gray-50 text-sm font-medium focus:outline-none focus:border-orange-300 focus:bg-white transition-all duration-200"/>
+                <button type="button" onClick={()=>setShowPw(p=>!p)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 hover:text-gray-500 cursor-pointer">
+                  {showPw?<EyeOff size={16}/>:<Eye size={16}/>}
+                </button>
+              </div>
+            )}
+
+            {/* Forgot password link */}
+            {mode==='login' && (
+              <div className="text-right -mt-1">
+                <button type="button" onClick={()=>{setMode('forgot');setError('');}}
+                  className="text-xs text-orange-500 font-semibold hover:underline cursor-pointer">
+                  {zh?'忘記密碼？':'Forgot password?'}
+                </button>
+              </div>
+            )}
+
+            {/* Error */}
+            <AnimatePresence>
+              {error && (
+                <motion.p initial={{opacity:0,y:-4}} animate={{opacity:1,y:0}} exit={{opacity:0}}
+                  className="text-red-500 text-xs text-center bg-red-50 rounded-xl p-2.5 border border-red-100">
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
+
+            {/* Submit */}
+            <button type="submit" disabled={loading} style={{marginTop:'8px'}}
+              className="w-full py-4 rounded-2xl text-white font-black text-base cursor-pointer transition-all duration-200 active:scale-[0.97] disabled:opacity-50"
+              style={{background:'linear-gradient(135deg,#FF8C42,#FF6B1A)',boxShadow:'0 6px 20px rgba(255,107,26,0.40)'}}>
+              {loading
+                ? <Loader2 size={18} className="animate-spin mx-auto"/>
+                : mode==='login'  ? (zh?'登入':'Log In')
+                : mode==='signup' ? (zh?'建立帳戶':'Sign Up')
+                : mode==='forgot' ? (zh?'發送重設連結':'Send Reset Link')
+                :                   (zh?'設定新密碼':'Set New Password')}
+            </button>
+          </form>
+
+          {/* Footer links */}
+          <div className="mt-5 flex justify-center gap-6 text-sm">
+            {mode==='login' && (<>
+              <button onClick={()=>{setMode('signup');setError('');}}
+                className="text-orange-500 font-bold hover:underline cursor-pointer">
+                {zh?'注册':'Sign Up'}
+              </button>
+              <span className="text-gray-200">|</span>
+              <button onClick={onAuth.skip}
+                className="text-gray-400 hover:text-gray-600 cursor-pointer">
+                {zh?'訪客繼續':'Guest mode'}
+              </button>
+            </>)}
+            {(mode==='signup'||mode==='forgot') && (
+              <button onClick={()=>{setMode('login');setError('');}}
+                className="text-orange-500 font-bold hover:underline cursor-pointer">
+                {zh?'返回登入':'Back to Login'}
+              </button>
+            )}
+          </div>
+        </div>
       </motion.div>
     </div>
   );
