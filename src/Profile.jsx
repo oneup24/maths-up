@@ -84,8 +84,8 @@ export default function Profile({onBack,lang='zh',setLang,soundOn,setSoundOn,stu
 
         {/* Mascot + birthday banner */}
         <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} className="text-center mb-4">
-          <img src={isToday?'/mascot-happy.webp':'/mascot.webp'} alt="Curlboo Bear and Fluffy Bunny"
-            className="w-36 h-36 object-contain mx-auto drop-shadow-lg"/>
+          <img src={isToday?'/mascot-happy.webp':'/head-bunny.webp'} alt="Fluffy Bunny"
+            className="w-36 h-36 object-contain mx-auto drop-shadow-lg" style={{mixBlendMode:'multiply'}}/>
           {isToday&&(
             <motion.div initial={{scale:0}} animate={{scale:1}} transition={{type:'spring',stiffness:200}}
               className="mt-2 inline-flex items-center gap-1.5 bg-pink-100 border border-pink-200 text-pink-600 font-bold text-sm px-3 py-1.5 rounded-full">

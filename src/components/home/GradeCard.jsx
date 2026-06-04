@@ -12,6 +12,16 @@ const GRADE_STYLES = {
   violet:  { bg: 'linear-gradient(135deg,#C4B5FD 0%,#7C3AED 100%)', shadow: 'rgba(124,58,237,0.35)' },
 };
 
+// Each grade gets its own character avatar
+const GRADE_AVATAR = {
+  1: '/avatar-bear.webp',
+  2: '/avatar-bunny.webp',
+  3: '/avatar-dino.webp',
+  4: '/avatar-hedgehog.webp',
+  5: '/avatar-sheep.webp',
+  6: '/avatar-tiger.webp',
+};
+
 export default function GradeCard({grade,best,onClick,L,delay=0}){
   var stars=best>=80?3:best>=60?2:best>=40?1:0;
   var co=GRADE_INFO[grade].co;
@@ -29,11 +39,21 @@ export default function GradeCard({grade,best,onClick,L,delay=0}){
       style={{
         background: style.bg,
         boxShadow: `0 8px 24px ${style.shadow}, 0 2px 8px rgba(0,0,0,0.08)`,
+        minHeight: '110px',
       }}
     >
-      {/* Stars top-right */}
+      {/* Character avatar — top right, blended into gradient */}
+      <img
+        src={GRADE_AVATAR[grade]}
+        alt=""
+        aria-hidden="true"
+        className="absolute -right-2 -top-2 w-20 h-20 object-contain pointer-events-none"
+        style={{ mixBlendMode: 'multiply', opacity: 0.92 }}
+      />
+
+      {/* Stars */}
       {stars>0&&(
-        <div className="absolute top-3 right-3 flex gap-0.5">
+        <div className="absolute bottom-3 right-3 flex gap-0.5 z-10">
           {[1,2,3].map(s=>(
             <Star key={s} size={12} className={s<=stars?'fill-yellow-300 text-yellow-300':'fill-white/25 text-white/25'}/>
           ))}
@@ -41,18 +61,18 @@ export default function GradeCard({grade,best,onClick,L,delay=0}){
       )}
 
       {/* Grade label */}
-      <div className="text-3xl font-black leading-none drop-shadow-sm mb-0.5">P{grade}</div>
-      <div className="text-sm font-bold opacity-95">{GRADE_INFO[grade].nm}</div>
+      <div className="text-3xl font-black leading-none drop-shadow-sm mb-0.5 relative z-10">P{grade}</div>
+      <div className="text-sm font-bold opacity-95 relative z-10">{GRADE_INFO[grade].nm}</div>
 
       {/* Bottom info */}
-      <div className="mt-3 flex items-center gap-2">
+      <div className="mt-3 relative z-10">
         {best>0 ? (
-          <span className="bg-white/25 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-full">
-            {best}%
+          <span className="bg-white/30 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-full">
+            最高 {best}%
           </span>
         ) : (
-          <span className="text-white/75 text-xs font-semibold">
-            {topicCount}{L?L('topicsCount','').replace(/\d+/,'').trim():'個課題'}
+          <span className="text-white/80 text-xs font-semibold">
+            {topicCount} 個課題
           </span>
         )}
       </div>
