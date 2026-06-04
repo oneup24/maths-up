@@ -140,27 +140,33 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
             className="flex flex-col items-center text-center w-full max-w-sm px-2">
 
             {/* Characters + globe */}
-            <div className="relative flex items-end justify-center gap-2 mb-6 mt-4">
-              <motion.img
-                src="/avatar-bear.webp" alt="Curlboo Bear"
-                initial={{opacity:0,y:20,rotate:-8}} animate={{opacity:1,y:0,rotate:-6}}
-                transition={{delay:0.1,type:'spring',stiffness:200}}
-                className="w-28 h-28 object-contain drop-shadow-xl"
-                style={{mixBlendMode:'multiply'}}
-              />
-              {/* Globe badge */}
+            <div className="relative flex items-center justify-center gap-6 mb-8 mt-6">
+              {/* Bear */}
+              <motion.div
+                initial={{opacity:0,y:24,rotate:-10}} animate={{opacity:1,y:0,rotate:-8}}
+                transition={{delay:0.1,type:'spring',stiffness:180,damping:14}}
+                className="w-32 h-32 rounded-full overflow-hidden shadow-2xl"
+                style={{boxShadow:'0 12px 36px rgba(180,80,0,0.30)'}}
+              >
+                <img src="/avatar-bear.webp" alt="Curlboo Bear" className="w-full h-full object-cover scale-110"/>
+              </motion.div>
+
+              {/* Globe — centered between */}
               <motion.div
                 initial={{scale:0,opacity:0}} animate={{scale:1,opacity:1}}
-                transition={{delay:0.35,type:'spring',stiffness:260}}
-                className="absolute -top-2 left-1/2 -translate-x-1/2 text-3xl drop-shadow-md select-none"
+                transition={{delay:0.4,type:'spring',stiffness:300}}
+                className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-4 text-4xl drop-shadow-lg select-none z-10"
               >🌍</motion.div>
-              <motion.img
-                src="/avatar-bunny.webp" alt="Fluffy Bunny"
-                initial={{opacity:0,y:20,rotate:8}} animate={{opacity:1,y:0,rotate:6}}
-                transition={{delay:0.2,type:'spring',stiffness:200}}
-                className="w-28 h-28 object-contain drop-shadow-xl"
-                style={{mixBlendMode:'multiply'}}
-              />
+
+              {/* Bunny */}
+              <motion.div
+                initial={{opacity:0,y:24,rotate:10}} animate={{opacity:1,y:0,rotate:8}}
+                transition={{delay:0.2,type:'spring',stiffness:180,damping:14}}
+                className="w-32 h-32 rounded-full overflow-hidden shadow-2xl"
+                style={{boxShadow:'0 12px 36px rgba(220,80,120,0.30)'}}
+              >
+                <img src="/avatar-bunny.webp" alt="Fluffy Bunny" className="w-full h-full object-cover scale-110"/>
+              </motion.div>
             </div>
 
             {/* Title */}
