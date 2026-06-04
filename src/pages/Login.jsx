@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 
 // ── swap this to '/login-banner.png' once the forest image is in public/ ──
-const BANNER = '/curlboo_herobanner.png';
+const BANNER = '/login-banner.png';
 
 export default function Login({ onAuth, lang = 'zh' }) {
   const [mode, setMode] = useState(onAuth.isRecovery ? 'update' : 'login');
@@ -71,15 +71,14 @@ export default function Login({ onAuth, lang = 'zh' }) {
         style={{borderRadius:'28px',boxShadow:'0 20px 60px rgba(200,80,0,0.25)'}}>
 
         {/* ── Banner image ── */}
-        <div className="relative w-full overflow-hidden bg-amber-50" style={{height:'220px'}}>
+        <div className="relative w-full overflow-hidden bg-[#FFF3E0]" style={{height:'200px'}}>
           <img
             src={BANNER}
             alt="Curlboo Bear and Friends"
             className="w-full h-full object-cover object-center"
-            style={{transform:'scale(1.05)'}}
           />
           {/* Soft fade at bottom */}
-          <div className="absolute inset-x-0 bottom-0 h-12"
+          <div className="absolute inset-x-0 bottom-0 h-16"
             style={{background:'linear-gradient(to bottom,transparent,white)'}}/>
         </div>
 
@@ -95,7 +94,7 @@ export default function Login({ onAuth, lang = 'zh' }) {
                                    (zh ? '設定新密碼'  : 'Set new password')}
             </h1>
             <p className="text-gray-400 text-xs mt-0.5">
-              {zh ? '文勁青蒲小學生沼國媽數學練' : 'Curlboo Bear Maths Trainer'}
+              {zh ? '為香港小學生而設的數學練習' : 'Maths practice for HK primary students'}
             </p>
           </div>
 
@@ -148,9 +147,9 @@ export default function Login({ onAuth, lang = 'zh' }) {
             </AnimatePresence>
 
             {/* Submit */}
-            <button type="submit" disabled={loading} style={{marginTop:'8px'}}
+            <button type="submit" disabled={loading}
               className="w-full py-4 rounded-2xl text-white font-black text-base cursor-pointer transition-all duration-200 active:scale-[0.97] disabled:opacity-50"
-              style={{background:'linear-gradient(135deg,#FF8C42,#FF6B1A)',boxShadow:'0 6px 20px rgba(255,107,26,0.40)'}}>
+              style={{marginTop:'8px',background:'linear-gradient(135deg,#FF8C42,#FF6B1A)',boxShadow:'0 6px 20px rgba(255,107,26,0.40)'}}>
               {loading
                 ? <Loader2 size={18} className="animate-spin mx-auto"/>
                 : mode==='login'  ? (zh?'登入':'Log In')
