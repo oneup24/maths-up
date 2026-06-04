@@ -45,13 +45,13 @@ function OnboardingProgress({current}){
 function CardMascot({happy=false,write=false,small=false}){
   var src=write?'/bunny-write.webp':happy?'/mascot-happy.webp':'/mascot.webp';
   if(small)return(
-    <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
-      <img src={src} alt="Curlboo" className="w-24 h-24 object-contain" style={{mixBlendMode:'multiply'}}/>
+    <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-10 w-24 h-24 rounded-2xl overflow-hidden shadow-lg border-2 border-white/60 bg-white">
+      <img src={src} alt="Curlboo" className="w-full h-full object-contain"/>
     </div>
   );
   return(
-    <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-10">
-      <img src={src} alt="Curlboo" className="w-32 h-32 object-contain" style={{mixBlendMode:'multiply'}}/>
+    <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-10 w-32 h-32 rounded-3xl overflow-hidden shadow-xl border-2 border-white/60 bg-white">
+      <img src={src} alt="Curlboo" className="w-full h-full object-contain"/>
     </div>
   );
 }
@@ -140,7 +140,9 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
             className="flex flex-col items-center text-center w-full max-w-sm">
             <motion.div initial={{scale:0.8,opacity:0}} animate={{scale:1,opacity:1}} transition={{delay:0.1}}
               className="mb-6">
-              <img src="/mascot-happy.webp" alt="Curlboo Bear and Fluffy Bunny" className="w-44 h-44 object-contain mx-auto" style={{mixBlendMode:'multiply'}}/>
+              <div className="w-44 h-44 rounded-3xl overflow-hidden shadow-2xl border-2 border-white/40 bg-white mx-auto">
+                <img src="/mascot-happy.webp" alt="Curlboo Bear and Fluffy Bunny" className="w-full h-full object-contain"/>
+              </div>
             </motion.div>
             <h1 className="text-3xl font-black text-white mb-2">Maths Quests</h1>
             <p className="text-white/80 text-base font-medium mb-8">Choose your language</p>
