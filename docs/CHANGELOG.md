@@ -4,6 +4,29 @@ All notable changes to **Maths Quests** (數學特訓).
 
 ---
 
+## [v1.3-beta] — 2026-06-04
+
+### feat: upgrade mascot assets to felted wool duo characters (Curlboo Bear + Fluffy Bunny)
+
+**New assets added to `public/`:**
+- `mascot.webp` / `mascot-happy.webp` / `mascot-ok.webp` / `mascot-sad.webp` — replaced tiny placeholder WebPs (18–33 KB) with high-quality felted wool duo images (960 KB–1.2 MB); all four states now show **both** Curlboo Bear and Fluffy Bunny together
+- `curlboo_herobanner.png` — Bear + Bunny at a math chalkboard (`12 + 8 = 20`); used in CurlbooHero
+- `mascot-astronaut.webp` — Bear in astronaut suit (future use)
+- `bunny-write.webp` — Bunny holding pencil + notebook; used in onboarding exam step
+- `avatar-bear/bunny/dino/hedgehog/sheep/tiger.webp` — 6 character head shots (ready for avatar selection feature)
+- `head-bear.webp` / `head-bunny.webp` — close-up head shots
+- Removed stale `mascot*.png` source files (were overwriting new WebPs on every build)
+
+**Component updates:**
+- `CurlbooHero`: replaced `mascot.webp` with `curlboo_herobanner.png` (chalkboard scene); removed dev placeholder label; widened mascot panel to 48%
+- `ScoreReport`: changed mascot display from `object-cover rounded-3xl shadow-md` → `object-contain drop-shadow-md` (duo images have white backgrounds, no crop needed)
+- `Profile`: same display fix — `object-contain drop-shadow-lg`; image size 32 → 36
+- `Onboarding`: language step uses `mascot-happy.webp` (jumping duo) with `mix-blend-mode: multiply` to blend into orange gradient; exam question step (step 3) uses `bunny-write.webp`; `CardMascot` sized up (w-24/w-32) and also uses `multiply` blend on orange bg
+
+**`scripts/convert-images.mjs`:** updated to skip PNG → WebP conversion gracefully when source PNGs are absent, so new WebP-direct assets are never overwritten by prebuild
+
+---
+
 ## [v1.3-beta] — 2026-04-20
 
 ### fix: gradeRules.js — P4 decimal places, P6 negative flag, note text
