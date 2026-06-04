@@ -133,31 +133,64 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
         </button>
       )}
 
-      {/* ═══ Step 0: Language — open layout on vivid bg ═══ */}
+      {/* ═══ Step 0: Language ═══ */}
       {step===0&&(
         <AnimatePresence mode="wait">
           <motion.div key="lang" variants={slideVariants} initial="enter" animate="center" exit="exit"
-            className="flex flex-col items-center text-center w-full max-w-sm">
-            <motion.div initial={{scale:0.8,opacity:0}} animate={{scale:1,opacity:1}} transition={{delay:0.1}}
-              className="mb-6">
-              <div className="w-44 h-44 rounded-3xl overflow-hidden shadow-2xl border-2 border-white/40 bg-white mx-auto">
-                <img src="/mascot-happy.webp" alt="Curlboo Bear and Fluffy Bunny" className="w-full h-full object-contain"/>
-              </div>
-            </motion.div>
-            <h1 className="text-3xl font-black text-white mb-2">Maths Quests</h1>
-            <p className="text-white/80 text-base font-medium mb-8">Choose your language</p>
-            <div className="flex gap-4 w-full">
-              <motion.button whileTap={{scale:0.95}} onClick={()=>pickLang('zh')}
-                className="flex-1 py-6 rounded-2xl bg-white shadow-lg text-center active:bg-orange-50 transition-all">
-                <span className="text-4xl block mb-1 font-black text-gray-800">中</span>
-                <span className="text-sm font-bold text-gray-500">中文</span>
-              </motion.button>
-              <motion.button whileTap={{scale:0.95}} onClick={()=>pickLang('en')}
-                className="flex-1 py-6 rounded-2xl bg-white shadow-lg text-center active:bg-orange-50 transition-all">
-                <span className="text-4xl block mb-1 font-black text-gray-800">En</span>
-                <span className="text-sm font-bold text-gray-500">English</span>
-              </motion.button>
+            className="flex flex-col items-center text-center w-full max-w-sm px-2">
+
+            {/* Characters + globe */}
+            <div className="relative flex items-end justify-center gap-2 mb-6 mt-4">
+              <motion.img
+                src="/avatar-bear.webp" alt="Curlboo Bear"
+                initial={{opacity:0,y:20,rotate:-8}} animate={{opacity:1,y:0,rotate:-6}}
+                transition={{delay:0.1,type:'spring',stiffness:200}}
+                className="w-28 h-28 object-contain drop-shadow-xl"
+                style={{mixBlendMode:'multiply'}}
+              />
+              {/* Globe badge */}
+              <motion.div
+                initial={{scale:0,opacity:0}} animate={{scale:1,opacity:1}}
+                transition={{delay:0.35,type:'spring',stiffness:260}}
+                className="absolute -top-2 left-1/2 -translate-x-1/2 text-3xl drop-shadow-md select-none"
+              >🌍</motion.div>
+              <motion.img
+                src="/avatar-bunny.webp" alt="Fluffy Bunny"
+                initial={{opacity:0,y:20,rotate:8}} animate={{opacity:1,y:0,rotate:6}}
+                transition={{delay:0.2,type:'spring',stiffness:200}}
+                className="w-28 h-28 object-contain drop-shadow-xl"
+                style={{mixBlendMode:'multiply'}}
+              />
             </div>
+
+            {/* Title */}
+            <motion.h1
+              initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{delay:0.3}}
+              className="text-4xl font-black text-white mb-1 drop-shadow-md"
+            >Maths Quests</motion.h1>
+            <motion.p
+              initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.4}}
+              className="text-white/75 text-sm font-semibold mb-10 tracking-wide"
+            >Curlboo Bear &amp; Friends</motion.p>
+
+            {/* Language buttons */}
+            <motion.div
+              initial={{opacity:0,y:16}} animate={{opacity:1,y:0}} transition={{delay:0.45}}
+              className="flex gap-3 w-full"
+            >
+              <motion.button whileTap={{scale:0.94}} onClick={()=>pickLang('zh')}
+                className="flex-1 py-5 rounded-3xl text-center cursor-pointer transition-all duration-200 active:scale-95"
+                style={{background:'rgba(255,255,255,0.92)',boxShadow:'0 8px 24px rgba(255,120,50,0.25)'}}>
+                <span className="text-3xl block mb-0.5 font-black text-gray-800">中</span>
+                <span className="text-xs font-bold text-gray-500">中文</span>
+              </motion.button>
+              <motion.button whileTap={{scale:0.94}} onClick={()=>pickLang('en')}
+                className="flex-1 py-5 rounded-3xl text-center cursor-pointer transition-all duration-200 active:scale-95"
+                style={{background:'rgba(255,255,255,0.92)',boxShadow:'0 8px 24px rgba(255,120,50,0.25)'}}>
+                <span className="text-3xl block mb-0.5 font-black text-gray-800">En</span>
+                <span className="text-xs font-bold text-gray-500">English</span>
+              </motion.button>
+            </motion.div>
           </motion.div>
         </AnimatePresence>
       )}
