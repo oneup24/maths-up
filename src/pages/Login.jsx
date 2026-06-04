@@ -71,12 +71,11 @@ export default function Login({ onAuth, lang = 'zh' }) {
         style={{borderRadius:'28px',boxShadow:'0 20px 60px rgba(200,80,0,0.25)'}}>
 
         {/* ── Banner image ── */}
-        <div className="relative w-full overflow-hidden bg-[#FEF3E2]" style={{height:'270px'}}>
+        <div className="relative w-full overflow-hidden bg-[#FEF3E2]">
           <img
             src={BANNER}
             alt="Curlboo Bear and Friends"
-            className="w-full h-full"
-            style={{objectFit:'cover', objectPosition:'center 28%'}}
+            className="w-full block"
           />
           {/* Soft fade at bottom */}
           <div className="absolute inset-x-0 bottom-0 h-20"
