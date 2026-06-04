@@ -22,14 +22,12 @@ export default function CurlbooHero({ name, streak, isBirthday }) {
       </div>
 
       {/* Right: mascot */}
-      <div className="absolute right-0 bottom-0 w-[44%] h-[115%] flex items-end justify-center">
+      <div className="absolute right-0 bottom-0 w-[48%] h-[120%] flex items-end justify-center">
         <img
-          src="/mascot.webp"
-          alt="Curlboo"
+          src="/curlboo_herobanner.png"
+          alt="Curlboo Bear and Fluffy Bunny at the chalkboard"
           className="w-full h-full object-contain object-bottom drop-shadow-lg"
         />
-        {/* Dev placeholder label — remove when real 300×380px PNG provided */}
-        <span className="absolute bottom-1 right-1 text-[9px] text-white/40 pointer-events-none">300×380px PNG</span>
       </div>
     </div>
   );

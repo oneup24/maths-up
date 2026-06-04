@@ -123,7 +123,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
           const k=si+'-'+qi;
           const mr=markRes[k];
           const studentAns=q.isMC?(mcSel[k]||''):(answers[k]||'');
-          allQs.push({num:allQs.length+1,q:q.q,studentAns,correctAns:q.a,ok:mr&&mr.ok});
+          allQs.push({num:allQs.length+1,q:q.q,studentAns,correctAns:q.a,ok:mr&&mr.ok,steps:q.s||[]});
         });
       });
 
@@ -207,6 +207,50 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
               const tp=topics[data.row.index];
               if(tp)data.cell.styles.textColor=tp.pct>=80?[22,163,74]:tp.pct>=50?[217,119,6]:[239,68,68];
             }
+          }
+        });
+      }
+
+      // ── Suggested Steps ──
+      const stepsQs=allQs.filter(r=>r.steps&&r.steps.length>0);
+      if(stepsQs.length>0){
+        const stepsHeaderY=(doc.lastAutoTable?doc.lastAutoTable.finalY:200)+8;
+        doc.setFont(FONT,'normal');
+        doc.setFontSize(12);
+        doc.setTextColor(55,65,81);
+        doc.text(zh?'參考解題步驟':'Suggested Steps',margin,stepsHeaderY);
+        autoTable(doc,{
+          startY:stepsHeaderY+3,
+          margin:{left:margin,right:margin},
+          head:[[
+            '#',
+            zh?'題目':'Question',
+            zh?'答案':'Answer',
+            zh?'解題步驟':'Steps'
+          ]],
+          body:stepsQs.map(row=>[
+            row.num,
+            row.q,
+            row.correctAns,
+            row.steps.map((st,i)=>{
+              if(st.startsWith('🔍'))return'【陷阱】'+st.replace(/^\S+\s*/,'');
+              if(st.startsWith('❌'))return'[x] '+st.replace(/^\S+\s*/,'');
+              if(st.startsWith('✅'))return'[v] '+st.replace(/^\S+\s*/,'');
+              return'步驟'+(i+1)+'：'+st;
+            }).join('\n')
+          ]),
+          styles:{font:FONT,fontStyle:'normal',fontSize:8,cellPadding:3},
+          headStyles:{font:FONT,fontStyle:'normal',fillColor:[224,242,254],textColor:[7,89,133]},
+          bodyStyles:{font:FONT,fontStyle:'normal'},
+          columnStyles:{
+            0:{cellWidth:8,halign:'center'},
+            1:{cellWidth:'auto'},
+            2:{cellWidth:28},
+            3:{cellWidth:65}
+          },
+          didParseCell(data){
+            data.cell.styles.font=FONT;
+            data.cell.styles.fontStyle='normal';
           }
         });
       }

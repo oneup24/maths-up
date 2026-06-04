@@ -383,9 +383,21 @@ export default function App(){
                             </div>
                           )}
                           {isR&&!isMarked&&(
-                            <div className="mt-2 bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-200"><p className="text-sm font-bold text-emerald-700">💡 {q.a}</p></div>
+                            <div className="mt-2 bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-200">
+                              <p className="text-sm font-bold text-emerald-700">💡 {q.a}</p>
+                              {q.s&&q.s.length>0&&(
+                                <div className="mt-2 pt-2 border-t border-emerald-200">
+                                  <p className="text-xs font-bold text-sky-600 mb-1">{L('stepsTitle')}</p>
+                                  {q.s.map((st,i)=>(
+                                    <p key={i} className={"text-xs mt-0.5 "+(st.startsWith('🔍')?'text-amber-700 font-bold':'text-sky-700')}>
+                                      {st.startsWith('🔍')?st:(st.startsWith('❌')||st.startsWith('✅')?st:'步驟'+(i+1)+'：'+st)}
+                                    </p>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
                           )}
-                          {(isS||(isMarked&&mr&&!mr.ok))&&q.s&&(
+                          {isMarked&&q.s&&q.s.length>0&&(
                             <div className="mt-2 bg-sky-50 rounded-lg px-3 py-2 border border-sky-200">
                               <p className="text-xs font-bold text-sky-600 mb-1">{L('stepsTitle')}</p>
                               {q.s.map((st,i)=>(
@@ -398,12 +410,8 @@ export default function App(){
                         </div>
                         {!isMarked&&(
                           <div className="flex flex-col gap-1 shrink-0">
-                            <button onClick={()=>tryReveal(k,'eye')} aria-label={lang==='zh'?'顯示答案':'Show answer'} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isR?'bg-emerald-200 text-emerald-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><Eye size={14}/></button>
-                            <button onClick={()=>tryReveal(k,'steps')} aria-label={lang==='zh'?'顯示步驟':'Show steps'} className="p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97] transition-all duration-200 flex items-center justify-center">{isS?<ChevronUp size={14}/>:<ChevronDown size={14}/>}</button>
+                            <button onClick={()=>tryReveal(k,'eye')} aria-label={lang==='zh'?'顯示答案及步驟':'Show answer & steps'} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isR?'bg-emerald-200 text-emerald-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><Eye size={14}/></button>
                           </div>
-                        )}
-                        {isMarked&&mr&&!mr.ok&&(
-                          <button onClick={()=>setStepsShown(r=>({...r,[k]:!r[k]}))} aria-label={lang==='zh'?'解題步驟':'Solution steps'} className="p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold bg-sky-100 text-sky-600 shrink-0 self-start mt-1 active:bg-sky-200 active:scale-[0.97] transition-all duration-200 flex items-center justify-center">📖</button>
                         )}
                       </div>
                     </div>

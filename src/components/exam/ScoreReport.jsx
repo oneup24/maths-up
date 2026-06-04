@@ -16,9 +16,9 @@ export default function ScoreReport({isMarked,animScore,animPct,pct,grandTotal,f
           </div>
           <span className="text-sm font-bold text-gray-500 mt-1 inline-block">{animPct}%</span>
           <div className="mt-2">
-            <motion.img src={pct>=80?'/mascot-happy.webp':pct>=50?'/mascot-ok.webp':'/mascot-sad.webp'} alt={pct>=80?'Curlboo Bear celebrating':'Curlboo Bear encouraging'}
+            <motion.img src={pct>=80?'/mascot-happy.webp':pct>=50?'/mascot-ok.webp':'/mascot-sad.webp'} alt={pct>=80?'Curlboo Bear and Fluffy Bunny celebrating':'Curlboo Bear and Fluffy Bunny encouraging'}
               initial={{scale:0.7,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:'spring',stiffness:200}}
-              className="w-44 h-44 object-cover rounded-3xl mx-auto shadow-md"/>
+              className="w-48 h-48 object-contain mx-auto drop-shadow-md"/>
             <p className={"text-sm font-extrabold mt-1 "+fb.c}>{fb.m}</p>
             <p className={"text-xs mt-1 "+(user&&cloudSaved?'text-emerald-500':user?'text-gray-400':'text-gray-400')}>
               {user&&cloudSaved?(lang==='zh'?'☁️ 已保存到雲端':'☁️ Saved to cloud'):user?(lang==='zh'?'⏳ 保存中...':'⏳ Saving...'):(lang==='zh'?'💾 僅本地保存':'💾 Local only')}

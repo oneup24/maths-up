@@ -42,16 +42,16 @@ function OnboardingProgress({current}){
 }
 
 /* ── Mascot above card ── */
-function CardMascot({happy=false,small=false}){
-  var src=happy?'/mascot-happy.webp':'/mascot.webp';
+function CardMascot({happy=false,write=false,small=false}){
+  var src=write?'/bunny-write.webp':happy?'/mascot-happy.webp':'/mascot.webp';
   if(small)return(
-    <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-10">
-      <img src={src} alt="Curlboo" className="w-20 h-20 object-contain drop-shadow-xl"/>
+    <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-10">
+      <img src={src} alt="Curlboo" className="w-24 h-24 object-contain" style={{mixBlendMode:'multiply'}}/>
     </div>
   );
   return(
-    <div className="absolute -top-14 left-1/2 -translate-x-1/2 z-10">
-      <img src={src} alt="Curlboo" className="w-28 h-28 object-contain drop-shadow-xl"/>
+    <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-10">
+      <img src={src} alt="Curlboo" className="w-32 h-32 object-contain" style={{mixBlendMode:'multiply'}}/>
     </div>
   );
 }
@@ -140,7 +140,7 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
             className="flex flex-col items-center text-center w-full max-w-sm">
             <motion.div initial={{scale:0.8,opacity:0}} animate={{scale:1,opacity:1}} transition={{delay:0.1}}
               className="mb-6">
-              <img src="/mascot.webp" alt="Curlboo" className="w-36 h-36 object-contain drop-shadow-2xl mx-auto"/>
+              <img src="/mascot-happy.webp" alt="Curlboo Bear and Fluffy Bunny" className="w-44 h-44 object-contain mx-auto" style={{mixBlendMode:'multiply'}}/>
             </motion.div>
             <h1 className="text-3xl font-black text-white mb-2">Maths Quests</h1>
             <p className="text-white/80 text-base font-medium mb-8">Choose your language</p>
@@ -167,7 +167,7 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
           {/* Mascot overlapping card top */}
           {step!==5||!authMode?(
             step===3?(
-              <CardMascot small/>
+              <CardMascot write small/>
             ):(
               <CardMascot happy={step===4&&!!wasCorrect}/>
             )
