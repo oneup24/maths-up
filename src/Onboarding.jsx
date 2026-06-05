@@ -144,9 +144,9 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
               initial={{opacity:0,y:20,scale:0.95}} animate={{opacity:1,y:0,scale:1}}
               transition={{delay:0.1,type:'spring',stiffness:160,damping:18}}
               className="w-full mb-4 mt-4 rounded-3xl overflow-hidden"
-              style={{boxShadow:'0 16px 48px rgba(180,80,0,0.22)'}}
+              style={{maxHeight:'42vh',boxShadow:'0 16px 48px rgba(180,80,0,0.22)'}}
             >
-              <img src="/onboarding-hero.png" alt="Curlboo Bear and Friends" className="w-full block"/>
+              <img src="/onboarding-hero.png" alt="Curlboo Bear and Friends" className="w-full h-full object-cover object-top"/>
             </motion.div>
 
             {/* Title */}
