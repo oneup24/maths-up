@@ -30,37 +30,44 @@ export default function GradeCard({grade,best,onClick,L,delay=0}){
       initial={{opacity:0,y:14}}
       animate={{opacity:1,y:0}}
       transition={{delay, type:'spring', stiffness:280, damping:22}}
-      whileTap={{scale:.93}}
+      whileHover={{scale:1.04, transition:{duration:0.15, ease:'easeOut'}}}
+      whileTap={{scale:.92}}
       onClick={onClick}
       className="relative p-4 rounded-3xl text-white text-left w-full overflow-hidden cursor-pointer"
       style={{
         background: s.bg,
-        boxShadow: `0 10px 28px ${s.shadow}, 0 2px 6px rgba(0,0,0,0.06)`,
-        minHeight: '118px',
+        boxShadow: `inset -3px -3px 12px rgba(255,255,255,0.35), 0 12px 32px ${s.shadow}, 0 3px 8px rgba(0,0,0,0.10)`,
+        border: '2.5px solid rgba(255,255,255,0.50)',
+        minHeight: '130px',
       }}
     >
-      {/* Character — bottom-right, large */}
-      <img
-        src={GRADE_AVATAR[grade]}
-        alt=""
-        aria-hidden="true"
-        className="absolute -bottom-3 -right-3 w-24 h-24 object-contain pointer-events-none select-none"
-        style={{ mixBlendMode: 'multiply', opacity: 0.88 }}
-      />
+      {/* Frosted avatar panel — bottom-right corner sticker */}
+      <div
+        className="absolute bottom-0 right-0 w-28 h-28 rounded-tl-2xl flex items-center justify-center"
+        style={{background: 'rgba(255,255,255,0.22)'}}
+      >
+        <img
+          src={GRADE_AVATAR[grade]}
+          alt=""
+          aria-hidden="true"
+          className="w-24 h-24 object-contain pointer-events-none select-none"
+          style={{filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.18))'}}
+        />
+      </div>
 
       {/* Grade number */}
-      <div className="text-4xl font-black leading-none drop-shadow-sm">P{grade}</div>
+      <div className="text-4xl font-black leading-none" style={{textShadow:'0 2px 4px rgba(0,0,0,0.15)'}}>P{grade}</div>
       {/* Grade name */}
       <div className="text-sm font-bold opacity-90 mt-0.5">{GRADE_INFO[grade].nm}</div>
 
       {/* Topic count / best score badge */}
       <div className="absolute bottom-3 left-4">
         {best > 0 ? (
-          <span className="bg-white/30 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-full shadow-sm">
+          <span className="bg-white/35 backdrop-blur-sm text-white text-xs font-black px-2.5 py-1 rounded-full shadow-sm">
             最高 {best}%
           </span>
         ) : (
-          <span className="text-white/80 text-xs font-semibold">
+          <span className="text-white/85 text-xs font-semibold">
             {topicCount} 個課題
           </span>
         )}
