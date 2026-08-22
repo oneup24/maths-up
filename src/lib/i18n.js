@@ -1,6 +1,6 @@
 export const i18n={
   zh:{
-    appTitle:'小學數學模擬試卷',
+    appTitle:'Maths-Up',
     appSubtitle:'依據教育局《小學數學科學習內容》(2017)',
     band1:'Band 1 級',
     hasTrap:'含干擾項',
@@ -96,7 +96,7 @@ export const i18n={
     backToLogin:'返回登入',
   },
   en:{
-    appTitle:"Primary Maths Practice",
+    appTitle:"Maths-Up",
     appSubtitle:'Based on EDB Primary Mathematics Curriculum (2017)',
     band1:'Band 1',
     hasTrap:'Trap Items',
