@@ -7,8 +7,8 @@ import { nm, CTX, _nm2 } from '../config.js';
 
 export const grade6={
 '6N1':[
-  ()=>{var a=ri(20,80),b=ri(3,9);return{d:1,tp:'calc',q:(a/10).toFixed(1)+' ÷ '+b+' = ?',a:(a/(b*10)).toFixed(2),s:['小數÷整數'],sc:2}},
-  ()=>{var a=ri(30,90),b=ri(3,8),c=ri(10,50);return{d:2,tp:'calc',q:(a/10).toFixed(1)+' ÷ '+b+' + '+(c/10).toFixed(1)+' = ?',a:(a/(b*10)+c/10).toFixed(2),s:['先除後加'],sc:2}},
+  ()=>{var a=ri(20,80),b=ri(3,9);return{d:1,tp:'calc',q:(a/10).toFixed(1)+' ÷ '+b+' = ?',a:(a/(b*10)).toFixed(2),s:['小數除整數，小數點位置不變',(a/10).toFixed(1)+' ÷ '+b+' = '+(a/(b*10)).toFixed(2),'驗算：'+(a/(b*10)).toFixed(2)+' × '+b+' ≈ '+(a/10).toFixed(1),'✅ 答案：'+(a/(b*10)).toFixed(2)],sc:2}},
+  ()=>{var a=ri(30,90),b=ri(3,8),c=ri(10,50);return{d:2,tp:'calc',q:(a/10).toFixed(1)+' ÷ '+b+' + '+(c/10).toFixed(1)+' = ?',a:(a/(b*10)+c/10).toFixed(2),s:['先除（運算優先）：'+(a/10).toFixed(1)+' ÷ '+b+' = '+(a/(b*10)).toFixed(2),'後加：'+(a/(b*10)).toFixed(2)+' + '+(c/10).toFixed(1)+' = '+(a/(b*10)+c/10).toFixed(2),'✅ 答案：'+(a/(b*10)+c/10).toFixed(2)],sc:2}},
   ()=>{var ans=(ri(10,50)/10).toFixed(1);var b=ri(3,8);var a=(parseFloat(ans)*b).toFixed(1);return{d:3,tp:'calc',q:'____ ÷ '+b+' = '+ans,a:a,s:['逆向: '+ans+'×'+b+'='+a],sc:2}},
   /* _addQ Strategy 1 — template rotation (line 480) */
   ()=>{
@@ -81,7 +81,7 @@ export const grade6={
       a:String(part),s:[frac.f+'='+frac.d,'$'+total+'×'+frac.d+'=$'+part],sc:2}}
 ],
 '6N34':[
-  ()=>{var w=ri(15,60)*10,p=pk([15,20,25,30]);return{d:1,tp:'calc',q:w+'的'+p+'% = ?',a:String(w*p/100),s:['百分數計算'],sc:2}},
+  ()=>{var w=ri(15,60)*10,p=pk([15,20,25,30]);return{d:1,tp:'calc',q:w+'的'+p+'% = ?',a:String(w*p/100),s:[w+' × '+p+'%',w+' × '+p+' ÷ 100 = '+w*p+' ÷ 100 = '+w*p/100,'✅ 答案：'+w*p/100],sc:2}},
   ()=>{var orig=ri(10,40)*20,pDec=pk([10,15,20,25]);var newP=orig*(100-pDec)/100;var dStock=ri(50,200);return{d:2,tp:'short',q:pk(CTX.places)+'存貨'+dStock+'件。原價$'+orig+'打'+(10-pDec/10)+'折，售價多少？',a:String(newP),trap:'存貨數量',s:['🔍 存貨無關','售價: '+newP],sc:2}},
   ()=>{var cost=ri(5,15)*20,markup=pk([20,25,30,40]);var sell=cost*(100+markup)/100;var disc=pk([10,15,20]);var final2=sell*(100-disc)/100;var dRent=ri(8000,20000),dStaff=ri(3,8);return{d:3,tp:'work',q:'店舖月租$'+dRent+'，有'+dStaff+'名員工。貨品成本$'+cost+'，加價'+markup+'%出售，再打'+(10-disc/10)+'折。促銷價多少？賺還是蝕？差額？',a:Math.round(final2)+','+(final2>cost?'賺':'蝕')+','+Math.abs(Math.round(final2-cost)),trap:'月租和員工數',s:['🔍 月租和員工無關','售價: '+Math.round(sell),'促銷: '+Math.round(final2),'比較成本'],sc:3}},
   ()=>{var girls=ri(150,300),boys=ri(120,280);var total=girls+boys;var pG=Math.round(girls/total*100);var dT=ri(20,50),dAge=ri(30,80);return{d:3,tp:'work',q:'學校建校'+dAge+'年，有'+dT+'位老師、男生'+boys+'人、女生'+girls+'人。女生佔學生百分之幾？（四捨五入至整數）',a:pG+'%',trap:'建校年數和老師數',s:['🔍 建校年數和老師無關','總學生: '+total,'女生%: ≈'+pG+'%'],sc:3}},
@@ -133,8 +133,8 @@ export const grade6={
   }
 ],
 '6A1':[
-  ()=>{var x=ri(5,20),a=ri(3,8),b=ri(15,60);return{d:1,tp:'calc',q:a+'x + '+b+' = '+(a*x+b)+'，x = ?',a:String(x),s:['移項求解'],sc:2}},
-  ()=>{var x=ri(5,18),a=ri(2,5),b=ri(10,30),c=ri(3,8);var rhs=a*x+b-c*x;var rhsStr=rhs>=0?c+'x + '+rhs:c+'x − '+Math.abs(rhs);return{d:2,tp:'calc',q:a+'x + '+b+' = '+rhsStr+'，x = ?',a:String(x),s:['移項歸邊'],sc:3}},
+  ()=>{var x=ri(5,20),a=ri(3,8),b=ri(15,60);return{d:1,tp:'calc',q:a+'x + '+b+' = '+(a*x+b)+'，x = ?',a:String(x),s:[a+'x + '+b+' = '+(a*x+b),'移項：'+a+'x = '+(a*x+b)+' − '+b+' = '+a*x,'x = '+a*x+' ÷ '+a+' = '+x,'✅ 答案：x = '+x],sc:2}},
+  ()=>{var x=ri(5,18),a=ri(2,5),b=ri(10,30),c=ri(3,8);var rhs=a*x+b-c*x;var rhsStr=rhs>=0?c+'x + '+rhs:c+'x − '+Math.abs(rhs);return{d:2,tp:'calc',q:a+'x + '+b+' = '+rhsStr+'，x = ?',a:String(x),s:[a+'x + '+b+' = '+rhsStr,'移項歸邊：'+a+'x − '+c+'x = '+rhs+' − '+b,(a-c)+'x = '+(rhs-b)+'  →  x = '+(rhs-b)+' ÷ '+(a-c)+' = '+x,'✅ 答案：x = '+x],sc:3}},
   ()=>{var age=ri(8,14),ratio=ri(3,4),diff=age*(ratio-1);var dSib=ri(5,age-2),dPet=ri(1,3),n=nm();return{d:3,tp:'work',q:n+'有'+dSib+'歲的弟弟和'+dPet+'隻寵物。媽媽年齡是'+n+'的'+ratio+'倍，比'+n+'大'+diff+'歲。'+n+'幾歲？',a:String(age),trap:'弟弟年齡和寵物數',s:['🔍 弟弟和寵物無關','設x歲: '+ratio+'x−x='+diff,'x='+age],sc:3}},
   // 括號方程 a(x+b)=c (d:3)
   ()=>{const a=ri(2,5),b=ri(2,8),x=ri(3,10);const c=a*(x+b);
@@ -234,7 +234,7 @@ export const grade6={
   ()=>({d:3,tp:'mc',q:'以下哪個圖形既有旋轉對稱又有線對稱？',isMC:true,opts:[{l:'A',v:'等腰三角形',c:false},{l:'B',v:'正六邊形',c:true},{l:'C',v:'平行四邊形',c:false}],a:'B',s:['正六邊形有6條對稱軸和旋轉對稱'],sc:3})
 ],
 '6D1':[
-  ()=>{var n=ri(4,7);var vals=[];for(var i=0;i<n;i++)vals.push(ri(50,98));var sum=vals.reduce((s,v)=>s+v,0);var avg=sum/n;return{d:1,tp:'calc',q:vals.join('、')+'的平均數 = ?',a:avg%1===0?String(avg):avg.toFixed(1),s:['總÷'+n],sc:2}},
+  ()=>{var n=ri(4,7);var vals=[];for(var i=0;i<n;i++)vals.push(ri(50,98));var sum=vals.reduce((s,v)=>s+v,0);var avg=sum/n;return{d:1,tp:'calc',q:vals.join('、')+'的平均數 = ?',a:avg%1===0?String(avg):avg.toFixed(1),s:['總和：'+vals.join(' + ')+' = '+sum,'÷ 個數（'+n+'）：'+sum+' ÷ '+n+' = '+(avg%1===0?avg:avg.toFixed(1)),'✅ 答案：'+(avg%1===0?avg:avg.toFixed(1))],sc:2}},
   ()=>{var n=ri(4,6);var vals=[];for(var i=0;i<n;i++)vals.push(ri(60,95));var sum=vals.reduce((s,v)=>s+v,0);var avg=sum/n;var target=Math.ceil(avg)+ri(2,8);var need=target*(n+1)-sum;while(need>100){target--;need=target*(n+1)-sum;}var dAbsent=ri(1,3);return{d:3,tp:'work',q:'有'+dAbsent+'人缺席。現有'+n+'次成績：'+vals.join('、')+'。要令'+(n+1)+'次平均達'+target+'分，下次最少要多少分？',a:String(need),trap:'缺席人數',s:['🔍 缺席無關','現總: '+sum,'目標總: '+target*(n+1),'需: '+need],sc:3}},
   /* _addQ Phase 2 — find next score for target avg (line 1025) */
   ()=>{

@@ -383,34 +383,46 @@ export default function App(){
                             </div>
                           )}
                           {isR&&!isMarked&&(
-                            <div className="mt-2 bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-200">
+                            <div className="mt-2 bg-emerald-50 rounded-xl px-3 py-2.5 border border-emerald-200">
                               <p className="text-sm font-bold text-emerald-700">💡 {q.a}</p>
-                              {q.s&&q.s.length>0&&(
-                                <div className="mt-2 pt-2 border-t border-emerald-200">
-                                  <p className="text-xs font-bold text-sky-600 mb-1">{L('stepsTitle')}</p>
-                                  {q.s.map((st,i)=>(
-                                    <p key={i} className={"text-xs mt-0.5 "+(st.startsWith('🔍')?'text-amber-700 font-bold':'text-sky-700')}>
-                                      {st.startsWith('🔍')?st:(st.startsWith('❌')||st.startsWith('✅')?st:'步驟'+(i+1)+'：'+st)}
-                                    </p>
-                                  ))}
-                                </div>
-                              )}
                             </div>
                           )}
-                          {isMarked&&q.s&&q.s.length>0&&(
-                            <div className="mt-2 bg-sky-50 rounded-lg px-3 py-2 border border-sky-200">
-                              <p className="text-xs font-bold text-sky-600 mb-1">{L('stepsTitle')}</p>
-                              {q.s.map((st,i)=>(
-                                <p key={i} className={"text-xs mt-0.5 "+(st.startsWith('🔍')?'text-amber-700 font-bold':'text-sky-700')}>
-                                  {st.startsWith('🔍')?st:(st.startsWith('❌')||st.startsWith('✅')?st:'步驟'+(i+1)+'：'+st)}
-                                </p>
-                              ))}
+                          {isS&&!isMarked&&q.s&&q.s.length>0&&(
+                            <div className="mt-2 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
+                              <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsTitle')}</p>
+                              {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
                             </div>
+                          )}
+                          {isMarked&&q.s&&q.s.length>0&&sec.id==='work'&&(
+                            <div className="mt-2 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
+                              <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsWork')}</p>
+                              {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
+                            </div>
+                          )}
+                          {isMarked&&q.s&&q.s.length>0&&sec.id!=='work'&&mr&&!mr.ok&&(
+                            <div className="mt-2 bg-orange-50 rounded-xl px-3 py-2.5 border border-orange-300">
+                              <p className="text-sm font-bold text-orange-700 mb-2">{L('stepsWrong')}</p>
+                              {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-orange-200 text-orange-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-orange-800')}>{isTrap||isFin?st:st}</p></div>);})}
+                            </div>
+                          )}
+                          {isMarked&&q.s&&q.s.length>0&&sec.id!=='work'&&mr&&mr.ok&&(
+                            <>
+                              <button onClick={()=>setStepsShown(p=>({...p,[k]:!p[k]}))} className="mt-2 text-sm text-sky-600 font-medium flex items-center gap-1 hover:text-sky-800 transition-colors">
+                                <ListOrdered size={14}/>{isS?L('stepsHide'):L('stepsShow')}
+                              </button>
+                              {isS&&(
+                                <div className="mt-1.5 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
+                                  <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsTitle')}</p>
+                                  {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
+                                </div>
+                              )}
+                            </>
                           )}
                         </div>
                         {!isMarked&&(
                           <div className="flex flex-col gap-1 shrink-0">
-                            <button onClick={()=>tryReveal(k,'eye')} aria-label={lang==='zh'?'顯示答案及步驟':'Show answer & steps'} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isR?'bg-emerald-200 text-emerald-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><Eye size={14}/></button>
+                            <button onClick={()=>tryReveal(k,'eye')} aria-label={lang==='zh'?'顯示答案':'Show answer'} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isR?'bg-emerald-200 text-emerald-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><Eye size={14}/></button>
+                            {q.s&&q.s.length>0&&<button onClick={()=>tryReveal(k,'steps')} aria-label={L('stepsBtn')} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isS?'bg-sky-200 text-sky-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><ListOrdered size={14}/></button>}
                           </div>
                         )}
                       </div>

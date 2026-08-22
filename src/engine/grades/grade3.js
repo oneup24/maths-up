@@ -40,8 +40,8 @@ export const grade3={
 ],
 
 '3N2':[
-  ()=>{var a=ri(35,99),b=ri(6,9);return{d:1,tp:'calc',q:a+' × '+b+' = ?',a:String(a*b),s:['兩位×一位'],sc:2}},
-  ()=>{var a=ri(100,350),b=ri(3,9);return{d:1,tp:'calc',q:a+' × '+b+' = ?',a:String(a*b),s:['三位×一位'],sc:2}},
+  ()=>{var a=ri(35,99),b=ri(6,9);var u=a%10,t=Math.floor(a/10);return{d:1,tp:'calc',q:a+' × '+b+' = ?',a:String(a*b),s:[t+'0 × '+b+' = '+t*b*10,u+' × '+b+' = '+u*b,'相加：'+t*b*10+' + '+u*b+' = '+a*b,'✅ 答案：'+a*b],sc:2}},
+  ()=>{var a=ri(100,350),b=ri(3,9);var h=Math.floor(a/100),r=a%100;return{d:1,tp:'calc',q:a+' × '+b+' = ?',a:String(a*b),s:[h*100+' × '+b+' = '+h*b*100,r+' × '+b+' = '+r*b,'相加：'+(h*b*100)+' + '+(r*b)+' = '+a*b,'✅ 答案：'+a*b],sc:2}},
   ()=>{var price=ri(25,60),n=ri(5,12),paid=1000;var total=price*n;var dStudents=ri(30,45),dDiscount='九折';return{d:2,tp:'work',q:'班上有'+dStudents+'位學生。'+nm()+'到'+pl()+'買書，書店正進行'+dDiscount+'優惠（未使用）。每本書$'+price+'，買了'+n+'本，付了$'+paid+'。找回多少元？',a:String(paid-total),trap:'學生數和折扣（未使用）',s:['🔍 學生數和折扣均無關','總: '+price+'×'+n+'='+total,'找回: '+paid+'−'+total+'='+(paid-total)],sc:3}},
   ()=>{var a=ri(15,35),b=ri(3,6),c=ri(8,20),d2=ri(2,4);var dE=ri(5,10),dEP=ri(2,4);return{d:2,tp:'work',q:'文具店有鉛筆每盒'+b+'枝(共'+a+'盒)、原子筆每盒'+d2+'枝(共'+c+'盒)，以及橡皮擦'+dE+'個(每個$'+dEP+')。鉛筆和原子筆共有多少枝？',a:String(a*b+c*d2),trap:'橡皮擦數量和價錢',s:['🔍 橡皮擦無關','鉛筆: '+a*b,'原子筆: '+c*d2,'共: '+(a*b+c*d2)],sc:3}},
   // HK context: 書展 with student/age trap
@@ -53,7 +53,7 @@ export const grade3={
 ],
 
 '3N3':[
-  ()=>{var dv=ri(4,9),q2=ri(30,70),r=ri(1,dv-1);var n=dv*q2+r;return{d:1,tp:'calc',q:n+' ÷ '+dv+' = ?',a:q2+'...'+r,s:['有餘數除法'],sc:2}},
+  ()=>{var dv=ri(4,9),q2=ri(30,70),r=ri(1,dv-1);var n=dv*q2+r;return{d:1,tp:'calc',q:n+' ÷ '+dv+' = ?',a:q2+'...'+r,s:[dv+' × '+q2+' = '+dv*q2,n+' − '+dv*q2+' = '+r+'（餘數）','✅ 答案：'+q2+' 餘 '+r],sc:2}},
   ()=>{var per=ri(6,12),total=ri(150,300);var full=Math.floor(total/per),rem=total%per;var dColor=pk(['紅色','藍色','綠色']),dFactory=ri(50,100);return{d:2,tp:'work',q:'工廠有'+dFactory+'名工人，生產了'+total+'件'+dColor+'玩具。每箱裝'+per+'件，至少需要多少個箱？',a:String(rem>0?full+1:full),trap:'工人數和顏色',s:['🔍 工人數和顏色無關',total+'÷'+per+'='+full+'...'+rem,'需'+(full+1)+'箱'],sc:3}},
   ()=>{var cap=ri(5,8),people=ri(20,45);var full=Math.floor(people/cap),rem=people%cap;var dLunch=ri(30,60),dDist=ri(10,30);return{d:3,tp:'work',q:people+'位同學帶$'+dLunch+'午餐費，乘'+pk(CTX.vehicle)+'到'+dDist+'公里外的農場。每輛最多坐'+cap+'人，最少需多少輛？',a:String(rem>0?full+1:full),trap:'午餐費和距離',s:['🔍 午餐費和距離無關',people+'÷'+cap+'='+full+'...'+rem],sc:3}},
   // 進一法: school trip bus
@@ -82,8 +82,8 @@ export const grade3={
 ],
 
 '3N4':[
-  ()=>{var a=ri(15,40),b=ri(3,8),c=ri(20,60);return{d:1,tp:'calc',q:a+' × '+b+' + '+c+' = ?',a:String(a*b+c),s:['先乘後加'],sc:2}},
-  ()=>{var a=ri(10,25),b=ri(5,15),c=ri(3,7);return{d:1,tp:'calc',q:'('+a+' + '+b+') × '+c+' = ?',a:String((a+b)*c),s:['先算括號'],sc:2}},
+  ()=>{var a=ri(15,40),b=ri(3,8),c=ri(20,60);return{d:1,tp:'calc',q:a+' × '+b+' + '+c+' = ?',a:String(a*b+c),s:['先乘：'+a+' × '+b+' = '+a*b,'後加：'+a*b+' + '+c+' = '+(a*b+c),'✅ 答案：'+(a*b+c)],sc:2}},
+  ()=>{var a=ri(10,25),b=ri(5,15),c=ri(3,7);return{d:1,tp:'calc',q:'('+a+' + '+b+') × '+c+' = ?',a:String((a+b)*c),s:['先算括號：'+a+' + '+b+' = '+(a+b),'再乘：'+(a+b)+' × '+c+' = '+(a+b)*c,'✅ 答案：'+(a+b)*c],sc:2}},
   ()=>{var n=ri(4,8),p1=ri(12,30),p2=ri(8,20),paid=500;var cost=n*p1+n*p2;var dRP=ri(15,25),dRN=ri(3,8);return{d:2,tp:'work',q:nm()+'買了'+n+'本中文書(每本$'+p1+')和'+n+'本英文書(每本$'+p2+')。店裏雨傘每把$'+dRP+'(共'+dRN+'把)，但未購買。付了$'+paid+'，找回多少元？',a:String(paid-cost),trap:'雨傘資料（未購買）',s:['🔍 雨傘無關','中: '+n*p1,'英: '+n*p2,'找回: '+(paid-cost)],sc:3}},
   ()=>{var a=ri(100,300),b=ri(3,8),c=ri(50,150);return{d:2,tp:'calc',q:a+' − '+c+' × '+b+' = ?',a:String(a-c*b),s:['先乘: '+c+'×'+b+'='+c*b,'再減: '+(a-c*b)],sc:2}},
   // 和差問題 with weight distractor
@@ -102,9 +102,9 @@ export const grade3={
 ],
 
 '3N5':[
-  ()=>{var den=pk([4,6,8]),a=ri(1,den-2),b=ri(1,den-a-1);return{d:1,tp:'calc',q:a+'/'+den+' + '+b+'/'+den+' = ?',a:fS(a+b,den),s:['同分母相加'],sc:2}},
-  ()=>{var den=pk([3,5,6,8]),a=ri(Math.ceil(den*0.6),den+3),b=ri(1,den-1);return{d:1,tp:'calc',q:a+'/'+den+' − '+b+'/'+den+' = ?',a:fS(a-b,den),s:['同分母相減'],sc:2}},
-  ()=>{var w1=ri(1,3),n1=ri(1,3),d1=pk([4,5,6]),w2=ri(1,2),n2=ri(1,d1-1);var imp1=w1*d1+n1,imp2=w2*d1+n2;return{d:2,tp:'calc',q:w1+'又'+n1+'/'+d1+' + '+w2+'又'+n2+'/'+d1+' = ?',a:fS(imp1+imp2,d1),s:['帶分數相加'],sc:2}},
+  ()=>{var den=pk([4,6,8]),a=ri(1,den-2),b=ri(1,den-a-1);return{d:1,tp:'calc',q:a+'/'+den+' + '+b+'/'+den+' = ?',a:fS(a+b,den),s:['分母相同（'+den+'），直接相加分子：'+a+' + '+b+' = '+(a+b),a+'/'+den+' + '+b+'/'+den+' = '+(a+b)+'/'+den,'✅ 答案：'+fS(a+b,den)],sc:2}},
+  ()=>{var den=pk([3,5,6,8]),a=ri(Math.ceil(den*0.6),den+3),b=ri(1,den-1);return{d:1,tp:'calc',q:a+'/'+den+' − '+b+'/'+den+' = ?',a:fS(a-b,den),s:['分母相同（'+den+'），直接相減分子：'+a+' − '+b+' = '+(a-b),a+'/'+den+' − '+b+'/'+den+' = '+(a-b)+'/'+den,'✅ 答案：'+fS(a-b,den)],sc:2}},
+  ()=>{var w1=ri(1,3),n1=ri(1,3),d1=pk([4,5,6]),w2=ri(1,2),n2=ri(1,d1-1);var imp1=w1*d1+n1,imp2=w2*d1+n2;return{d:2,tp:'calc',q:w1+'又'+n1+'/'+d1+' + '+w2+'又'+n2+'/'+d1+' = ?',a:fS(imp1+imp2,d1),s:['化為假分數：'+w1+'又'+n1+'/'+d1+' = '+imp1+'/'+d1,w2+'又'+n2+'/'+d1+' = '+imp2+'/'+d1,'同分母相加：'+imp1+'/'+d1+' + '+imp2+'/'+d1+' = '+(imp1+imp2)+'/'+d1,'✅ 答案：'+fS(imp1+imp2,d1)],sc:2}},
   // d:2 — fraction of a group with color distractor
   ()=>{var den=pk([4,5,6]),num=ri(1,den-1);var total=den*ri(3,6);var dColor=pk(['紅','藍','黃']);return{d:2,tp:'work',q:'一盒波子有 '+total+' 粒，其中 '+num+'/'+den+' 是'+dColor+'色的，其餘是綠色的。'+dColor+'色波子有多少粒？',a:String((total/den)*num),s:['先把波子平分成 '+den+' 份：'+total+' ÷ '+den+' = '+(total/den),'佔了其中 '+num+' 份：'+(total/den)+' × '+num+' = '+((total/den)*num)+' 粒'],sc:3}},
   // d:3 — compare fractions: 1/4 vs 1/5 vs 2/4
@@ -120,7 +120,7 @@ export const grade3={
     return{d:1,tp:'fill',q:'0.'+n+' 讀作「____」，它等於'+n+'/____。',
       a:'零點'+chars[n-1]+',10',s:['0.'+n+'='+n+'/10'],sc:1}},
   // Add tenths (d:1)
-  ()=>{const a=ri(1,5),b=ri(1,4);return{d:1,tp:'calc',q:a+'.0 + 0.'+b+' = ?',a:(a+b/10).toFixed(1),s:['整數+十分位小數'],sc:1}},
+  ()=>{const a=ri(1,5),b=ri(1,4);return{d:1,tp:'calc',q:a+'.0 + 0.'+b+' = ?',a:(a+b/10).toFixed(1),s:['整數部分：'+a+'.0','小數部分：0.'+b,'小數點對齊相加：'+a+'.0 + 0.'+b+' = '+(a+b/10).toFixed(1),'✅ 答案：'+(a+b/10).toFixed(1)],sc:1}},
   // Subtract tenths (d:2)
   ()=>{const a=ri(3,9),b=ri(1,a-1);return{d:2,tp:'calc',q:a+'.0 − '+b+'.0 = ?',a:(a-b).toFixed(1),s:[a+'−'+b+'='+(a-b)],sc:1}},
   // Order tenths (d:2)
@@ -134,7 +134,7 @@ export const grade3={
 ],
 
 '3M':[
-  ()=>{var km=ri(2,6),m=ri(100,900),km2=ri(1,4),m2=ri(100,800);return{d:1,tp:'calc',q:km+'公里'+m+'米 + '+km2+'公里'+m2+'米 = ____米',a:String(km*1000+m+km2*1000+m2),s:['化成米再加'],sc:2}},
+  ()=>{var km=ri(2,6),m=ri(100,900),km2=ri(1,4),m2=ri(100,800);return{d:1,tp:'calc',q:km+'公里'+m+'米 + '+km2+'公里'+m2+'米 = ____米',a:String(km*1000+m+km2*1000+m2),s:[km+'公里 = '+km*1000+'米',km2+'公里 = '+km2*1000+'米','合計：'+km*1000+' + '+m+' + '+km2*1000+' + '+m2+' = '+(km*1000+m+km2*1000+m2)+'米','✅ 答案：'+(km*1000+m+km2*1000+m2)+'米'],sc:2}},
   ()=>{var items=[{n:fd(),w:ri(200,400)},{n:fd(),w:ri(150,300)},{n:fd(),w:ri(100,250)}];var total=items.reduce((s,i)=>s+i.w,0);var dBox=ri(50,100),dBoxC=pk(['紅色','藍色']);return{d:2,tp:'short',q:items.map(i=>i.n+'重'+i.w+'克').join('，')+'。放在'+dBoxC+'盒子(空盒重'+dBox+'克)。水果共重多少克？比1公斤多還是少？差多少克？',a:total+','+(total>=1000?'多':'少')+','+Math.abs(total-1000),trap:'盒子重量和顏色',s:['🔍 盒子無關','水果: '+total+'克','與1000克差: '+Math.abs(total-1000)],sc:3}},
   /* d:3 — unit conversion chain */
   ()=>{var km=ri(2,5),m=ri(200,800);var total_m=km*1000+m;return{d:3,tp:'fill',q:km+'公里'+m+'米 = ____米 = ____厘米',a:total_m+','+(total_m*100),s:[km+'×1000+'+m+'='+total_m,total_m+'×100='+(total_m*100)],sc:3}},
@@ -160,7 +160,7 @@ export const grade3={
 
 '3D1':[
   ()=>{var items=[{l:'足球',v:ri(15,35)},{l:'籃球',v:ri(10,30)},{l:'排球',v:ri(12,28)},{l:'乒乓球',v:ri(20,40)}];var total=items.reduce((s,i)=>s+i.v,0);var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);var mn=items.reduce((m,i)=>i.v<m.v?i:m,items[0]);return{d:2,tp:'short',q:'根據棒形圖，四種球共有多少個？最多比最少多多少個？',fig:FIG.bars(items),a:total+','+(mx.v-mn.v),s:['總和: '+total,'差: '+(mx.v-mn.v)],sc:3}},
-  ()=>{var items=[{l:'一月',v:ri(20,50)},{l:'二月',v:ri(15,45)},{l:'三月',v:ri(25,60)}];var avg=Math.round(items.reduce((s,i)=>s+i.v,0)/items.length);return{d:3,tp:'short',q:'棒形圖顯示三個月銷量。三個月平均銷量是多少？',fig:FIG.bars(items),a:String(avg),s:['總÷3='+avg],sc:3}},
+  ()=>{var items=[{l:'一月',v:ri(20,50)},{l:'二月',v:ri(15,45)},{l:'三月',v:ri(25,60)}];var sum=items.reduce((s,i)=>s+i.v,0),avg=Math.round(sum/items.length);return{d:3,tp:'short',q:'棒形圖顯示三個月銷量。三個月平均銷量是多少？',fig:FIG.bars(items),a:String(avg),s:['三個月總和：'+items[0].v+' + '+items[1].v+' + '+items[2].v+' = '+sum,sum+' ÷ 3 ≈ '+avg,'✅ 答案：'+avg],sc:3}},
   // d:2 — 雪糕 bar chart with 3 flavors
   ()=>{var items=[{l:'朱古力',v:ri(25,45)},{l:'雲呢拿',v:ri(10,30)},{l:'士多啤梨',v:ri(15,35)}];var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);var mn=items.reduce((m,i)=>i.v<m.v?i:m,items[0]);return{d:2,tp:'short',q:'棒形圖顯示雪糕店各款口味的銷量。最受歡迎的口味比最不受歡迎的多賣出多少杯？',fig:FIG.bars(items),a:String(mx.v-mn.v),s:['最多：'+mx.v+' 杯，最少：'+mn.v+' 杯','相差：'+mx.v+' − '+mn.v+' = '+(mx.v-mn.v)+' 杯'],sc:2}}
 ],

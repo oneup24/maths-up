@@ -40,9 +40,9 @@ export const grade5={
 ],
 
 '5N2':[
-  ()=>{var d1=pk([3,4,6]),d2=pk([4,6,8]);if(d1===d2)d2=d1*2;var l=lcm(d1,d2);var n1=ri(1,d1-1),n2=ri(1,d2-1);var res=n1*(l/d1)+n2*(l/d2);return{d:1,tp:'calc',q:n1+'/'+d1+' + '+n2+'/'+d2+' = ?',a:fS(res,l),s:['通分母: L.C.M.='+l],sc:2}},
-  ()=>{var d1=pk([3,4,6]),d2=pk([4,6,8]);if(d1===d2)d2=d1+2;var l=lcm(d1,d2);var n1=ri(Math.ceil(d1*0.6),d1-1),n2=ri(1,Math.floor(d2*0.4));var v1=n1*(l/d1),v2=n2*(l/d2);if(v1<=v2){n1=d1-1;v1=n1*(l/d1)}return{d:2,tp:'calc',q:n1+'/'+d1+' − '+n2+'/'+d2+' = ?',a:fS(v1-v2,l),s:['通分母後相減'],sc:2}},
-  ()=>{var sets=[{d1:4,d2:6,d3:3,l:12},{d1:3,d2:4,d3:6,l:12},{d1:6,d2:8,d3:4,l:24},{d1:4,d2:5,d3:10,l:20},{d1:3,d2:5,d3:15,l:15}];var s=pk(sets);var n1=ri(1,s.d1-1),n2=ri(1,s.d2-1),n3=ri(1,s.d3-1);var v1=n1*(s.l/s.d1),v2=n2*(s.l/s.d2),v3=n3*(s.l/s.d3);while(v3>=v1+v2){n3=ri(1,s.d3-1);v3=n3*(s.l/s.d3);}return{d:3,tp:'calc',q:n1+'/'+s.d1+' + '+n2+'/'+s.d2+' − '+n3+'/'+s.d3+' = ?',a:fS(v1+v2-v3,s.l),s:['L.C.M.='+s.l],sc:3}},
+  ()=>{var d1=pk([3,4,6]),d2=pk([4,6,8]);if(d1===d2)d2=d1*2;var l=lcm(d1,d2);var n1=ri(1,d1-1),n2=ri(1,d2-1);var v1=n1*(l/d1),v2=n2*(l/d2),res=v1+v2;return{d:1,tp:'calc',q:n1+'/'+d1+' + '+n2+'/'+d2+' = ?',a:fS(res,l),s:['通分母：L.C.M.('+d1+'，'+d2+') = '+l,n1+'/'+d1+' → '+v1+'/'+l,n2+'/'+d2+' → '+v2+'/'+l,'相加：'+v1+'/'+l+' + '+v2+'/'+l+' = '+res+'/'+l,'✅ 答案：'+fS(res,l)],sc:2}},
+  ()=>{var d1=pk([3,4,6]),d2=pk([4,6,8]);if(d1===d2)d2=d1+2;var l=lcm(d1,d2);var n1=ri(Math.ceil(d1*0.6),d1-1),n2=ri(1,Math.floor(d2*0.4));var v1=n1*(l/d1),v2=n2*(l/d2);if(v1<=v2){n1=d1-1;v1=n1*(l/d1)}return{d:2,tp:'calc',q:n1+'/'+d1+' − '+n2+'/'+d2+' = ?',a:fS(v1-v2,l),s:['通分母：L.C.M.('+d1+'，'+d2+') = '+l,n1+'/'+d1+' → '+v1+'/'+l,n2+'/'+d2+' → '+v2+'/'+l,'相減：'+v1+'/'+l+' − '+v2+'/'+l+' = '+(v1-v2)+'/'+l,'✅ 答案：'+fS(v1-v2,l)],sc:2}},
+  ()=>{var sets=[{d1:4,d2:6,d3:3,l:12},{d1:3,d2:4,d3:6,l:12},{d1:6,d2:8,d3:4,l:24},{d1:4,d2:5,d3:10,l:20},{d1:3,d2:5,d3:15,l:15}];var s=pk(sets);var n1=ri(1,s.d1-1),n2=ri(1,s.d2-1),n3=ri(1,s.d3-1);var v1=n1*(s.l/s.d1),v2=n2*(s.l/s.d2),v3=n3*(s.l/s.d3);while(v3>=v1+v2){n3=ri(1,s.d3-1);v3=n3*(s.l/s.d3);}return{d:3,tp:'calc',q:n1+'/'+s.d1+' + '+n2+'/'+s.d2+' − '+n3+'/'+s.d3+' = ?',a:fS(v1+v2-v3,s.l),s:['通分母：L.C.M. = '+s.l,'換算：'+n1+'/'+s.d1+'='+v1+'/'+s.l+'，'+n2+'/'+s.d2+'='+v2+'/'+s.l+'，'+n3+'/'+s.d3+'='+v3+'/'+s.l,'計算：'+v1+' + '+v2+' − '+v3+' = '+(v1+v2-v3)+'，分母 '+s.l,'✅ 答案：'+fS(v1+v2-v3,s.l)],sc:3}},
   ()=>{var d1=pk([3,4,5]),d2=pk([4,6,8]);if(d1===d2)d2=d1+2;var l=lcm(d1,d2);var n1=ri(1,d1-1),n2=ri(1,d2-1);var v1=n1*(l/d1),v2=n2*(l/d2);return{d:3,tp:'mc',q:n1+'/'+d1+' 和 '+n2+'/'+d2+' 哪個較大？',isMC:true,opts:[{l:'A',v:n1+'/'+d1,c:v1>v2},{l:'B',v:n2+'/'+d2,c:v2>v1},{l:'C',v:'一樣大',c:v1===v2}],a:v1>v2?'A':v2>v1?'B':'C',s:['通分母比較: '+v1+'/'+l+' vs '+v2+'/'+l],sc:2}},
   /* _addQ Strategy 3 — comparison (line 582) */
   ()=>{
@@ -75,7 +75,7 @@ export const grade5={
     return{d:3,tp:'calc',
       q:fS(sumV,l)+' − '+n1+'/'+d1+' = ?',
       a:fS(n2*(l/d2),l),
-      s:['通分母後相減'],sc:2};
+      s:['通分母：L.C.M.('+d1+'，'+d2+') = '+l,fS(sumV,l)+' → '+sumV+'/'+l,n1+'/'+d1+' → '+n1*(l/d1)+'/'+l,'相減：'+sumV+'/'+l+' − '+n1*(l/d1)+'/'+l+' = '+n2*(l/d2)+'/'+l,'✅ 答案：'+fS(n2*(l/d2),l)],sc:2};
   },
   /* _addQ Phase 2 — comparison in context (line 966) */
   ()=>{
@@ -96,8 +96,8 @@ export const grade5={
   }
 ],
 '5N3':[
-  ()=>{var n1=ri(2,5),d1=pk([3,5,7]),n2=ri(2,4),d2=pk([4,6,8]);return{d:1,tp:'calc',q:n1+'/'+d1+' × '+n2+'/'+d2+' = ?',a:fS(n1*n2,d1*d2),s:['分子×分子，分母×分母'],sc:2}},
-  ()=>{var w=ri(2,4),n=ri(1,3),den=pk([4,5,6]),m=ri(3,8);var imp=w*den+n;return{d:2,tp:'calc',q:w+'又'+n+'/'+den+' × '+m+' = ?',a:fS(imp*m,den),s:['先化假分數再乘'],sc:2}},
+  ()=>{var n1=ri(2,5),d1=pk([3,5,7]),n2=ri(2,4),d2=pk([4,6,8]);return{d:1,tp:'calc',q:n1+'/'+d1+' × '+n2+'/'+d2+' = ?',a:fS(n1*n2,d1*d2),s:['分子相乘：'+n1+' × '+n2+' = '+n1*n2,'分母相乘：'+d1+' × '+d2+' = '+d1*d2,'結果：'+n1*n2+'/'+d1*d2,'✅ 答案（最簡）：'+fS(n1*n2,d1*d2)],sc:2}},
+  ()=>{var w=ri(2,4),n=ri(1,3),den=pk([4,5,6]),m=ri(3,8);var imp=w*den+n;return{d:2,tp:'calc',q:w+'又'+n+'/'+den+' × '+m+' = ?',a:fS(imp*m,den),s:['化為假分數：'+w+'又'+n+'/'+den+' = ('+w+'×'+den+'+'+n+')/'+den+' = '+imp+'/'+den,'乘以整數：'+imp+'/'+den+' × '+m+' = '+imp*m+'/'+den,'✅ 答案（最簡）：'+fS(imp*m,den)],sc:2}},
   ()=>{var recL=ri(6,14),fN=ri(2,3),fD=pk([4,5]);var dThick=pk([2,3,5]),dColor=pk(['白色','黃色']);var width=recL*fN/fD;return{d:3,tp:'work',q:'一塊'+dColor+'紙板厚'+dThick+'mm，長'+recL+'cm，闊是長的'+fN+'/'+fD+'。面積？',a:String(recL*width),trap:'顏色和厚度',s:['🔍 顏色和厚度無關','闊='+width,'面積='+recL*width],sc:3}},
   // 呈分試Killer題：「餘下的」分數 (d:3)
   ()=>{var total=4*ri(10,20);return{d:3,tp:'work',q:nm()+'有 '+total+' 粒波子。他把其中的 1/4 送給弟弟，再把**餘下**的 1/3 送給妹妹。妹妹得到多少粒波子？',a:String(total*3/4/3),trap:'「餘下的」字眼',s:['🔍 陷阱！妹妹得到的不是總數的 1/3，而是「餘下的」1/3。','弟弟拿走後餘下：'+total+' × (1 − 1/4) = '+(total*3/4)+' 粒','妹妹得到：'+(total*3/4)+' × 1/3 = '+(total*3/4/3)+' 粒'],sc:3}},
@@ -114,8 +114,8 @@ export const grade5={
   }
 ],
 '5N4':[
-  ()=>{var a=ri(15,40),b=ri(12,35);return{d:1,tp:'calc',q:(a/10).toFixed(1)+' × '+(b/10).toFixed(1)+' = ?',a:((a*b)/100).toFixed(2),s:['小數×小數'],sc:2}},
-  ()=>{var a=ri(20,50),b=ri(20,50),c=ri(10,30);return{d:2,tp:'calc',q:'('+(a/10).toFixed(1)+' + '+(b/10).toFixed(1)+') × '+(c/10).toFixed(1)+' = ?',a:(((a+b)*c)/100).toFixed(2),s:['先算括號'],sc:2}},
+  ()=>{var a=ri(15,40),b=ri(12,35);return{d:1,tp:'calc',q:(a/10).toFixed(1)+' × '+(b/10).toFixed(1)+' = ?',a:((a*b)/100).toFixed(2),s:['先當整數計算：'+a+' × '+b+' = '+a*b,'兩個因數各有 1 位小數，共 2 位','加上小數點：'+a*b+' → '+((a*b)/100).toFixed(2),'✅ 答案：'+((a*b)/100).toFixed(2)],sc:2}},
+  ()=>{var a=ri(20,50),b=ri(20,50),c=ri(10,30);return{d:2,tp:'calc',q:'('+(a/10).toFixed(1)+' + '+(b/10).toFixed(1)+') × '+(c/10).toFixed(1)+' = ?',a:(((a+b)*c)/100).toFixed(2),s:['先算括號：'+(a/10).toFixed(1)+' + '+(b/10).toFixed(1)+' = '+((a+b)/10).toFixed(1),'再乘：'+((a+b)/10).toFixed(1)+' × '+(c/10).toFixed(1)+' = '+(((a+b)*c)/100).toFixed(2),'✅ 答案：'+(((a+b)*c)/100).toFixed(2)],sc:2}},
   ()=>{var price=ri(20,60),qty=ri(8,20);var disc=0.8;var dM=ri(500,2000),dA=ri(200,500);return{d:3,tp:'work',q:pl()+'面積'+dA+'平方米，有會員'+dM+'人。原價每件$'+(price/10).toFixed(1)+'0，打八折後每件多少？買'+qty+'件共多少？',a:(price/10*disc).toFixed(2)+','+(price/10*disc*qty).toFixed(2),trap:'面積和會員數',s:['🔍 面積和會員數無關','折扣價×'+qty],sc:3}},
   // 克 vs 公斤單位換算陷阱 (d:3)
   ()=>{var weight=ri(12,25);var pricePerKg=ri(25,45);return{d:3,tp:'work',q:'超級市場裏，車厘子每公斤售 $'+(pricePerKg/10).toFixed(1)+'。媽媽買了 '+(weight*100)+' 克的車厘子，需付多少元？',a:((pricePerKg/10)*(weight/10)).toFixed(2),trap:'單位不統一（克 vs 公斤）',s:['🔍 陷阱！必須先將克化為公斤。',(weight*100)+' 克 = '+(weight/10).toFixed(1)+' 公斤','需付：'+(pricePerKg/10).toFixed(1)+' × '+(weight/10).toFixed(1)+' = $'+((pricePerKg/10)*(weight/10)).toFixed(2)],sc:3}},
@@ -137,13 +137,13 @@ export const grade5={
     return{d:2,tp:'calc',q:b+' ÷ 100 = ?',a:(b/100).toFixed(2),s:['小數點左移2位'],sc:1}}
 ],
 '5N5':[
-  ()=>{var n1=ri(2,6),d1=pk([3,5,7]),n2=ri(2,4),d2=pk([4,6,8]);return{d:1,tp:'calc',q:n1+'/'+d1+' ÷ '+n2+'/'+d2+' = ?',a:fS(n1*d2,d1*n2),s:['×倒數'],sc:2}},
+  ()=>{var n1=ri(2,6),d1=pk([3,5,7]),n2=ri(2,4),d2=pk([4,6,8]);return{d:1,tp:'calc',q:n1+'/'+d1+' ÷ '+n2+'/'+d2+' = ?',a:fS(n1*d2,d1*n2),s:['除法改乘倒數：÷ '+n2+'/'+d2+' → × '+d2+'/'+n2,n1+'/'+d1+' × '+d2+'/'+n2+' = '+n1*d2+'/'+d1*n2,'✅ 答案（最簡）：'+fS(n1*d2,d1*n2)],sc:2}},
   ()=>{var total=ri(200,500),fN=ri(2,3),fD=pk([4,5,6]);var dDay=pk(['星期一','星期三','星期五']),dP=ri(3,8);var used=Math.round(total*fN/fD);return{d:2,tp:'work',q:dDay+'，'+dP+'位工人用一條'+total+'cm繩子，用去全長的'+fN+'/'+fD+'。剩多少cm？',a:String(total-used),trap:'日期和工人數',s:['🔍 日期和工人數無關','用去: '+used,'剩: '+(total-used)],sc:3}},
   ()=>{var whole=ri(3,6),fN=ri(1,3),fD=pk([4,5,6]);var imp=whole*fD+fN;var div=ri(2,4);return{d:3,tp:'calc',q:whole+'又'+fN+'/'+fD+' ÷ '+div+' = ?',a:fS(imp,fD*div),s:['先化假分數: '+imp+'/'+fD,'÷'+div+' = '+imp+'/'+(fD*div)],sc:3}}
 ],
 '5A':[
-  ()=>{var x=ri(5,20),a=ri(3,8),b=ri(10,50);return{d:1,tp:'calc',q:a+'x + '+b+' = '+(a*x+b)+'，x = ?',a:String(x),s:['移項: x='+x],sc:2}},
-  ()=>{var x=ri(3,12),a=ri(2,6),b=ri(5,20);return{d:2,tp:'calc',q:a+'(x + '+b+') = '+(a*(x+b))+'，x = ?',a:String(x),s:['展開或先÷'+a],sc:2}},
+  ()=>{var x=ri(5,20),a=ri(3,8),b=ri(10,50);return{d:1,tp:'calc',q:a+'x + '+b+' = '+(a*x+b)+'，x = ?',a:String(x),s:[a+'x + '+b+' = '+(a*x+b),'移項：'+a+'x = '+(a*x+b)+' − '+b+' = '+a*x,'x = '+a*x+' ÷ '+a+' = '+x,'✅ 答案：x = '+x],sc:2}},
+  ()=>{var x=ri(3,12),a=ri(2,6),b=ri(5,20);return{d:2,tp:'calc',q:a+'(x + '+b+') = '+(a*(x+b))+'，x = ?',a:String(x),s:['兩邊除以 '+a+'：(x + '+b+') = '+(a*(x+b))+' ÷ '+a+' = '+(x+b),'移項：x = '+(x+b)+' − '+b+' = '+x,'✅ 答案：x = '+x],sc:2}},
   ()=>{var n=ri(15,30),each=ri(3,8),extra=ri(20,50);var dSchool=pk(CTX.school),dClass=pk(['4A','5B','6C']);return{d:3,tp:'work',q:dSchool+dClass+'班老師買了x本簿(每本$'+each+')和'+extra+'枝筆(每枝$3)，共$'+(n*each+extra*3)+'。買了多少本簿？',a:String(n),trap:'學校和班別',s:['🔍 學校班別無關',each+'x+'+extra*3+'='+(n*each+extra*3),'x='+n],sc:3}},
   /* d:3 — forming equation */
   ()=>{var x=ri(8,20);var a=ri(2,5);var total=x+a*x;return{d:3,tp:'work',q:nm()+'的年齡是弟弟的'+a+'倍。兩人年齡總和是'+total+'歲。弟弟幾歲？',a:String(x),s:['設弟弟x歲','x+'+a+'x='+total,(a+1)+'x='+total,'x='+x],sc:3}},

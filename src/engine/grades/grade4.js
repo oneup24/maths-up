@@ -7,7 +7,7 @@ import { nm, pl, CTX, _it, _pl, _nm2 } from '../config.js';
 
 export const grade4={
 '4N1':[
-  ()=>{var a=ri(35,99),b=ri(25,75);return{d:1,tp:'calc',q:a+' × '+b+' = ?',a:String(a*b),s:['兩位×兩位'],sc:2}},
+  ()=>{var a=ri(35,99),b=ri(25,75);var u=b%10,t=Math.floor(b/10);return{d:1,tp:'calc',q:a+' × '+b+' = ?',a:String(a*b),s:[a+' × '+u+' = '+a*u,a+' × '+t+'0 = '+a*t*10,'相加：'+a*u+' + '+a*t*10+' = '+a*b,'✅ 答案：'+a*b],sc:2}},
   ()=>{var a=ri(30,80),b=ri(15,40),c=ri(20,60);return{d:2,tp:'calc',q:a+' × '+b+' + '+a+' × '+c+' = ?',a:String(a*(b+c)),s:['分配律: '+a+'×('+b+'+'+c+')'],sc:2}},
   ()=>{var packs=ri(40,80),per=ri(100,200),extra=ri(200,600);var dWeight=ri(5,15),dShop=pk(CTX.places);return{d:2,tp:'work',q:dShop+'現有花生'+packs+'包，每包'+per+'顆，每顆重約'+dWeight+'克。再添加'+extra+'顆，共有花生多少顆？',a:String(packs*per+extra),trap:'每顆重量和店名',s:['🔍 重量和店名無關',packs+'×'+per+'='+packs*per,packs*per+'+'+extra+'='+(packs*per+extra)],sc:3}},
   ()=>{var cn=ri(12,20),en=ri(10,16),ma=ri(5,10),sets=ri(200,400);var dPrice=ri(50,120);return{d:3,tp:'work',q:'一套圖書有'+cn+'本中文、'+en+'本英文和'+ma+'本數學，每套售$'+dPrice+'。'+pl()+'有'+sets+'套，共有中英文書多少本？',a:String((cn+en)*sets),trap:'售價和數學書數量',s:['🔍 售價和數學書無關','中英: '+(cn+en),'×'+sets+' = '+(cn+en)*sets],sc:3}},
@@ -90,7 +90,7 @@ export const grade4={
   }
 ],
 '4N2':[
-  ()=>{var dv=ri(12,30),q2=ri(15,35),r=ri(1,dv-1);var n=dv*q2+r;return{d:1,tp:'calc',q:n+' ÷ '+dv+' = ?',a:q2+'...'+r,s:['有餘數除法'],sc:2}},
+  ()=>{var dv=ri(12,30),q2=ri(15,35),r=ri(1,dv-1);var n=dv*q2+r;return{d:1,tp:'calc',q:n+' ÷ '+dv+' = ?',a:q2+'...'+r,s:[dv+' × '+q2+' = '+dv*q2,n+' − '+dv*q2+' = '+r+'（餘數）','✅ 答案：'+q2+' 餘 '+r],sc:2}},
   ()=>{var total=ri(300,800),per=ri(12,25);var full=Math.floor(total/per),rem=total%per;var dW=ri(8,20),dC=pk(['紅色','藍色']);return{d:2,tp:'work',q:'工廠有'+dW+'名工人，生產了'+total+'件'+dC+'玩具。每箱盛'+per+'件，要用多少個箱？',a:String(rem>0?full+1:full),trap:'工人數和顏色',s:['🔍 均無關',total+'÷'+per+'='+full+'...'+rem,'需'+(full+1)+'箱'],sc:3}},
   ()=>{var plane=ri(250,500),ratio=ri(12,20);var car=Math.floor(plane/ratio);var budget=ri(plane+50,plane+200);var remain=budget-plane;var maxCar=Math.floor(remain/car);var dAge=ri(35,50);return{d:3,tp:'work',q:'一架模型飛機售'+plane+'元，是模型車的'+ratio+'倍。爸爸今年'+dAge+'歲，有'+budget+'元。買了飛機後，最多可買模型車多少輛？',a:String(maxCar),trap:'爸爸年齡',s:['🔍 年齡無關','車價: '+car,'餘錢: '+(budget-plane),'最多: '+maxCar+'輛'],sc:3}}
 ],
@@ -161,8 +161,8 @@ export const grade4={
       a:ps.join(','),s:['質數只有1和本身兩個因數','答案：'+ps.join(', ')],sc:2}}
 ],
 '4N4':[
-  ()=>{var a=pk([6,8,9,12]),b=pk([8,10,12,15]);return{d:1,tp:'fill',q:a+'和'+b+'的L.C.M.是____',a:String(lcm(a,b)),s:['列出倍數'],sc:2}},
-  ()=>{var a=pk([18,24,30,36]),b=pk([12,16,20,24]);return{d:1,tp:'fill',q:a+'和'+b+'的H.C.F.是____',a:String(gcd(a,b)),s:['列出因數'],sc:2}},
+  ()=>{var a=pk([6,8,9,12]),b=pk([8,10,12,15]);return{d:1,tp:'fill',q:a+'和'+b+'的L.C.M.是____',a:String(lcm(a,b)),s:[a+'的倍數：'+a+'，'+(a*2)+'，'+(a*3)+'，'+(a*4)+'，…',b+'的倍數：'+b+'，'+(b*2)+'，'+(b*3)+'，'+(b*4)+'，…','最小公倍數（L.C.M.）= '+lcm(a,b),'✅ 答案：'+lcm(a,b)],sc:2}},
+  ()=>{var a=pk([18,24,30,36]),b=pk([12,16,20,24]);var fa=fOf(a).join('，'),fb=fOf(b).join('，');return{d:1,tp:'fill',q:a+'和'+b+'的H.C.F.是____',a:String(gcd(a,b)),s:[a+'的因數：'+fa,b+'的因數：'+fb,'最大公因數（H.C.F.）= '+gcd(a,b),'✅ 答案：'+gcd(a,b)],sc:2}},
   // HCF 實際應用：剪正方形
   ()=>{var w=pk([24,36,48]),h=pk([16,20,32]);var g=gcd(w,h);return{d:3,tp:'work',q:'一塊長方形手工紙長 '+w+' cm，闊 '+h+' cm。要把這張紙剪成數個大小相同的正方形，而沒有剩餘。剪出的正方形最大邊長是多少 cm？',a:String(g),s:['要剪出最大的正方形且沒有剩餘，邊長必須是長和闊的「最大公因數 (H.C.F.)」。','H.C.F.('+w+', '+h+') = '+g],sc:3}},
   // LCM 實際應用：巴士同時開出
@@ -172,8 +172,8 @@ export const grade4={
   ()=>{var a=pk([6,8,10,12]),b=pk([8,10,12,15]);var l=lcm(a,b);var n=ri(2,4);return{d:3,tp:'work',q:'紅燈每'+a+'秒亮一次，綠燈每'+b+'秒亮一次。同時亮後，第'+n+'次同時亮是多少秒後？',a:String(l*n),s:['L.C.M.='+l,'第'+n+'次: '+l+'×'+n+'='+l*n],sc:3}}
 ],
 '4N5':[
-  ()=>{var a=ri(30,80),b=ri(15,40),c=ri(5,12);return{d:1,tp:'calc',q:'('+a+' + '+b+') × '+c+' = ?',a:String((a+b)*c),s:['括號先算'],sc:2}},
-  ()=>{for(var i=0;i<50;i++){var a=ri(100,300),b=ri(20,60),c=ri(5,9),d=ri(10,30);if(a-b*c>=0)return{d:2,tp:'calc',q:a+' − '+b+' × '+c+' + '+d+' = ?',a:String(a-b*c+d),s:['先乘後加減'],sc:2}}var fa=300,fb=20,fc=5,fd=10;return{d:2,tp:'calc',q:fa+' − '+fb+' × '+fc+' + '+fd+' = ?',a:String(fa-fb*fc+fd),s:['先乘後加減'],sc:2}},
+  ()=>{var a=ri(30,80),b=ri(15,40),c=ri(5,12);return{d:1,tp:'calc',q:'('+a+' + '+b+') × '+c+' = ?',a:String((a+b)*c),s:['先算括號：'+a+' + '+b+' = '+(a+b),'再乘：'+(a+b)+' × '+c+' = '+(a+b)*c,'✅ 答案：'+(a+b)*c],sc:2}},
+  ()=>{for(var i=0;i<50;i++){var a=ri(100,300),b=ri(20,60),c=ri(5,9),d=ri(10,30);if(a-b*c>=0)return{d:2,tp:'calc',q:a+' − '+b+' × '+c+' + '+d+' = ?',a:String(a-b*c+d),s:['先乘（優先）：'+b+' × '+c+' = '+b*c,'從左計算：'+a+' − '+b*c+' = '+(a-b*c),'最後加：'+(a-b*c)+' + '+d+' = '+(a-b*c+d),'✅ 答案：'+(a-b*c+d)],sc:2}}var fa=300,fb=20,fc=5,fd=10;return{d:2,tp:'calc',q:fa+' − '+fb+' × '+fc+' + '+fd+' = ?',a:String(fa-fb*fc+fd),s:['先乘（優先）：'+fb+' × '+fc+' = '+fb*fc,'從左計算：'+fa+' − '+fb*fc+' = '+(fa-fb*fc),'最後加：'+(fa-fb*fc)+' + '+fd+' = '+(fa-fb*fc+fd),'✅ 答案：'+(fa-fb*fc+fd)],sc:2}},
   ()=>{var small=ri(15,25),big=small+ri(3,8),n=ri(200,350);var dMember=ri(1000,5000),dOpen=ri(8,22);return{d:2,tp:'work',q:'超市有會員'+dMember+'人，每日營業'+dOpen+'小時。細包裝每包$'+small+'，大包裝比細包裝貴$'+(big-small)+'。各買'+n+'包需付多少元？',a:String((small+big)*n),trap:'會員數和營業時間',s:['🔍 會員和營業時間無關','大: '+big,'兩種×'+n+': '+(small+big)*n],sc:3}},
   ()=>{var girls=ri(20,40),leave=ri(3,10),ratio=ri(10,20);var dArea=ri(100,300);return{d:3,tp:'work',q:'禮堂面積'+dArea+'平方米，有女學生'+girls+'人。'+leave+'人離開後，男學生是餘下女學生的'+ratio+'倍。男學生有多少人？',a:String((girls-leave)*ratio),trap:'禮堂面積',s:['🔍 面積無關','餘下: '+(girls-leave),'男: '+(girls-leave)*ratio],sc:3}},
   // 分配律：展開 (d:1)
@@ -186,8 +186,8 @@ export const grade4={
       a:b+'+'+c,s:['提取公因數'+a,'= '+a+'×'+(b+c)+' = '+(a*(b+c))],sc:2}}
 ],
 '4N6':[
-  ()=>{var n=ri(10,25),den=ri(3,7);var w=Math.floor(n/den),r=n%den;return{d:1,tp:'fill',q:n+'/'+den+' 化為帶分數 = ____',a:r===0?String(w):w+'又'+r+'/'+den,s:['假分數÷分母'],sc:2}},
-  ()=>{var den=pk([6,8,12]),a=ri(den+1,den*2),b=ri(1,den-1);return{d:2,tp:'calc',q:a+'/'+den+' − '+b+'/'+den+' = ?（最簡）',a:fS(a-b,den),s:['同分母相減後約分'],sc:2}},
+  ()=>{var n=ri(10,25),den=ri(3,7);var w=Math.floor(n/den),r=n%den;return{d:1,tp:'fill',q:n+'/'+den+' 化為帶分數 = ____',a:r===0?String(w):w+'又'+r+'/'+den,s:r===0?[n+' ÷ '+den+' = '+w+'（整除）','✅ 答案：'+w]:[n+' ÷ '+den+' = '+w+' 餘 '+r,'整數部分 = '+w+'，分子 = '+r+'，分母不變 = '+den,'✅ 答案：'+w+'又'+r+'/'+den],sc:2}},
+  ()=>{var den=pk([6,8,12]),a=ri(den+1,den*2),b=ri(1,den-1);return{d:2,tp:'calc',q:a+'/'+den+' − '+b+'/'+den+' = ?（最簡）',a:fS(a-b,den),s:['同分母，相減分子：'+a+' − '+b+' = '+(a-b),a+'/'+den+' − '+b+'/'+den+' = '+(a-b)+'/'+den,'約分至最簡：'+fS(a-b,den),'✅ 答案：'+fS(a-b,den)],sc:2}},
   ()=>{var d=pk([4,6,8]);var pairs=[];for(var n=1;n<d;n++){if(gcd(n,d)>1)pairs.push(n+'/'+d+'='+fS(n,d))}return{d:3,tp:'fill',q:'寫出 1/'+d+'、2/'+d+'、...、'+(d-1)+'/'+d+' 中可以約分的分數及其最簡分數。',a:pairs.join(','),s:['逐一檢查公因數'],sc:3}},
   /* _addQ Strategy 3 — comparison (line 885) */
   ()=>{
@@ -207,7 +207,7 @@ export const grade4={
   }
 ],
 '4N78':[
-  ()=>{var a=ri(30,95),b=ri(20,85);return{d:1,tp:'calc',q:(a/10).toFixed(1)+' + '+(b/10).toFixed(1)+' = ?',a:((a+b)/10).toFixed(1),s:['小數加法'],sc:2}},
+  ()=>{var a=ri(30,95),b=ri(20,85);return{d:1,tp:'calc',q:(a/10).toFixed(1)+' + '+(b/10).toFixed(1)+' = ?',a:((a+b)/10).toFixed(1),s:['小數點對齊，直接相加',(a/10).toFixed(1)+' + '+(b/10).toFixed(1)+' = '+((a+b)/10).toFixed(1),'✅ 答案：'+((a+b)/10).toFixed(1)],sc:2}},
   ()=>{var a=ri(20,80),b=ri(10,50),c=ri(10,Math.min(40,a+b-5));return{d:2,tp:'calc',q:(a/10).toFixed(1)+' + '+(b/10).toFixed(1)+' − '+(c/10).toFixed(1)+' = ?',a:((a+b-c)/10).toFixed(1),s:['先加後減'],sc:2}},
   ()=>{var a=ri(10,50),b=ri(10,50);return{d:3,tp:'fill',q:'____+ '+(b/10).toFixed(1)+' = '+((a+b)/10).toFixed(1),a:(a/10).toFixed(1),s:['逆向: '+((a+b)/10).toFixed(1)+'−'+(b/10).toFixed(1)+'='+(a/10).toFixed(1)],sc:2}},
   /* _addQ — reverse / find missing decimal (line 849) */
