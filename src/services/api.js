@@ -57,6 +57,13 @@ export async function getUserStats(userId) {
   return { totalExams, avgScore, bestScore };
 }
 
+// Save per-question responses (Gate 0 — required by 8 downstream features)
+export async function saveResponses(rows) {
+  if (!rows || rows.length === 0) return;
+  const { error } = await supabase.from('responses').insert(rows);
+  if (error) console.error('Save responses error:', error);
+}
+
 // Resend signup verification email
 export async function resendVerificationEmail(email) {
   const { error } = await supabase.auth.resend({ type: 'signup', email });

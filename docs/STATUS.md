@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-08-24 (v6.0 consolidation)
+**Last updated:** 2026-08-24 (Gate 0 — responses table)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -70,7 +70,7 @@
 |------|--------|----------|
 | Doc consolidation (MASTER_PLAN.md v6.0) | ✅ | This commit |
 | scripts/audit-generators.js | ☐ | Not created |
-| responses table migration | ☐ | `rg 'responses' supabase/ → no match` |
+| responses table migration + write path | ✅ | `supabase/migrations/20260824000001_create_responses.sql` · `src/services/api.js` `saveResponses()` · `src/App.jsx` wired in markExam |
 | PostHog question_answered event | ☐ | Not in 18-event inventory |
 | RLS audit — fix USING(true) policies | ☐ | `supabase/setup.sql:3` (questions) and `supabase/setup.sql:8` (user_errors INSERT) still use USING/WITH CHECK(true) |
 | exam_sessions RLS migration | ⚠️ | Applied in Supabase dashboard only; not version-controlled → NEEDS FOUNDER: should this be migrated to supabase/migrations/? |

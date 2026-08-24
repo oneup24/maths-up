@@ -11,7 +11,7 @@ import {Eye,ChevronDown,ChevronUp,X,Check,AlertTriangle,ListOrdered} from 'lucid
 import {TOPICS,GRADE_INFO,DIFF_INFO,buildExam,printExam,chkAns,saveHistory,loadHistory,clearHistory} from './engine/index';
 import {t} from './lib/i18n';
 import { useAuth } from './hooks/useAuth';
-import { saveExamResult } from './services/api';
+import { saveExamResult, saveResponses } from './services/api';
 import {GC} from './lib/colors';
 import {track} from './lib/track';
 import {pageTransition} from './lib/animations';
@@ -211,7 +211,19 @@ export default function App(){
       var tids=Object.keys(tb).filter(function(k){return k!=='unknown'});
       var topicVal=tids.length===1?tids[0]:'mixed';
       saveExamResult({userId:user.id,grade:String(grade),topic:topicVal,topicBreakdown:tb,totalQuestions:totalQs,correctAnswers:correctCount,scorePercent:sp,timeSpent:elapsed})
-        .then(({error})=>{if(!error)setCloudSaved(true);});
+        .then(({data,error})=>{
+          if(!error){
+            setCloudSaved(true);
+            if(data&&data[0]&&data[0].id){
+              var qi=0,rsp=[];
+              sections.forEach(function(sec,si){sec.qs.forEach(function(q,qj){
+                var k=si+'-'+qj,mr=res[k];if(!mr)return;
+                rsp.push({session_id:data[0].id,user_id:user.id,topic_id:q.topicId||'unknown',q_index:qi++,is_correct:mr.ok,raw_answer:q.isMC?(mcSel[k]||null):(answers[k]||null),matched_trap:(q.trap&&!mr.ok)?q.trap:null});
+              })});
+              saveResponses(rsp);
+            }
+          }
+        });
     }
     setTimeout(()=>window.scrollTo({top:0,behavior:'smooth'}),100);
   };
