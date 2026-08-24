@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-08-24 (Q5/Q7/Q9 settled by founder)
+**Last updated:** 2026-08-24 (Q4 confirmed — 2,004 rows in question_bank)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -58,7 +58,7 @@
 |------|--------|----------|
 | question_bank schema | ✅ | `supabase/question_bank.sql:1` (97 lines) |
 | Seed script | ✅ | `scripts/seed_question_bank.mjs:1` (137 lines) |
-| question_bank row count | ⚠️ | Cannot verify from files → NEEDS FOUNDER: run `SELECT count(*) FROM question_bank` in Supabase dashboard |
+| question_bank row count | ✅ | 2,004 rows — confirmed by founder 2026-08-24 |
 | contexts.js wired | ✅ | `src/engine/config.js:41` — `export { CTX, nm, ... } from './contexts.js'` |
 | gradeRules.js wired | ✅ | `src/engine/exam.js:8` — imports `validateQuestion` |
 | future_tables.md complete | ✅ | `docs/future_tables.md` — documents 5 tables |
@@ -103,7 +103,7 @@
 
 | # | Question | Options |
 |---|----------|---------|
-| Q4 | How many rows in `question_bank` in Supabase right now? | Run `SELECT count(*) FROM question_bank` |
+| Q4 | `question_bank` row count | SETTLED: 2,004 rows confirmed by founder 2026-08-24 |
 | Q5 | RLS fixes done — migrations 20260824000002 + 20260824000003 applied | SETTLED: 2026-08-24 |
 | Q6 | How many of the 10 soft-launch families are recruited? (last known: 4/10) | Pending — some fixes first |
 | Q7 | appId confirmed as `com.oneup24.mathsup`, appName as `Maths-Up` | SETTLED: confirmed by founder 2026-08-24 |
