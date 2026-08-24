@@ -4,7 +4,7 @@ Founder answers: Q4 unsure · Q5 unsure · Q6 4/10 · Q7 com.oneup24.mathsup/Mat
 
 - [x] 1.  cp baseline + commit
 - [x] 2.  GROUP A (structural: doc split, Gate 0, Phase 3E, Phase 4 order, gate table)
-- [ ] 3.  GROUP B (responses table, blocked-features table, time matrix, guest policy)
+- [x] 3.  GROUP B (responses table, blocked-features table, time matrix, guest policy)
 - [ ] 4.  GROUP C (generator quarantine, AI-emits-template, coverage math, copyright)
 - [ ] 5.  GROUP D (content CSV layer, topic_map, grade-label fix, trap merge, report standard)
 - [ ] 6.  GROUP E (Stripe-only, break-even, CAC assumption, Studio Hub, appId)

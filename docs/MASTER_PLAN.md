@@ -809,7 +809,18 @@ Rationale: 4A is distribution; distribution before product-market fit is wasted.
 | 7 | Duplicate questions in session | Hash-based dedup |
 | 8 | MC options leak answer | Distractor generation rules |
 
-**Fix Strategy:** 3-layer schema + validation gate + automated audit script. Ships in Phase 3C / 4B.
+**Fix Strategy:** 3-layer schema + validation gate + automated audit script. Ships Gate 0 (quarantine) / Phase 4B (full refactor).
+
+## D7. time_spent_ms Diagnostic Matrix
+
+`responses.time_spent_ms` is not just a performance metric. It determines the nature of the error:
+
+| | Fast | Slow |
+|---|---|---|
+| **Correct** | Mastered — no action needed | Knows it but not fluent → drill for speed (procedure is understood, not yet automatic) |
+| **Wrong** | Careless / guessing → re-read habit | Conceptual gap → re-teach from foundation |
+
+"Knows it but slow" and "doesn't know it" produce completely different parent advice. Without `time_spent_ms`, the parent report cannot distinguish them and defaults to generic feedback. This is why time is mandatory in `responses`, not optional.
 
 ---
 
@@ -1026,6 +1037,52 @@ created_at       TIMESTAMPTZ
 
 > Full schemas with RLS, indexes, and JSONB examples. Build in Supabase at the start of the listed Phase. **Do NOT build UI until the Phase begins.**
 
+### The Data Gap: Why `responses` is Gate 0 Priority
+
+`exam_sessions.topic_breakdown` stores aggregate counts per topic per session. It cannot answer: which question did the child see, what did they actually type, how many seconds did they spend, which specific trap did they fall for, which attempt was this. This data is not backfillable from existing records.
+
+Eight features in this plan are blocked until `responses` exists:
+
+| Feature | Phase | Why responses is required |
+|---------|-------|--------------------------|
+| Daily Challenge "3-5 error-based questions" | 4B P0 | Must know which specific questions the child got wrong |
+| Spaced repetition (D3c) | 5-6 | Requires per-question attempt history and timing |
+| No-repeat question serving | 4B | Requires which question_ids have been seen |
+| "Report wrong answer" button | 4B | Must link report to specific question_id |
+| question_bank quality learning (times_served/correct/avg_time) | 4B | Backfilling from exam_sessions is impossible |
+| trap_fall_rate per trap | 4B | Must know which trap was hit per question |
+| Per-station Quest analytics | 3E | Quest stations are individual questions |
+| Empirical difficulty calibration | 4B+ | Requires per-question response distribution |
+
+```sql
+-- responses — per-question answer record (Gate 0)
+-- exam_sessions.topic_breakdown remains as a read cache (aggregate).
+-- responses becomes the source of truth for all diagnostic features.
+CREATE TABLE responses (
+  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  session_id      UUID NOT NULL REFERENCES exam_sessions(id) ON DELETE CASCADE,
+  user_id         UUID REFERENCES auth.users(id) ON DELETE CASCADE,
+  question_id     UUID,              -- question_bank.id; null if Layer 1 generated
+  generator_id    TEXT,              -- Layer 1 generator identifier (e.g. 'grade4_fractions_add')
+  topic_id        TEXT NOT NULL,
+  q_index         INT NOT NULL,      -- position in the exam (0-indexed)
+  is_correct      BOOLEAN NOT NULL,
+  raw_answer      TEXT,              -- exactly what the child typed
+  matched_trap    TEXT,              -- which trap/distractor was hit, if any
+  time_spent_ms   INT,               -- milliseconds from question display to answer submit
+  attempt_no      INT DEFAULT 1,
+  content_version TEXT,              -- from content/VERSION — lets you query which sessions
+                                     -- were affected after fixing a generator bug
+  created_at      TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE responses ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "owner" ON responses USING (user_id = auth.uid());
+CREATE INDEX ON responses (user_id, topic_id, is_correct);
+CREATE INDEX ON responses (question_id);
+```
+
+---
+
 ```sql
 -- question_bank — AI-as-Factory stored content (Phase 3C)
 CREATE TABLE question_bank (
@@ -1167,6 +1224,16 @@ Future:   AI → Validate → Store in Supabase → Serve from DB → Learn ($�
 
 The content bank + topic_breakdown JSONB = the company's two most valuable assets.
 ```
+
+## I5. Guest Mode Data Policy
+
+Guest = localStorage only = zero cloud diagnostic data, while also being the frictionless default path. This creates a tension: the most accessible path generates no data for improvement.
+
+**For Phase 3D:** All 10 families sign in (the founder is hand-holding them anyway). No guest sessions during the soft launch cohort.
+
+**Post-3D option:** Anonymous `device_id` sessions stored locally, merged on signup. This allows diagnostic data collection before the auth friction. Do not build this unless Phase 3D data proves the parent report is actionable — building the merge mechanism before validating the report is premature.
+
+**Permanent rule (do not change):** Guest mode must always work. Full exam features are available without an account. The sign-up prompt is a banner, never a hard gate for exam completion.
 
 ---
 
