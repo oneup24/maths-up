@@ -3,7 +3,7 @@ Approved: 2026-08-24
 Founder answers: Q4 unsure · Q5 unsure · Q6 4/10 · Q7 com.oneup24.mathsup/Maths-Up · Q8 keep · Q9 consolidate→@oneup24game · Q10 Fractions P1→P4
 
 - [x] 1.  cp baseline + commit
-- [ ] 2.  GROUP A (structural: doc split, Gate 0, Phase 3E, Phase 4 order, gate table)
+- [x] 2.  GROUP A (structural: doc split, Gate 0, Phase 3E, Phase 4 order, gate table)
 - [ ] 3.  GROUP B (responses table, blocked-features table, time matrix, guest policy)
 - [ ] 4.  GROUP C (generator quarantine, AI-emits-template, coverage math, copyright)
 - [ ] 5.  GROUP D (content CSV layer, topic_map, grade-label fix, trap merge, report standard)

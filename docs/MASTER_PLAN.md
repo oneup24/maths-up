@@ -19,15 +19,15 @@ Here is the full v5 regeneration with **every detail** from all sources integrat
 │                         priorities, architecture reference  │
 │ 3. INVESTORS/MENTORS → Business case, market, traction     │
 │                                                            │
-│ TWO TRACKING SYSTEMS (inherited from v4):                  │
-│ • Diagnostic Milestones (D0–D3) — Gap detection engine     │
-│ • Delivery Phases (Phase 1–6) — Chronological build order  │
-│ They are SEPARATE. Don't confuse them.                     │
+│ TWO SYSTEMS — DIFFERENT ROLES:                             │
+│ • Diagnostic Milestones (D0–D3) — Epic labels (like tags). │
+│   Every D-item is assigned to exactly one Phase.           │
+│   No D-item may span phases; split it into two items.      │
+│ • Delivery Phases (Phase 1–6) — The ONLY scheduling        │
+│   authority. Phase order = build order.                    │
 │                                                            │
-│ ⭐ = NEW in v5 (not in v3 or v4)                           │
-│ 🔄 = UPDATED in v5 (changed since v4)                     │
-│ ✅ = CONFIRMED DONE as of April 17                         │
-│ 🆕 = NEW in v5.1 (added from Poe Topic Quest chat)        │
+│ Execution status lives ONLY in docs/STATUS.md.             │
+│ This file describes WHAT and WHY, never WHETHER.           │
 └────────────────────────────────────────────────────────────┘
 ```
 
@@ -66,7 +66,7 @@ APPENDIX E — Document Control
 ```
 ❌ OneUp24 ≠ a math app
 ❌ OneUp24 ≠ a single product
-✅ OneUp24 = a Studio that builds a portfolio of 
+OneUp24 = a Studio that builds a portfolio of 
    gamified education + family apps connected 
    through shared IP characters
 ```
@@ -103,7 +103,7 @@ This means: Maths Quests is NOT a question-generating machine. It is a **system 
 ├── 🐻🐰 IP Characters (Curlboo Bear + Fluffy Bunny)
 │   └── Appear across ALL apps = brand unity + emotional bond
 │
-├── 📱 Maths Quests ✅ LIVE (maths-exam.vercel.app)
+├── 📱 Maths Quests (live — see docs/STATUS.md for deployed URL)
 ├── 📱 English App 🔜 Coming Soon
 ├── 📱 STEM App 🔜 Coming Soon
 ├── 📱 Parent-Child App 🔜 Coming Soon
@@ -124,7 +124,7 @@ This means: Maths Quests is NOT a question-generating machine. It is a **system 
 - Coming Soon apps collect emails = pre-launch leads
 - NOT a Maths Quests landing page — it's the umbrella brand
 
-## A5. Current Traction Snapshot (April 17, 2026) 🔄
+## A5. Current Traction Snapshot (April 17, 2026)
 
 | Metric | Status |
 |---|---|
@@ -148,7 +148,7 @@ This means: Maths Quests is NOT a question-generating machine. It is a **system 
 
 | Character | Role | Status |
 |---|---|---|
-| 🐻 **Curlboo Bear** | Primary mascot. Emotional interface for all apps. | ✅ Live in Maths Quests (4 mood states) |
+| 🐻 **Curlboo Bear** | Primary mascot. Emotional interface for all apps. | Live in Maths Quests (4 mood states) |
 | 🐰 **Fluffy Bunny** | Secondary character. Companion/friend to Curlboo. | 📋 Designed, not yet in-app |
 
 **Curlboo Bear Profile:**
@@ -170,9 +170,9 @@ USER ACTION                    → CURLBOO STATE
 ────────────────────────────────────────────────
 First open app                 → 👋 mascot-wave
 Complete quiz                  → 🎉 mascot-happy
-Score < 50%                    → 🤗 mascot-encourage  ✅ LIVE
+Score < 50%                    → 🤗 mascot-encourage
 Score 50-80%                   → 💪 mascot-keepgoing
-Score > 80%                    → 🥳 mascot-celebrate   ✅ LIVE
+Score > 80%                    → 🥳 mascot-celebrate
 API error / loading            → 😅 mascot-oops
 3-day streak                   → 🔥 mascot-proud
 Inactive 3+ days               → 😢 mascot-miss-you
@@ -209,7 +209,7 @@ Quest restarted                   → 🐻 歡迎    「歡迎返嚟！繼續探
 │        DARK SOULS GAMIFICATION — NOT MARIO                  │
 │                                                            │
 │  ❌ Mario style: Do anything = get reward = dopamine hit    │
-│  ✅ Dark Souls style: Overcome difficulty = earn reward     │
+│  Dark Souls style: Overcome difficulty = earn reward        │
 │     = genuine satisfaction                                  │
 │                                                            │
 │  PLACEMENT (% of gamification investment):                  │
@@ -286,7 +286,7 @@ Phase 6+:   Merchandise (if community reaches 50K+)
 
 **Government support:** Innovation and Technology Fund, EdUHK and Cyberport incubators, Smart Government Innovation Lab. HK and Guangdong signed education cooperation framework (Aug 2023). HKUST and EdUHK approved AI tools for coursework (2023).
 
-## C4. ⚠️ CRITICAL RISK: Declining Student Population
+## C4. CRITICAL RISK: Declining Student Population
 
 | Metric | Value |
 |---|---|
@@ -317,21 +317,21 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 
 **Key Insight (from 51Talk analysis):** You need just **2,100 paying subscribers (0.57% of 370K students)** to hit HKD 1M ARR.
 
-## C6. Competitive Landscape 🔄
+## C6. Competitive Landscape
 
 ```
 ┌──────────────────┬───────────┬──────────┬──────────┬──────────┬──────────┐
 │ Competitor       │ Trap Items│ HK Curr. │ Topic Dx │ Cognitive│ Topic    │
 │                  │           │          │          │ Fprint.  │ Quest    │
 ├──────────────────┼───────────┼──────────┼──────────┼──────────┼──────────┤
-│ Workbooks        │ ❌        │ ⚠️ Some   │ ❌       │ ❌       │ ❌       │
-│ Khan Academy     │ ❌        │ ❌        │ ⚠️ Basic │ ❌       │ ❌       │
-│ Snapask          │ ❌        │ ✅        │ ❌       │ ❌       │ ❌       │
-│ IXL/Kumon        │ ❌        │ ❌        │ ⚠️ Basic │ ⚠️ Basic │ ❌       │
-│ Private Tutors   │ ⚠️ Manual │ ✅        │ ⚠️ Manual│ ❌       │ ❌       │
-│ 51Talk           │ ❌        │ ❌        │ ❌       │ ❌       │ ❌       │
+│ Workbooks        │ No        │ ~ Some    │ No       │ No       │ No       │
+│ Khan Academy     │ No        │ No        │ ~ Basic  │ No       │ No       │
+│ Snapask          │ No        │ Yes       │ No       │ No       │ No       │
+│ IXL/Kumon        │ No        │ No        │ ~ Basic  │ ~ Basic  │ No       │
+│ Private Tutors   │ ~ Manual  │ Yes       │ ~ Manual │ No       │ No       │
+│ 51Talk           │ No        │ No        │ No       │ No       │ No       │
 ├──────────────────┼───────────┼──────────┼──────────┼──────────┼──────────┤
-│ MATHS QUESTS ★   │ ✅ ONLY   │ ✅        │ ✅       │ ✅       │ ✅ ⭐    │
+│ MATHS QUESTS ★   │ Yes ONLY  │ Yes       │ Yes      │ Yes      │ Yes ⭐   │
 └──────────────────┴───────────┴──────────┴──────────┴──────────┴──────────┘
 ```
 
@@ -363,9 +363,9 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 
 **What:** AI-powered math diagnostic tool for HK primary students (P1–P6).
 
-**Deployed at:** maths-exam.vercel.app ✅
+**Deployed at:** Vercel (see docs/STATUS.md for live URL — stale in plan)
 
-**GitHub:** github.com/oneup24/maths-exam (public, 26 commits, 2 releases)
+**GitHub:** github.com/oneup24/maths-up (public, 98 commits)
 
 **Product Name Etymology:** 🆕 The name "Maths **Quests**" was chosen early as a brand name. The Topic Quest feature, designed months later, revealed that the name had been prophetic all along — the product IS about quests (learning journeys), not just exams.
 
@@ -373,11 +373,11 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 
 | # | USP | Status |
 |---|---|---|
-| 1 | **Trap Item Training (干擾項訓練)** — irrelevant data in word problems that tests reading comprehension. No competitor does this. | Engine built ✅, Structured engine v1 Phase 4B |
-| 2 | **Per-Topic Diagnostic (📊 各單元表現)** — color-coded breakdown sorted worst-first. What tutors charge $300-500/hr for. | ✅ LIVE |
-| 3 | **Infinite Non-Repeating Generation** — 600+ procedural generators, every quiz unique | ✅ LIVE |
-| 4 | **Physical-Digital Hybrid** — PDF export for printing + digital tracking | 🔨 In Progress |
-| 5 | **Cognitive Fingerprinting** — topic_breakdown JSONB builds student weakness maps over time | ✅ Collecting data |
+| 1 | **Trap Item Training (干擾項訓練)** — irrelevant data in word problems that tests reading comprehension. No competitor does this. | Engine built; structured engine v1 in Phase 4B |
+| 2 | **Per-Topic Diagnostic (📊 各單元表現)** — color-coded breakdown sorted worst-first. What tutors charge $300-500/hr for. | Live |
+| 3 | **Infinite Non-Repeating Generation** — 329 procedural generators (P1-P6), every quiz unique | Live |
+| 4 | **Physical-Digital Hybrid** — PDF export for printing + digital tracking | Live |
+| 5 | **Cognitive Fingerprinting** — topic_breakdown JSONB builds student weakness maps over time | Collecting data |
 
 ## D2. Topic Quest (主題探險) — Flagship Feature ⭐🆕
 
@@ -392,7 +392,7 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 │  He had every "tool" but couldn't do it.                     │
 │                                                              │
 │  SCENARIO B: Son starts his own game from Level 1            │
-│  → Same side quest → ✅ CLEARED EASILY                       │
+│  → Same side quest → CLEARED EASILY                          │
 │  He had fewer "tools" but succeeded.                         │
 │                                                              │
 │  WHAT DID SCENARIO B HAVE THAT A DIDN'T?                     │
@@ -425,7 +425,7 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 │  → Student knows the RULE but can't DO it                    │
 │  → Has all the "gear" but can't beat the quest               │
 │                                                              │
-│  ✅ TOPIC QUEST (Start From Level 1):                         │
+│  TOPIC QUEST (Start From Level 1):                           │
 │  P1: "8 apples split between 2 people" → equal sharing       │
 │  P2: "1 pizza cut into 4, ate 1" → what is a fraction        │
 │  P3: "2/4 and 1/2 are the same" → equivalent fractions       │
@@ -463,13 +463,13 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 │ Best for          │ Students who just  │ Students whose       │
 │                   │ need more practice │ FOUNDATION has gaps   │
 ├───────────────────┼────────────────────┼──────────────────────┤
-│ Framing           │ ❌ "Go back to P2" │ ✅ "Start a new Quest"│
+│ Framing           │ ❌ "Go back to P2" │ "Start a new Quest"   │
 │                   │  = shame           │  = excitement        │
 └───────────────────┴────────────────────┴──────────────────────┘
 
 KEY DISTINCTION:
 ❌ "Reverse learning" (P4→P3→P2→P1) = confusing, goes BACKWARD
-✅ "Learning Curve Replay" (P1→P2→P3→P4) = natural, goes FORWARD again
+"Learning Curve Replay" (P1→P2→P3→P4) = natural, goes FORWARD again
 
 The child doesn't know they've "been sent back to P1."
 They think they're on a NEW QUEST. Psychologically 100% different.
@@ -598,119 +598,109 @@ Same data structure. Completely different product value.
 Topic Quest is the MOST NATURAL UI EXPRESSION of prerequisite chains.
 ```
 
-## D3. Current Build Status (April 17, 2026) 🔄
+## D3. Phases 3A – 3E: Stabilise, Prove & Monetise
 
-### Phase 1: Core Engine — ✅ DONE
-*(All items from v4 Phase 1 confirmed complete)*
+### Phase 1: Core Engine
 
-- 600+ procedural generators (P1-P6)
-- HK EDB curriculum-aligned topics (6-11 per grade)
-- 5 question types, 3 difficulty levels
-- Exam builder with configurable targets
-- Answer checker (unit stripping, fraction parsing, multi-part, tolerance)
-- Trap items, SVG figures, timer, onboarding wizard
-- Curlboo 4 moods, confetti, sound effects, streak tracker
-- Grade star badges, Chinese/English toggle, wrong answer review
-- Kid-friendly UI, privacy policy (COPPA/PDPO), PWA support
+329 procedural generators (P1-P6), HK EDB curriculum-aligned topics (6-11 per grade), 5 question types, 3 difficulty levels, exam builder with configurable targets, answer checker (unit stripping, fraction parsing, multi-part, tolerance), trap items, SVG figures, timer, onboarding wizard, Curlboo 4 moods, confetti, sound effects, streak tracker, grade star badges, Chinese/English toggle, wrong answer review, kid-friendly UI, privacy policy (COPPA/PDPO), PWA support.
 
-### Phase 2: Auth + Cloud — ✅ DONE
+### Phase 2: Auth + Cloud
 
-- Supabase email auth, Google OAuth
-- Guest mode with banners + sign-up prompts
-- Cloud save to exam_sessions table
-- Cloud stats in Profile, recent exam history
-- Print gate (auth required), Parent PIN lock
+Supabase email auth, guest mode with banners + sign-up prompts, cloud save to exam_sessions table, cloud stats in Profile, recent exam history, print gate (auth required), Parent PIN lock.
 
-### Phase 3: Stabilize + Prepare — 🔄 IN PROGRESS
+### Phase 3A — Testing & Fixes
 
-**3A — Testing & Fixes**
+Complete code health: merge supabase-auth to main, pin port 5175, fix lint errors, per-topic breakdown on results, production Vercel deployment (v1.2-beta), PDF export, password reset flow, Capacitor build preparation, E2E testing across all grades and question types, Lighthouse audit.
 
-| Item | Status |
-|---|---|
-| Merge supabase-auth to main | ✅ |
-| Supabase RLS policies | ✅ |
-| Clean up unused stub files | ✅ |
-| Fix broken import in main.jsx | ✅ |
-| Pin Vite to port 5175 | ✅ |
-| Fix all 33 lint errors + qty bug | ✅ |
-| Per-topic breakdown on results | ✅ |
-| PDF export (ExportPDFButton) | ✅ |
-| **Production Vercel deployment (v1.2-beta LIVE)** | ✅ |
-| End-to-end testing (all grades/types) | ☐ |
-| Test guest mode flow | ☐ |
-| Test auth flow | ☐ |
-| Test cloud sync | ☐ |
-| Test parent PIN | ☐ |
-| Test i18n | ☐ |
-| Test edge cases | ☐ |
-| Password reset flow | ☐ |
-| Fix Capacitor build | ☐ |
-| Lighthouse audit | ☐ |
+### Phase 3B — Instrumentation
 
-**3B — Instrumentation** — 🔄 IN PROGRESS
+PostHog analytics (free tier) and Sentry error monitoring (free tier) fully operational. Dual-destination: track.js fires PostHog + Supabase simultaneously. Retention cohort (D1/D3/D7/D30) and funnel dashboards configured. Sentry tags: grade, question type, auth status.
 
-- ✅ PostHog analytics integration (free tier) — DONE
-  - 12 events tracked: onboarding_complete, exam_start, exam_complete, results_view, pdf_export, retry_click, grade_selected, lang_switch, parent_pin_set, guest_signup_prompt_shown, guest_signup_prompt_clicked, signup_complete
-  - Dual-destination: track.js fires PostHog + Supabase simultaneously
-  - VITE_POSTHOG_KEY live in .env.local — add to Vercel env vars for production
-  - Set up retention cohort (D1/D3/D7/D30) + funnel dashboards in PostHog — TODO
-- ☐ Sentry error monitoring (free tier, 5K events/mo)
-  - Capture JS exceptions, unhandled promise rejections
-  - Tag errors with: grade, question type, auth status
-- **PostHog done ✅. Sentry still BLOCKING soft launch.**
+Event inventory (18 code-verified events; full list in STATUS.md): onboarding_start, onboarding_language, onboarding_grade, onboarding_question_answered, onboarding_guest, onboarding_signup, onboarding_login, onboarding_complete, quiz_start, quiz_complete, results_view, retry_click, guest_signup_prompt_shown, guest_signup_prompt_clicked, grade_selected, pdf_export, parent_pin_set, signup_complete.
 
-**3C — Data Layer Prep** — ☐ NOT STARTED
+### Phase 3C — Data Layer Prep
 
-- Data schema documentation
-- question_bank table creation + seeding
-- Dedup logic, contexts.js, gradeRules
-- ✅ future_tables.md — complete with quest_progress, topic_map, knowledge_gaps, student_profiles, subscriptions (RLS, indexes, JSONB examples all documented)
-- Future tables schema design (student_profiles, subscriptions, topic_map, knowledge_gaps, quest_progress) ✅ DONE — see docs/future_tables.md
+Data schema documentation, question_bank table creation and seeding, dedup logic, contexts.js and gradeRules.js wiring, future_tables.md documentation (quest_progress, topic_map, knowledge_gaps, student_profiles, subscriptions with RLS, indexes, JSONB examples).
 
-**3D — Soft Launch** — ☐ NOT STARTED
+### Gate 0 (must clear before Phase 3D)
 
-- Recruit 10 real HK parent-child pairs
-- Feedback WhatsApp group
-- 3 sessions per family over 1 week
-- **GATE: Do NOT proceed to Phase 4 until 10 families tested**
+*Gate condition: generator audit reports 0 violations (or all violators quarantined) + `responses` table receiving rows + RLS audit clean (no `USING(true)` or `WITH CHECK(true)` policies) + brand/appId unified → only then may family #1 be onboarded.*
 
-## D4. Diagnostic Milestones (Cross-cutting) 🔄🆕
+- Doc consolidation: MASTER_PLAN.md, STATUS.md, DECISIONS.md
+- `scripts/audit-generators.js` — every generator × 500 runs, 6 invariant checks: (a) answer ≠ any given value, (b) division yields integer where grade requires it, (c) no diagram label equals an unknown value, (d) answer > 0, (e) MC options unique and format-consistent, (f) shape aspect ratio ≤ 5:1. Violators get `status: 'quarantined'` and are excluded from buildExam. Do not attempt the 3-layer schema refactor before soft launch. 150 clean generators beats 329 buggy ones.
+- `responses` table migration + write path in api.js (see Part I3)
+- PostHog `question_answered` event
+- RLS audit: find and fix all `USING(true)` / `WITH CHECK(true)` policies; migrate to `supabase/migrations/*.sql`
+- Brand name + appId unified: appId `com.oneup24.mathsup`, appName `Maths-Up`, across capacitor.config.json, package.json, public/manifest.json, index.html
+- Topic Quest grade-label decision recorded in DECISIONS.md
+- Soft-launch cohort: all 10 families sign in (no guest mode for Phase 3D cohort)
+
+### Phase 3D — Soft Launch (10 Families)
+
+Recruit 10 real HK parent-child pairs. Feedback WhatsApp group. 3 sessions per family over 2–3 weeks. After each session, ask the two qualitative questions that outrank all analytics:
+
+- To the child: "If I don't remind you tomorrow, will you open it yourself?"
+- To the parent: "After reading the report, what will you do?"
+
+A parent answering "I don't know" means the diagnostic is not actionable yet — which directly determines whether Phase 3E must be redone.
+
+*Gate condition: 10 families × 3 sessions completed + both qualitative questions asked every session.*
+
+### Phase 3E — Prove Value Before Mobile
+
+*Gate condition: 3 parents have paid HKD 388. If not → revise the report; do NOT build mobile.*
+
+- `content/topic_map.csv` hand-authored for ONE prerequisite chain: Fractions P1→P4 (~5 rows). Do not build the full topic_map system.
+- `content/misconceptions.csv` — ~25 rows with `parent_advice_zh`
+- Misconception report = 各單元表現 + exactly one recommended action per topic
+- PDF becomes a 3-page set: ① student paper ② answers + worked solutions ③ parent report
+- Topic Quest v1 on the Fractions chain (hardcoded route — do not wait for full topic_map system)
+- Manual pre-sale: 3 parents × HKD 388 via FPS/PayMe, manually inserted into `subscriptions`
+- Expand context bank (`content/contexts.csv`)
+
+## D4. Diagnostic Milestones (Epic Labels — Cross-cutting)
+
+D0, D1, D2, D3 are epic labels, not phases. Each D-item is assigned to exactly one Phase. Phase 1–6 is the only scheduling authority.
 
 ```
-D0 — Foundation                              STATUS
-  D0a  Tag questions with topicId            ✅ DONE
-  D0b  Save topic breakdown in api.js        ✅ DONE
-  D0c  Fix level in profiles                 ⚠️ PARTIAL
+D0 — Foundation (Phase 3A)
+  D0a  Tag questions with topicId
+  D0b  Save topic breakdown in api.js
+  D0c  Fix level in profiles
 
-D1 — Gap Detection                           SHIPS IN Phase 4B
-  D1a  topic_map prerequisite chains         ☐  ← QUEST ROUTE DATA SOURCE
-  D1b  Detect gaps (>=3/5 wrong per topic)   ☐  ← QUEST TRIGGER CONDITION
-  D1c  knowledge_gaps table                  ☐  ← RECORDS WHICH TOPICS NEED REPLAY
-  D1d  Gap alert on results screen           ☐  ← ENTRY POINT: "Start a Topic Quest"
+D1 — Gap Detection (Phase 4B)
+  D1a  topic_map prerequisite chains         ← QUEST ROUTE DATA SOURCE
+  D1b  Detect gaps (>=3/5 wrong per topic)   ← QUEST TRIGGER CONDITION
+  D1c  knowledge_gaps table                  ← RECORDS WHICH TOPICS NEED REPLAY
+  D1d  Gap alert on results screen           ← ENTRY POINT: "Start a Topic Quest"
 
-D2 — Recommendations → UPGRADED WITH TOPIC QUEST 🆕
-  D2a  Per-topic retry button                ⚠️ PARTIAL
+D2 — Recommendations (Phase 3E → Phase 4B)
+  D2a  Per-topic retry button
        → BECOMES: "Single station practice" inside Quest
-  D2b  Importance display                    ☐
+  D2b  Importance display
        → BECOMES: "This station affects P4-P6" on Quest map
-  D2c  Basic parent report (free tier)       ⚠️ PARTIAL
+  D2c  Basic parent report (free tier)
        → ADDS: Quest progress ("Your child is at Station 3")
-  D2d  Topic Quest system 🆕                 ☐
+  D2d  Topic Quest system (Phase 3E: hardcoded Fractions chain)
        → Quest route generation (from topic_map prerequisite chain)
        → Per-station mini-exam (5 questions, same topic)
        → Unlock logic (4/5 correct → unlock next)
        → Quest progress storage (quest_progress table)
        → Quest completion celebration (Curlboo special animation)
 
-D3 — Premium Diagnostics                     SHIPS IN Phase 5-6
-  D3a  Knowledge Health Map (visual)         ☐
-  D3b  Full parent report (paid)             ☐
-  D3c  Spaced repetition                     ☐
+D3 — Premium Diagnostics (Phase 5–6)
+  D3a  Knowledge Health Map (visual)
+  D3b  Full parent report (paid)
+  D3c  Spaced repetition
 ```
 
 ## D5. Delivery Phases (4–6)
 
-### Phase 4A: Mobile App — NOT STARTED
+**Phase 4 execution order: 4B-lite → 4C (Stripe web) → 4A (mobile)**
+
+Rationale: 4A is distribution; distribution before product-market fit is wasted. 4B-lite contains Topic Quest = Paywall Gate 4 = the plan's own highest-intent conversion moment. 4C (Stripe web) must exist before mobile so that paying users exist to justify the App Store submission. Build what makes people pay before what makes people download.
+
+### Phase 4A: Mobile App
 - Capacitor iOS + Android builds
 - Safe areas, notch, keyboard handling
 - Splash screen + app icon
@@ -718,7 +708,7 @@ D3 — Premium Diagnostics                     SHIPS IN Phase 5-6
 - App Store + Play Store submission
 - Push notifications + streak reminder (5% gamification investment here)
 
-### Phase 4B: Smart Features + AI Engine — NOT STARTED ⭐🆕
+### Phase 4B: Smart Features + AI Engine
 
 **RULE: Every feature here must generate more exam_sessions data.**
 
@@ -748,7 +738,18 @@ D3 — Premium Diagnostics                     SHIPS IN Phase 5-6
 - Validation pipeline (structure, math verify, context, dedup)
 - **IRON RULE: NEVER serve unvalidated AI questions to students**
 
-### Phase 5: Monetization — NOT STARTED 🔄
+### Phase 4C: Stripe Web Payments
+
+*Unlocks after: full Topic Quest chain works + traps mapped to misconceptions (Gate 4B → 4C).*
+
+- Stripe Checkout integration (web only — no RevenueCat, no IAP at this stage)
+- Subscription plans: Pro HKD 48/mo or HKD 388/yr; Family HKD 78/mo or HKD 628/yr
+- Push annual as primary (Stripe HK fee burden ≈ 4.0% on HKD 388/yr vs ≈ 8.3% on HKD 48/mo); monthly as decoy
+- Webhook: subscription created/updated/cancelled → update Supabase `subscriptions` table
+- Entitlement check gate (guard Topic Quest, PDF, diagnostic behind subscription)
+- 7-day free Pro trial
+
+### Phase 5: Monetization
 
 **Subscription Infrastructure:**
 - RevenueCat (iOS/Android) + Stripe (web PWA) + cross-platform entitlements
@@ -763,7 +764,7 @@ D3 — Premium Diagnostics                     SHIPS IN Phase 5-6
 | Pro | HKD 48/mo (388/yr) | Unlimited, all topics, traps, 📊各單元表現, PDF, **Topic Quest** |
 | Family | HKD 78/mo (628/yr) | Pro × 3 children + cross-child comparison |
 
-**4 Paywall Gates — EXACTLY 4, NO MORE:** 🔄
+**4 Paywall Gates — EXACTLY 4, NO MORE:**
 
 | # | Gate | Trigger | Message |
 |---|---|---|---|
@@ -774,11 +775,11 @@ D3 — Premium Diagnostics                     SHIPS IN Phase 5-6
 
 **Note:** Gate 4 is the most powerful because it sells a DESIGNED PATH at the exact moment the parent realizes their child has a foundation gap. This is the highest-intent paywall moment possible.
 
-**Moved Forward from Phase 6:** ⭐
+**Moved Forward from Phase 6:**
 - Weekly parent progress email → NOW Phase 5
 - Viral WhatsApp share image → NOW Phase 5
 
-### Phase 6: Growth + Advanced AI — NOT STARTED
+### Phase 6: Growth + Advanced AI
 
 **Viral & Retention:**
 - Share Report button (Curlboo + breakdown + QR code image)
@@ -832,14 +833,14 @@ D3 — Premium Diagnostics                     SHIPS IN Phase 5-6
 │  Option A: KILL IT                                         │
 │  • Cleanest option. Full focus on education.               │
 │  • Removes cognitive load and strategic ambiguity.         │
-│  • ✅ RECOMMENDED if education portfolio grows.            │
+│  • Recommended if education portfolio grows.               │
 │                                                            │
 │  Option B: REFRAME AS "FAMILY REWARD" (v3 plan)           │
 │  • "Study → earn → pick a restaurant together!"           │
 │  • Cross-sell with Maths Quests families                   │
 │  • Makes it education-adjacent, not education-core         │
 │  • Curlboo appears in both apps (IP synergy)              │
-│  • ⚠️ Only viable after Maths Quests PMF proven            │
+│  • Only viable after Maths Quests PMF proven               │
 │                                                            │
 │  Option C: SPIN OFF                                        │
 │  • Separate brand entirely                                │
@@ -886,7 +887,7 @@ D3 — Premium Diagnostics                     SHIPS IN Phase 5-6
 ```
 CAC Target:        < HKD 30 (IG organic + WhatsApp)
 LTV:               HKD 384 (8 months × HKD 48)
-LTV:CAC Ratio:     12.8:1 (target > 3:1) ✅
+LTV:CAC Ratio:     12.8:1 (target > 3:1) — ASSUMPTION, unvalidated
 Monthly Churn:     < 12%
 Gross Margin:      > 85%
 Payback Period:    < 1 month
@@ -897,7 +898,7 @@ Break-even:        ~53 Pro subscribers covers all ops costs
 
 | Layer | What | Cost | Status |
 |---|---|---|---|
-| Layer 1: Hardcode | 600+ generators, instant, offline | $0 | ✅ BUILT |
+| Layer 1: Hardcode | 329 generators, instant, offline | $0 | built |
 | Layer 2: AI (DeepSeek) | V3.2 for word problems (pending benchmark) | ~$0.14-0.28/M tokens | Phase 4B |
 | Layer 3: Question Bank | Supabase table, reusable, self-improving | $0 per serve | Schema in Phase 3C |
 
@@ -914,7 +915,7 @@ Break-even:        ~53 Pro subscribers covers all ops costs
 
 # PART H — GROWTH PLAYBOOK
 
-## H1. Current State 🔄
+## H1. Current State
 
 ```
 WHAT EXISTS:
@@ -987,11 +988,11 @@ TO SCHOOLS:
 Frontend:    React + Vite + Tailwind CSS
 Mobile:      Capacitor (iOS + Android prepared)
 Backend:     Supabase Cloud (PostgreSQL, Auth, Storage, RLS, Edge Functions)
-Engine:      engine.js (~600+ generators, rule-based, $0 cost)
-Deploy:      Vercel (maths-exam.vercel.app — LIVE)
-VCS:         GitHub (oneup24/maths-exam, public, 26 commits)
-Analytics:   PostHog ✅ LIVE (Phase 3B complete)
-Monitoring:  Sentry (planned, Phase 3B — still TODO)
+Engine:      src/engine/ (329 generators, rule-based, $0 cost)
+Deploy:      Vercel (live — see docs/STATUS.md for URL)
+VCS:         GitHub (oneup24/maths-up, public, 98 commits)
+Analytics:   PostHog (live, 18 events — see STATUS.md for event list)
+Monitoring:  Sentry (live)
 Payments:    RevenueCat + Stripe (planned, Phase 5)
 AI:          DeepSeek V3.2 (planned, Phase 4B — pending benchmark)
 Dev tool:    Claude Code (CLAUDE.md in repo)
@@ -1002,7 +1003,7 @@ Languages:   JavaScript 97.2%, Swift 1.6%
 ## I2. Core Data Schema (Live in Supabase)
 
 ```sql
--- exam_sessions TABLE (LIVE ✅)
+-- exam_sessions TABLE (live)
 id               UUID (PK)
 user_id          UUID (FK → auth.users)
 level            INTEGER (1-6 = P1-P6)
@@ -1021,7 +1022,7 @@ created_at       TIMESTAMPTZ
 -- RLS: Users can only read/write their own sessions
 ```
 
-## I3. Future Tables (Full schema — see `docs/future_tables.md`) 🔄🆕
+## I3. Future Tables (Full schema — see `docs/future_tables.md`)
 
 > Full schemas with RLS, indexes, and JSONB examples. Build in Supabase at the start of the listed Phase. **Do NOT build UI until the Phase begins.**
 
@@ -1221,6 +1222,19 @@ The content bank + topic_breakdown JSONB = the company's two most valuable asset
 
 ---
 
+# PART K2 — PHASE GATES (Consolidated)
+
+| Gate | Condition | If not met |
+|------|-----------|------------|
+| Gate 0 → 3D | Docs unified + generator audit clean + `responses` table live + RLS clean (no `USING(true)`) + brand/appId unified | No families onboarded |
+| 3D → 3E | 10 families × 3 sessions + both qualitative questions asked | No new features |
+| 3E → 4 | 3 parents paid HKD 388 | Fix the report; do not build mobile |
+| 4B → 4C | Full Topic Quest chain works + traps mapped to misconceptions | Do not open Stripe |
+| 4C → 4A | 20 paying users | android/ ios/ stay frozen |
+| 4A → 5 | MRR > HKD 10K for 2 consecutive months | No pitch deck |
+
+---
+
 # PART L — METRICS, MILESTONES & GATES
 
 ## L1. KPI Dashboard
@@ -1245,7 +1259,7 @@ The content bank + topic_breakdown JSONB = the company's two most valuable asset
 | 🚀 Soft launch (10 families) | Late April 2026 | Families recruited, feedback group active |
 | Feedback incorporated | May 2026 | Top 3 issues fixed, D1/D7 measured |
 | Phase 4A (iOS app) submitted | June 2026 | App Store review passed |
-| Phase 4B (AI + Smart + Gamification + Topic Quest) 🔄 | Jul-Aug 2026 | V3.2 benchmark done, Bank learning, Daily Challenge live, Topic Quest v1 live |
+| Phase 4B (AI + Smart + Gamification + Topic Quest) | Jul-Aug 2026 | V3.2 benchmark done, Bank learning, Daily Challenge live, Topic Quest v1 live |
 | Phase 5 (Paywall live) | Sep 2026 | Trap Engine shipped, 4 gates, RevenueCat live |
 | Phase 6 (Growth) | Q4 2026 | 100+ paying users, case study ready |
 
@@ -1258,7 +1272,7 @@ The content bank + topic_breakdown JSONB = the company's two most valuable asset
 1. **Every feature must produce data.** Prioritize features that generate exam_sessions. Topic Quest generates 2-3x data per session.
 2. **AI-as-Factory, not AI-as-Service.** Generate once, store forever, serve at $0.
 3. **Sell the INSIGHT, not the tool.** Parents pay for "where is my child weak," not "unlimited quizzes." Topic Quest sells a designed PATH, not more questions.
-4. **4 paywall gates, no more.** 🔄 Discipline. More gates = less trust. (Updated from 3 to 4 with Topic Quest gate.)
+4. **4 paywall gates, no more.** Discipline. More gates = less trust.
 5. **Validate before serve. Always.** One wrong math answer = parent trust destroyed permanently.
 6. **Ship to real humans first, optimize later.** Phase 3D is the gate.
 7. **topic_breakdown JSONB is the moat.** Protect it. Back it up. Never delete it.
@@ -1438,39 +1452,39 @@ v5.1 Changes (from v5.0):
 ├── 🆕 D2 upgrade details with Topic Quest added to Part D4
 ├── 🆕 Specific paywall copy for Topic Quest gate added to Part D2f
 ├── 🆕 Founding philosophy quote added to Part A2
-├── 🆕 Topic Quest as viral loop #3 added to Part H3
-├── 🆕 Topic Quest KPIs added to Part L1
-├── 🆕 Decision filter #5 ("journey vs save file") added to Appendix B
-├── 🆕 Principle #11 ("Ability is a journey") added to Appendix A
-├── 🔄 Paywall gates updated from 3 to 4 (Principle #4, Part D5, Appendix D)
-├── 🔄 Curlboo state engine expanded with Quest-specific states
-├── 🔄 Claude Code notes expanded with full Topic Quest build instructions
-├── 🔄 Phase 4B milestone updated to include Topic Quest
-└── 🆕 Product name etymology note added to Part D1
+├── [added] Topic Quest as viral loop #3 added to Part H3
+├── [added] Topic Quest KPIs added to Part L1
+├── [added] Decision filter #5 ("journey vs save file") added to Appendix B
+├── [added] Principle #11 ("Ability is a journey") added to Appendix A
+├── [updated] Paywall gates updated from 3 to 4 (Principle #4, Part D5, Appendix D)
+├── [updated] Curlboo state engine expanded with Quest-specific states
+├── [updated] Claude Code notes expanded with full Topic Quest build instructions
+├── [updated] Phase 4B milestone updated to include Topic Quest
+└── [added] Product name etymology note added to Part D1
 
 v5.0 Changes (from v4):
-├── ⭐ Brand architecture (Studio model, not single app)
-├── ⭐ IP universe expanded (Fluffy Bunny, Curlboo State System)
-├── ⭐ Gamification system (Dark Souls philosophy, Daily Challenge,
+├── Brand architecture (Studio model, not single app)
+├── IP universe expanded (Fluffy Bunny, Curlboo State System)
+├── Gamification system (Dark Souls philosophy, Daily Challenge,
 │      Stardust, Curlboo Shop — designed, ships Phase 4B)
-├── ⭐ Topic Quest system (learning curve replay, Pro paywall feature)
-├── ⭐ 8 known generator bugs cataloged with fix plan
-├── ⭐ Gamification placement strategy (4 phases, investment %)
-├── ⭐ 51Talk competitive analysis → real competitor = private tutors
-├── ⭐ FoodSwipe fit assessment (doesn't fit education AI, keep frozen)
-├── ⭐ Future product portfolio (English, STEM, Parent-Child)
-├── ⭐ Website strategy (Studio Hub, not product landing page)
-├── ⭐ Claude Code integration notes (Appendix D)
-├── 🔄 Status updated to April 17 (Vercel deployed, IG accounts live)
-├── 🔄 Weekly parent email + viral share moved Phase 6 → Phase 5
-├── 🔄 Competitive positioning reframed (vs tutors, not apps)
-└── 🔄 Decision framework v5 (added "Would a tutor do this?" filter)
+├── Topic Quest system (learning curve replay, Pro paywall feature)
+├── 8 known generator bugs cataloged with fix plan
+├── Gamification placement strategy (4 phases, investment %)
+├── 51Talk competitive analysis → real competitor = private tutors
+├── FoodSwipe fit assessment (doesn't fit education AI, keep frozen)
+├── Future product portfolio (English, STEM, Parent-Child)
+├── Website strategy (Studio Hub, not product landing page)
+├── Claude Code integration notes (Appendix D)
+├── [updated] Status updated to April 17 (Vercel deployed, IG accounts live)
+├── [updated] Weekly parent email + viral share moved Phase 6 → Phase 5
+├── [updated] Competitive positioning reframed (vs tutors, not apps)
+└── [updated] Decision framework v5 (added "Would a tutor do this?" filter)
 
 v5.1 → v5.2 Changes (April 9, 2026 sync with Master_Plan_v4.md):
-├── ✅ Phase 3B: PostHog marked DONE (12 events live, dual-destination)
-├── ✅ I1 Stack: PostHog listed as live
-├── ✅ 3C: future_tables.md marked complete
-└── ✅ I3: Full schemas updated — RLS, indexes, JSONB examples, quest analytics events,
+├── [done] Phase 3B: PostHog marked done (12 events live, dual-destination)
+├── [done] I1 Stack: PostHog listed as live
+├── [done] 3C: future_tables.md marked complete
+└── [done] I3: Full schemas updated — RLS, indexes, JSONB examples, quest analytics events,
           bilingual topic_map (topic_name_zh + topic_name_en + unlocks),
           knowledge_gaps with gap_severity + quest_id,
           quest_progress with attempts field in step_results
