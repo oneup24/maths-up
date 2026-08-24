@@ -891,6 +891,26 @@ Mathematical structures, concepts, and question types are not protected by copyr
 
 **CI enforcement:** Any migration or seed containing `license: restricted` must hard-fail the build. The `notes` column must never contain original wording from a source paper.
 
+## D10. Actionable Parent Report Standard
+
+Every schema decision in Parts I and above exists to support exactly one deliverable:
+
+> ❌ "Fractions: 60% / Measurement: 85%"
+>
+> "This week's focus: adding fractions with the same denominator. She added the denominators together 3 times — this is conceptual, not arithmetic carelessness. → [Start the Fractions Quest] or [Print 8 targeted questions]"
+
+If the report cannot produce that sentence, the schema was wasted.
+
+Requirements to produce it:
+- `responses.topic_id` — to scope the sentence to one topic
+- `responses.raw_answer` + `matched_trap` — to identify "added denominators together"
+- `responses.time_spent_ms` — to classify carelessness vs conceptual gap (D7 matrix)
+- `misconceptions.parent_advice_zh` — to phrase it in actionable Chinese
+- `quest_station_name_zh` — to name the Quest entry point without a grade label
+- Trap fall count — to say "3 times", not just "sometimes"
+
+**Grade-label decision (D3):** v4 states "No grade labels shown inside a Quest." v5.1's D2d mockup shows "起點：平均分（P1）… 終點站：異分母加減（P4）". One dataset, two renderings. The child sees `quest_station_name_zh` only — no grade, no "you're at P1" framing. The parent report shows `topic_name_zh` (with grade) for transparency. This avoids the core-premise violation that the child feels sent backwards. Decision recorded in DECISIONS.md.
+
 ---
 
 # PART E — PRODUCT: FoodSwipe (Frozen)
@@ -1208,16 +1228,21 @@ CREATE POLICY "owner" ON subscriptions USING (user_id = auth.uid());
 CREATE INDEX ON subscriptions (user_id, status);
 
 -- topic_map — prerequisite chains (D1a, Topic Quest route source) (Phase 4B)
+-- Source of truth: content/topic_map.csv (hand-authored, not generated)
+-- topic_id MUST match the topicId values used in src/engine/ — do not invent a parallel ID system
+-- Two renderings from one dataset: child sees quest_station_name_zh (no grade);
+-- parent report shows topic_name_zh (with grade). See DECISIONS.md §grade-label.
 CREATE TABLE topic_map (
-  id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  topic_id        TEXT NOT NULL UNIQUE,   -- matches topicId in engine.js
-  topic_name_zh   TEXT NOT NULL,
-  topic_name_en   TEXT NOT NULL,
-  grade           INT NOT NULL CHECK (grade BETWEEN 1 AND 6),
-  prerequisites   TEXT[] DEFAULT '{}',    -- topic_ids that must be mastered first
-  unlocks         TEXT[] DEFAULT '{}',    -- topic_ids this topic enables
-  importance      TEXT CHECK (importance IN ('critical', 'high', 'medium', 'low')),
-  created_at      TIMESTAMPTZ DEFAULT now()
+  id                     UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  topic_id               TEXT NOT NULL UNIQUE,   -- matches topicId in engine.js
+  topic_name_zh          TEXT NOT NULL,           -- shown in parent report (includes grade)
+  topic_name_en          TEXT NOT NULL,
+  quest_station_name_zh  TEXT NOT NULL,           -- shown to child inside Quest (no grade label)
+  grade                  INT NOT NULL CHECK (grade BETWEEN 1 AND 6),
+  prerequisites          TEXT[] DEFAULT '{}',    -- topic_ids that must be mastered first
+  unlocks                TEXT[] DEFAULT '{}',    -- topic_ids this topic enables
+  importance             TEXT CHECK (importance IN ('critical', 'high', 'medium', 'low')),
+  created_at             TIMESTAMPTZ DEFAULT now()
 );
 -- RLS: read-only for all authenticated users — this is curriculum data, not user data
 ALTER TABLE topic_map ENABLE ROW LEVEL SECURITY;
@@ -1294,7 +1319,49 @@ Future:   AI → Validate → Store in Supabase → Serve from DB → Learn ($�
 The content bank + topic_breakdown JSONB = the company's two most valuable assets.
 ```
 
-## I5. Guest Mode Data Policy
+## I5. Content CSV Layer
+
+The `content/` directory holds additive metadata files that sit **on top of** the existing engine. Not a replacement for `question_bank`, `contexts.js`, `gradeRules.js`, or the generators. These files make curriculum data editable by non-engineers.
+
+```
+content/
+  README.md              — Chinese column documentation (mandatory — founder reads this)
+  topic_map.csv          — prerequisite chains; source of truth for topic_map table
+  skills.csv             — sub-skill layer, FIRST 3 TOPICS ONLY (~6 sub-skills each ≈ 18 rows total)
+  traps.csv              — trap + distractor + misconception + trap_fall_rate (unified system)
+  misconceptions.csv     — parent_advice_zh library (~25 rows)
+  item_templates.csv     — AI-emits-templates output (richness fix)
+  contexts.csv           — exported from contexts.js; made non-engineer editable
+  blueprints.csv
+  blueprint_sections.csv — includes use_weak_topics boolean (the retention mechanism)
+  VERSION                — content version tag; written to responses.content_version
+```
+
+**Three hard rules:**
+1. Multi-value fields use `|` not commas (commas corrupt CSV parsing)
+2. Files must be UTF-8 without BOM — author in Google Sheets, export CSV. Excel corrupts Traditional Chinese by default. CI checks encoding.
+3. IDs are never renamed or reused once live, because `responses` references them. A renamed ID is a broken foreign key.
+
+**sub-skill layer (D5):** `skills.csv` covers the first 3 topics only (~6 sub-skills each ≈ 18 rows). Do not build a 900-skill taxonomy. Sub-skills are needed for specific parent advice (e.g. "added denominators together" = a specific sub-skill of fractions addition), not for routing.
+
+**Trap / Distractor / Misconception unification (D4):** These are the same thing from different angles — trap = the planted wrong path; distractor = the wrong answer it produces; misconception = the name of the reasoning error; trap_fall_rate = the measurement. One `traps.csv`, one engine. Benefit: trap_fall_rate upgrades from a number into a parent report sentence. The #1 differentiator becomes the #1 diagnostic asset. This reduces total build scope (one system, not three).
+
+**blueprint_sections.csv `use_weak_topics` flag (D7):** When true, the paper visibly adapts to the specific child's weak topics. This single flag is the retention mechanism — not gamification. A parent who sees a paper that "knows" what their child struggles with renews before trying a competitor.
+
+**CI assertions (`npm run content:check`):**
+1. All cross-file ID references resolve (no orphan topic_ids)
+2. No cycles in `prereq_topic_ids`
+3. Every template × 100 seeds satisfies constraints and computes an answer
+4. Every `example_seed` still yields `example_answer` (regression guard)
+5. `license: restricted` fails the build
+6. `plausible_min`/`plausible_max` always present
+7. UTF-8, no BOM
+8. Live templates have ≥ 2 traps
+9. Every `topic_map` row has `quest_station_name_zh`
+
+Error messages must print **Chinese + filename + line number** — the founder reads them, not an agent.
+
+## I6. Guest Mode Data Policy
 
 Guest = localStorage only = zero cloud diagnostic data, while also being the frictionless default path. This creates a tension: the most accessible path generates no data for improvement.
 

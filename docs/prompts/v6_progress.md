@@ -6,7 +6,7 @@ Founder answers: Q4 unsure · Q5 unsure · Q6 4/10 · Q7 com.oneup24.mathsup/Mat
 - [x] 2.  GROUP A (structural: doc split, Gate 0, Phase 3E, Phase 4 order, gate table)
 - [x] 3.  GROUP B (responses table, blocked-features table, time matrix, guest policy)
 - [x] 4.  GROUP C (generator quarantine, AI-emits-template, coverage math, copyright)
-- [ ] 5.  GROUP D (content CSV layer, topic_map, grade-label fix, trap merge, report standard)
+- [x] 5.  GROUP D (content CSV layer, topic_map, grade-label fix, trap merge, report standard)
 - [ ] 6.  GROUP E (Stripe-only, break-even, CAC assumption, Studio Hub, appId)
 - [ ] 7.  GROUP F edits inside MASTER_PLAN.md (KPIs, 3D questions, next-5-actions)
 - [ ] 8.  Appendix E — v6.0 changelog listing every applied edit
