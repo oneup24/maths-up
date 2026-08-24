@@ -1,0 +1,183 @@
+/**
+ * audit-generators.mjs — Gate 0 generator quality audit
+ *
+ * 每個 generator 運行 500 次，檢查 6 個質量規則。
+ * 違規者標記為 quarantined，從 buildExam 中排除。
+ *
+ * 運行方法：node scripts/audit-generators.mjs
+ * 輸出：src/engine/quarantined.js（更新 quarantine 列表）
+ */
+
+import { Q } from '../src/engine/grades/index.js';
+import { writeFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const RUNS = 500;
+
+// ─── 工具函數 ──────────────────────────────────────────────────────────────
+
+const parseNum = s => {
+  const clean = String(s || '').replace(/[^\d.\-\/]/g, '');
+  if (/^\-?\d+(\.\d+)?$/.test(clean)) return parseFloat(clean);
+  return NaN;
+};
+
+const isInteger = n => !isNaN(n) && Math.floor(n) === n;
+
+// 提取 SVG 文字節點內容（去標籤）
+const svgTextNodes = fig => {
+  if (!fig) return [];
+  return (fig.match(/<text[^>]*>([^<]*)<\/text>/g) || [])
+    .map(t => t.replace(/<[^>]*>/g, '').trim())
+    .filter(Boolean);
+};
+
+// ─── 6 項質量規則 ──────────────────────────────────────────────────────────
+
+function checkInvariants(grade, topicId, idx, q) {
+  const errs = [];
+  const ans = String(q.a || '').trim();
+  const qText = String(q.q || '');
+
+  // (a) 答案不應等於題目中的給定數值 [bug 4]
+  // 只檢查單一整數答案，避免複雜答案的誤報
+  if (/^\d+$/.test(ans)) {
+    // 題目中的獨立數字（前後非數字）
+    const givenNums = (qText.match(/(?<![0-9])\d+(?![0-9])/g) || []);
+    if (givenNums.includes(ans)) {
+      errs.push(`(a) 答案「${ans}」與題目中的給定數字相同，可能是變數重用錯誤`);
+    }
+  }
+
+  // (b) P1–P4 除法題答案必須為整數 [bug 2]
+  if (grade <= 4 && /÷/.test(qText)) {
+    const n = parseNum(ans);
+    if (!isNaN(n) && !isInteger(n)) {
+      errs.push(`(b) P${grade} 除法題答案非整數（答案：${ans}）`);
+    }
+  }
+
+  // (c) 圖形標籤不應包含答案（洩露未知數）[bug 1]
+  if (q.fig) {
+    const textNodes = svgTextNodes(q.fig);
+    if (textNodes.some(t => t === ans || (ans.length > 0 && t.includes(ans)))) {
+      errs.push(`(c) 圖形文字節點包含答案「${ans}」，可能洩露未知數`);
+    }
+  }
+
+  // (d) 答案必須大於 0 [bug 6]
+  // 只檢查純數字答案（排除分數、多部分答案）
+  if (!ans.includes(',') && !ans.includes('/') && !ans.includes('又')) {
+    const n = parseNum(ans);
+    if (!isNaN(n) && n <= 0) {
+      errs.push(`(d) 答案為零或負數（答案：${ans}）`);
+    }
+  }
+
+  // (e) 選擇題選項必須唯一 [bug 8]
+  if (q.isMC && Array.isArray(q.opts) && q.opts.length > 0) {
+    const vals = q.opts.map(o => String(o.v !== undefined ? o.v : o).trim());
+    if (new Set(vals).size !== vals.length) {
+      errs.push(`(e) 選擇題有重複選項：${vals.join(' / ')}`);
+    }
+  }
+
+  // (f) 圖形長寬比不超過 5:1 [bug 5]
+  if (q.fig) {
+    const vb = q.fig.match(/viewBox="0 0 (\d+) (\d+)"/);
+    if (vb) {
+      const w = parseInt(vb[1]), h = parseInt(vb[2]);
+      if (h > 0 && (w / h > 5 || h / w > 5)) {
+        errs.push(`(f) 圖形長寬比超過 5:1（viewBox: ${w}×${h}）`);
+      }
+    }
+  }
+
+  return errs;
+}
+
+// ─── 主程式 ────────────────────────────────────────────────────────────────
+
+const quarantineSet = new Set();
+const report = [];
+let totalGens = 0;
+let totalViolators = 0;
+
+console.log(`\n🔍 Maths-Up Generator Audit — ${RUNS} 次 × 每個 generator\n`);
+console.log('─'.repeat(60));
+
+for (const [gradeStr, topicMap] of Object.entries(Q)) {
+  const grade = parseInt(gradeStr);
+  for (const [topicId, genArr] of Object.entries(topicMap)) {
+    if (!Array.isArray(genArr)) continue;
+    for (let i = 0; i < genArr.length; i++) {
+      const gen = genArr[i];
+      if (typeof gen !== 'function') continue;
+      totalGens++;
+
+      const key = `${topicId}:${i}`;
+      const allErrors = new Map(); // error_text → count
+
+      let throwCount = 0;
+      for (let run = 0; run < RUNS; run++) {
+        try {
+          const q = gen();
+          if (!q) { throwCount++; continue; }
+          const errs = checkInvariants(grade, topicId, i, q);
+          errs.forEach(e => allErrors.set(e, (allErrors.get(e) || 0) + 1));
+        } catch (err) {
+          throwCount++;
+        }
+      }
+
+      const hasViolation = allErrors.size > 0 || throwCount > 0;
+      if (hasViolation) {
+        totalViolators++;
+        quarantineSet.add(key);
+        const lines = [];
+        if (throwCount > 0) {
+          lines.push(`  ❌ 執行錯誤：${throwCount}/${RUNS} 次拋出例外`);
+        }
+        allErrors.forEach((count, msg) => {
+          lines.push(`  ⚠️  ${msg}（${count}/${RUNS} 次）`);
+        });
+        report.push({ key, topicId, grade, index: i, lines });
+        console.log(`\n[P${grade} ${topicId} #${i}] → 隔離`);
+        lines.forEach(l => console.log(l));
+      }
+    }
+  }
+}
+
+console.log('\n' + '─'.repeat(60));
+console.log(`\n📊 審計結果摘要`);
+console.log(`   總 generator 數：${totalGens}`);
+console.log(`   違規（已隔離）：${totalViolators}`);
+console.log(`   通過：${totalGens - totalViolators}`);
+console.log(`   隔離率：${((totalViolators / totalGens) * 100).toFixed(1)}%`);
+
+// ─── 生成 quarantined.js ───────────────────────────────────────────────────
+
+const entries = [...quarantineSet].sort();
+const outPath = join(__dirname, '../src/engine/quarantined.js');
+
+const fileContent = `// GENERATED by scripts/audit-generators.mjs — do not edit by hand
+// Re-run: node scripts/audit-generators.mjs
+// Last run: ${new Date().toISOString().slice(0, 10)} — ${totalViolators} 個 generator 被隔離（共 ${totalGens} 個）
+// Format: 'topicId:generatorIndex' (0-indexed)
+export const quarantined = new Set([
+${entries.map(e => `  '${e}',`).join('\n')}${entries.length ? '\n' : ''}]);
+`;
+
+writeFileSync(outPath, fileContent, 'utf8');
+console.log(`\n✅ 已寫入 src/engine/quarantined.js（${entries.length} 個隔離條目）`);
+
+if (totalViolators === 0) {
+  console.log('\n🎉 所有 generator 通過審計！Gate 0 條件已達成。\n');
+} else {
+  console.log(`\n⚠️  ${totalViolators} 個 generator 已被隔離。`);
+  console.log('   buildExam 將自動跳過這些 generator。');
+  console.log('   請查看上方的詳細違規報告。\n');
+}

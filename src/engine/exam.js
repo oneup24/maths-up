@@ -7,6 +7,7 @@ import { pk } from './core.js';
 import { TOPICS, GRADE_INFO, DIFF_INFO, DIFF_ALLOW, EXAM_TARGETS, SECT_RATIOS, SECT_CONF, SECT_LBL } from './config.js';
 import { validateQuestion } from './gradeRules.js';
 import { Q } from './grades/index.js';
+import { quarantined } from './quarantined.js';
 
 export function buildExam(grade,topics,examType,difficulty){
   difficulty=difficulty||2;
@@ -17,7 +18,8 @@ export function buildExam(grade,topics,examType,difficulty){
   topics.forEach(tid=>{
     var pool=(Q[grade]||{})[tid];if(!pool)return;
     var tnm=tMap[tid]||tid;
-    pool.forEach(gen=>{
+    pool.forEach((gen,gi)=>{
+      if(quarantined.has(tid+':'+gi))return;
       try{
         var q=gen();
         if(!q||!q.tp||!allGens[q.tp])return;

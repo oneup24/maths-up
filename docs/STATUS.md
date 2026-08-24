@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-08-24 (Gate 0 — brand/appId unified)
+**Last updated:** 2026-08-24 (Gate 0 — generator audit complete)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -69,7 +69,7 @@
 | Item | Status | Evidence |
 |------|--------|----------|
 | Doc consolidation (MASTER_PLAN.md v6.0) | ✅ | This commit |
-| scripts/audit-generators.js | ☐ | Not created |
+| scripts/audit-generators.js | ✅ | `scripts/audit-generators.mjs` — 397 generators audited × 500 runs; 103 quarantined (26%); 294 clean. `src/engine/quarantined.js` generated; `exam.js` filters quarantined on load. Violations: primarily invariant (a) — answer coincides with given operand |
 | responses table migration + write path | ✅ | `supabase/migrations/20260824000001_create_responses.sql` · `src/services/api.js` `saveResponses()` · `src/App.jsx` wired in markExam |
 | PostHog question_answered event | ✅ | `src/App.jsx` markExam loop — fires per question with grade, topic_id, q_type, q_index, is_correct, has_trap, trap_hit |
 | RLS audit — fix USING(true) policies | ✅ | `supabase/migrations/20260824000002_fix_using_true_rls.sql` — drops both bad policies; questions → authenticated read; user_errors → auth.uid() IS NOT NULL insert |
