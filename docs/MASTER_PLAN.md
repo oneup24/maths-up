@@ -1,10 +1,10 @@
-Here is the full v5 regeneration with **every detail** from all sources integrated — including the 7 missing pieces from the Poe chat.
-
 ---
 
-# 🚀 ONEUP24 MASTER PLAN v5.1
-### The Comprehensive Bible — Company · Products · IP · Growth
-### Last Updated: April 17, 2026
+# ONEUP24 MASTER PLAN v6.0
+### Status: ACTIVE — The Comprehensive Bible — Company · Products · IP · Growth
+### Last Updated: August 24, 2026
+
+Execution status lives ONLY in docs/STATUS.md. This file describes WHAT and WHY, never WHETHER.
 
 ---
 
@@ -1474,7 +1474,8 @@ Guest = localStorage only = zero cloud diagnostic data, while also being the fri
 | Retention | D1/D7/D30 retention, monthly churn, avg subscription length |
 | Engagement | Quizzes generated/completed, PDFs exported, avg session, trap fall rate |
 | Data Moat | topic_breakdown records, unique topic codes, bank size, AI cost/quiz |
-| Topic Quest 🆕 | Quests started, completion rate, avg stations completed, abandonment point, time per quest, quest → conversion rate |
+| Topic Quest | Quests started, completion rate, avg stations completed, abandonment point, time per quest, quest → conversion rate |
+| Per-question | `question_answered` volume by topic/grade, per-question abandonment point (which q_index do users stop at?), median `time_spent_ms` by topic, `trap_fall_rate` by trap type, misconception frequency ranking (which misconceptions appear most?), per-question `is_correct` rate over time (quality calibration) |
 
 ## L2. Milestones & Target Dates
 
@@ -1724,29 +1725,33 @@ Repository:   /docs/MASTER_PLAN_v5.md + /docs/Master_Plan_v4.md (keep in sync)
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│  1. Wire PostHog + Sentry (let Claude Code do it)          │
-│     → Without analytics, soft launch data is anecdotal     │
+│  1. Doc consolidation (this task — MASTER_PLAN.md,         │
+│     STATUS.md, DECISIONS.md)                               │
+│     → Single source of truth before any agent reads plan   │
 │                                                            │
-│  2. Run E2E tests (all grades, all types, all flows)       │
-│     → Ship confident, not hopeful                          │
+│  2. Generator audit + quarantine                           │
+│     → scripts/audit-generators.js, quarantine violators   │
+│     → Gate 0 condition: 0 violations in buildExam path     │
 │                                                            │
-│  3. Send 40 WhatsApp messages to recruit 10 test families  │
-│     → This is calendar time, can't be compressed           │
+│  3. responses table migration + write path in api.js       │
+│     → Every answered question must write a row             │
+│     → 8 features are blocked until this exists             │
 │                                                            │
-│  4. Add password reset flow                                │
-│     → Missing auth flow = guaranteed support headache       │
+│  4. Send the 40 WhatsApp messages NOW                      │
+│     → Calendar time — cannot be compressed                 │
+│     → 4/10 families recruited so far — need 6 more        │
 │                                                            │
-│  5. Set a HARD soft launch date and tell someone           │
-│     → Accountability creates urgency                       │
+│  5. At the END of soft launch: ask 3 families for HKD 388  │
+│     → This is the PMF gate for Phase 3E                    │
+│     → If none pay → fix the report, not build mobile      │
 │                                                            │
-│  EVERYTHING ELSE IS NOISE UNTIL 10 REAL FAMILIES           │
-│  HAVE USED YOUR PRODUCT.                                   │
-│                                                            │
-│  Your plan is solid. Your architecture is sound.           │
-│  Your pricing is smart. None of it matters until           │
-│  real parents and real kids have used it.                   │
-│                                                            │
-│  Phase 3D is the gate. Ship through it. 🚀                │
+│  DO NOT DO (until Gate 4C → 4A passes):                   │
+│  • Studio Hub engineering / new product code               │
+│  • Pitch deck                                              │
+│  • IAP / RevenueCat                                        │
+│  • Stardust / Curlboo Shop                                 │
+│  • android/ or ios/ code changes                          │
+│  (Coming Soon cards on oneup24.com = OK — no code)        │
 └────────────────────────────────────────────────────────────┘
 ```
 
