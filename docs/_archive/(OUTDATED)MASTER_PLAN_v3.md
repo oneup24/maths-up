@@ -1,3 +1,5 @@
+> ⛔ HISTORICAL — DO NOT REFERENCE. Superseded by docs/MASTER_PLAN.md + docs/STATUS.md (v6.0, 2026-08-24).
+
 # Master Plan v3.0 — Dev Roadmap (April 3, 2026)
 
 

@@ -13,4 +13,4 @@ Founder answers: Q4 unsure · Q5 unsure · Q6 4/10 · Q7 com.oneup24.mathsup/Mat
 - [x] 9.  STATUS.md
 - [x] 10. DECISIONS.md
 - [x] 11. CLAUDE.md append (F5)
-- [ ] 12. Archive move + banners + final acceptance check (§7)
+- [x] 12. Archive move + banners + final acceptance check (§7)

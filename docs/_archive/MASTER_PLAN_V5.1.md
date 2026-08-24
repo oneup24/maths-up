@@ -1,3 +1,5 @@
+> ⛔ HISTORICAL — DO NOT REFERENCE. Superseded by docs/MASTER_PLAN.md + docs/STATUS.md (v6.0, 2026-08-24).
+
 Here is the full v5 regeneration with **every detail** from all sources integrated — including the 7 missing pieces from the Poe chat.
 
 ---

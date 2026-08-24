@@ -1731,7 +1731,7 @@ Applied edits from docs/prompts/v6_regen.md Stage 2. Verified against codebase b
 - D4: D-items updated to epic label format with Phase assignments
 - D5: Phase 4 execution order added (4B-lite → 4C → 4A); Phase 4C added
 - PART K2: consolidated Gate table added (6 gates, conditions, consequences)
-- All ✅/⚠️/☐/🔄 removed (grep -c '✅' = 0)
+- All status markers (checkmarks/warnings/boxes/rotate) removed (grep -c = 0)
 - Stale values corrected: 329 generators, oneup24/maths-up repo, 98 commits
 
 **GROUP B — Data Moat**

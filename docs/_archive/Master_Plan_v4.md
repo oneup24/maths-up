@@ -1,3 +1,5 @@
+> ⛔ HISTORICAL — DO NOT REFERENCE. Superseded by docs/MASTER_PLAN.md + docs/STATUS.md (v6.0, 2026-08-24).
+
 # Master Plan v4.0 — Dev Roadmap (April 9, 2026)
 
 ## Company: OneUp24 (oneup24.com)
