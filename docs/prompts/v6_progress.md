@@ -12,5 +12,5 @@ Founder answers: Q4 unsure · Q5 unsure · Q6 4/10 · Q7 com.oneup24.mathsup/Mat
 - [x] 8.  Appendix E — v6.0 changelog listing every applied edit
 - [x] 9.  STATUS.md
 - [x] 10. DECISIONS.md
-- [ ] 11. CLAUDE.md append (F5)
+- [x] 11. CLAUDE.md append (F5)
 - [ ] 12. Archive move + banners + final acceptance check (§7)
