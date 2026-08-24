@@ -76,7 +76,7 @@
 | exam_sessions RLS migration | ⚠️ | Applied in Supabase dashboard only; not version-controlled → NEEDS FOUNDER: should this be migrated to supabase/migrations/? |
 | Brand name unified to Maths-Up | ✅ | `manifest.json` name, `capacitor.config.json` appName, `app.json` name/slug all updated to Maths-Up |
 | appId updated in capacitor.config.json | ✅ | `com.oneup24.mathsup` (was `com.mathexam.app`) — IMMUTABLE after first App Store submission |
-| Topic Quest grade-label recorded in DECISIONS.md | ☐ | DECISIONS.md not yet written |
+| Topic Quest grade-label recorded in DECISIONS.md | ✅ | `docs/DECISIONS.md` §grade-label — child sees quest_station_name_zh; parent report shows topic_name_zh with grade |
 | 10 soft-launch families sign in | ⚠️ | 4/10 recruited → NEEDS FOUNDER: current count |
 
 ## Phase 3D — Soft Launch
