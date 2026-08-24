@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-08-24 (Gate 0 — generator audit complete)
+**Last updated:** 2026-08-24 (Gate 0 — exam_sessions RLS version-controlled)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -73,7 +73,7 @@
 | responses table migration + write path | ✅ | `supabase/migrations/20260824000001_create_responses.sql` · `src/services/api.js` `saveResponses()` · `src/App.jsx` wired in markExam |
 | PostHog question_answered event | ✅ | `src/App.jsx` markExam loop — fires per question with grade, topic_id, q_type, q_index, is_correct, has_trap, trap_hit |
 | RLS audit — fix USING(true) policies | ✅ | `supabase/migrations/20260824000002_fix_using_true_rls.sql` — drops both bad policies; questions → authenticated read; user_errors → auth.uid() IS NOT NULL insert |
-| exam_sessions RLS migration | ⚠️ | Applied in Supabase dashboard only; not version-controlled → NEEDS FOUNDER: should this be migrated to supabase/migrations/? |
+| exam_sessions RLS migration | ✅ | `supabase/migrations/20260824000003_exam_sessions_rls.sql` — documents dashboard policy; idempotent (DROP POLICY IF EXISTS before CREATE) |
 | Brand name unified to Maths-Up | ✅ | `manifest.json` name, `capacitor.config.json` appName, `app.json` name/slug all updated to Maths-Up |
 | appId updated in capacitor.config.json | ✅ | `com.oneup24.mathsup` (was `com.mathexam.app`) — IMMUTABLE after first App Store submission |
 | Topic Quest grade-label recorded in DECISIONS.md | ✅ | `docs/DECISIONS.md` §grade-label — child sees quest_station_name_zh; parent report shows topic_name_zh with grade |
