@@ -775,7 +775,8 @@ This extends the plan's own AI-as-Factory principle: the factory should build th
 ### Phase 5: Monetization
 
 **Subscription Infrastructure:**
-- RevenueCat (iOS/Android) + Stripe (web PWA) + cross-platform entitlements
+- Stripe web only (Phase 4C already wired — see above). RevenueCat and IAP deferred until 20 paying users and Gate 4C → 4A passes.
+- Rationale: Apple/Google take 15% (not 30%) under Small Business Program (< US$1M annual proceeds) and Google's first-US$1M tier. The real argument for deferring IAP is integration complexity: 3 separate integrations (Stripe + RC + webhooks) + receipt validation for a solo founder with zero paying users. Build what closes sales before building what distributes.
 - 7-day free Pro trial
 - Family plan with student_profiles
 
@@ -969,6 +970,8 @@ Requirements to produce it:
 
 **Purpose on Website NOW:** 3 "Coming Soon" cards on oneup24.com that collect email addresses = pre-launch lead generation.
 
+**Tension with Principle #10 (Maths Quests first, everything else frozen):** Building marketing pages for frozen products is still working on them — cognitive load, visual design time, and copywriting effort all come at the expense of Maths-Up. The founder has decided to keep the 3 Coming Soon cards (Q8 — SETTLED). The rule is: no engineering time on frozen products until Gate 4C → 4A passes. Marketing copy on oneup24.com is acceptable. Product code is not. See DECISIONS.md.
+
 ---
 
 # PART G — BUSINESS MODEL & UNIT ECONOMICS
@@ -985,14 +988,31 @@ Requirements to produce it:
 ## G2. Unit Economics
 
 ```
-CAC Target:        < HKD 30 (IG organic + WhatsApp)
-LTV:               HKD 384 (8 months × HKD 48)
-LTV:CAC Ratio:     12.8:1 (target > 3:1) — ASSUMPTION, unvalidated
-Monthly Churn:     < 12%
+CAC Target:        < HKD 30 (IG organic + WhatsApp)         ← ASSUMPTION (unvalidated)
+LTV:               HKD 384 (8 months × HKD 48)              ← ASSUMPTION (unvalidated)
+LTV:CAC Ratio:     12.8:1 (target > 3:1)                    ← ASSUMPTION (unvalidated)
+Monthly Churn:     < 12%                                     ← ASSUMPTION
 Gross Margin:      > 85%
 Payback Period:    < 1 month
-Break-even:        ~53 Pro subscribers covers all ops costs
+Break-even:        ~53 Pro subscribers (plan figure — see below for corrected estimate)
 ```
+
+**ASSUMPTION caveat:** CAC < HKD 30 and 12.8:1 LTV:CAC are unvalidated — 332 combined IG followers (@curlboo.bear + @oneup24game), no paid ads run, no paying users. Label them ASSUMPTION until at least 20 paying users exist.
+
+**Infra break-even (corrected):** The plan's "53 Pro subscribers" appears to use an inflated ops cost figure. Actual likely stack:
+
+| Item | Monthly cost |
+|------|-------------|
+| Supabase Pro | ~US$25 |
+| Vercel Pro | ~US$20 |
+| PostHog | Free tier |
+| Sentry | Free tier |
+| Domain | ~US$1 |
+| **Total** | **~US$46–70/mo ≈ HKD 360–550** |
+
+Infra break-even: **8–12 Pro subscribers** (HKD 388/yr ÷ 12 = HKD 32/mo per subscriber, so ~HKD 360 ÷ HKD 32 ≈ 11 subscribers).
+
+The 53-subscriber figure may include founder salary or other ops costs — label clearly which number is which. Mark actual current plan tiers as unverified (Q5 — founder knows the live Supabase/Vercel tiers).
 
 ## G3. AI Cost Model (3-Layer Architecture)
 
@@ -1086,14 +1106,16 @@ TO SCHOOLS:
 
 ```
 Frontend:    React + Vite + Tailwind CSS
-Mobile:      Capacitor (iOS + Android prepared)
+Mobile:      Capacitor (iOS + Android prepared — android/ ios/ frozen until 20 paying users)
+             appId: com.oneup24.mathsup (Gate 0 item — update capacitor.config.json before any App Store submission;
+             appId is IMMUTABLE after first submission — cannot be changed without a new listing)
 Backend:     Supabase Cloud (PostgreSQL, Auth, Storage, RLS, Edge Functions)
 Engine:      src/engine/ (329 generators, rule-based, $0 cost)
 Deploy:      Vercel (live — see docs/STATUS.md for URL)
 VCS:         GitHub (oneup24/maths-up, public, 98 commits)
 Analytics:   PostHog (live, 18 events — see STATUS.md for event list)
 Monitoring:  Sentry (live)
-Payments:    RevenueCat + Stripe (planned, Phase 5)
+Payments:    Stripe web only (Phase 4C); RevenueCat + IAP deferred until 20 paying users
 AI:          DeepSeek V3.2 (planned, Phase 4B — pending benchmark)
 Dev tool:    Claude Code (CLAUDE.md in repo)
 Package:     pnpm
@@ -1209,8 +1231,8 @@ CREATE POLICY "owner" ON student_profiles
 CREATE INDEX ON student_profiles (user_id);
 
 -- subscriptions — paywall state (Phase 5)
--- Source of truth for entitlement checks. Populated by RevenueCat (mobile) and Stripe (web) webhooks.
--- Do NOT trust client-side plan claims — always check this table server-side.
+-- Source of truth for entitlement checks. Populated by Stripe webhooks (Phase 4C).
+-- RevenueCat added at Phase 4A when mobile goes live. Do NOT trust client-side plan claims — always check this table server-side.
 CREATE TABLE subscriptions (
   id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id      UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
