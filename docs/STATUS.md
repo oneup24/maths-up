@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-08-24 (Gate 0 — RLS fix)
+**Last updated:** 2026-08-24 (Gate 0 — brand/appId unified)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -74,8 +74,8 @@
 | PostHog question_answered event | ✅ | `src/App.jsx` markExam loop — fires per question with grade, topic_id, q_type, q_index, is_correct, has_trap, trap_hit |
 | RLS audit — fix USING(true) policies | ✅ | `supabase/migrations/20260824000002_fix_using_true_rls.sql` — drops both bad policies; questions → authenticated read; user_errors → auth.uid() IS NOT NULL insert |
 | exam_sessions RLS migration | ⚠️ | Applied in Supabase dashboard only; not version-controlled → NEEDS FOUNDER: should this be migrated to supabase/migrations/? |
-| Brand name unified to Maths-Up | ☐ | 5 name variants still active: `public/manifest.json:2` says "Curlboo & Fluffy's Maths Quests" |
-| appId updated in capacitor.config.json | ☐ | Current: `com.mathexam.app` / `math-exam` — must change to `com.oneup24.mathsup` / `Maths-Up` BEFORE App Store submission |
+| Brand name unified to Maths-Up | ✅ | `manifest.json` name, `capacitor.config.json` appName, `app.json` name/slug all updated to Maths-Up |
+| appId updated in capacitor.config.json | ✅ | `com.oneup24.mathsup` (was `com.mathexam.app`) — IMMUTABLE after first App Store submission |
 | Topic Quest grade-label recorded in DECISIONS.md | ☐ | DECISIONS.md not yet written |
 | 10 soft-launch families sign in | ⚠️ | 4/10 recruited → NEEDS FOUNDER: current count |
 

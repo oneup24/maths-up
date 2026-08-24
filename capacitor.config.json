@@ -1,6 +1,6 @@
 {
-  "appId": "com.mathexam.app",
-  "appName": "math-exam",
+  "appId": "com.oneup24.mathsup",
+  "appName": "Maths-Up",
   "webDir": "dist",
   "ios": {
     "contentInset": "always"
