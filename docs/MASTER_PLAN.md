@@ -1716,8 +1716,62 @@ v5.1 → v5.2 Changes (April 9, 2026 sync with Master_Plan_v4.md):
           quest_progress with attempts field in step_results
 
 Next Review:  Weekly (or after any gate is passed)
-Repository:   /docs/MASTER_PLAN_v5.md + /docs/Master_Plan_v4.md (keep in sync)
+Repository:   docs/MASTER_PLAN.md (strategy) + docs/STATUS.md (status) — single source of truth
 ```
+
+## v6.0 Changelog (August 24, 2026)
+
+Applied edits from docs/prompts/v6_regen.md Stage 2. Verified against codebase by Stage 1 audit (docs/AUDIT_v6.md).
+
+**GROUP A — Structural**
+- HOW TO USE: D0-D3 = epic labels (not phases); Phase 1-6 = only scheduling authority; removed "They are SEPARATE" line; added STATUS.md pointer
+- D3: replaced Current Build Status status tables with strategic phase descriptions (3A, 3B, 3C, Gate 0, 3D, 3E)
+- Gate 0: inserted before Phase 3D with deliverables and gate condition
+- Phase 3E: inserted between 3D and Phase 4 with PMF gate (3 parents paid HKD 388)
+- D4: D-items updated to epic label format with Phase assignments
+- D5: Phase 4 execution order added (4B-lite → 4C → 4A); Phase 4C added
+- PART K2: consolidated Gate table added (6 gates, conditions, consequences)
+- All ✅/⚠️/☐/🔄 removed (grep -c '✅' = 0)
+- Stale values corrected: 329 generators, oneup24/maths-up repo, 98 commits
+
+**GROUP B — Data Moat**
+- I3: responses table schema (Gate 0) with explanation of data gap vs exam_sessions
+- I3: 8-feature blocked table (features that cannot ship without responses)
+- D7: time_spent_ms diagnostic matrix (fast/slow × correct/wrong)
+- I6 (formerly I5): Guest Mode Data Policy
+
+**GROUP C — Correctness and Risk**
+- D6: quarantine strategy (audit-generators.js, 6 invariants, quarantined status, rationale)
+- Phase 4B: AI-emits-templates architecture (AI outputs templates with slots/constraints/answer_expr; Layer 1 fills params and computes answer; AI never asserts a numeric answer)
+- D8: content coverage analysis (2.8 q/bucket → exhaustion; template fix)
+- D9: past-paper copyright policy (safe: structure; never: wording; CI enforcement)
+
+**GROUP D — Content Layer**
+- I3 topic_map schema: added quest_station_name_zh column; topicId alignment rule; dual-rendering comment
+- I5: content/ CSV layer (full directory, 3 hard rules, CI assertions)
+- D10: actionable parent report standard with data requirements
+- D10: grade-label decision documented (child = station name; parent = topic with grade)
+
+**GROUP E — Money and Focus**
+- G2: infra break-even corrected (8-12 subscribers, not 53); CAC/LTV labeled ASSUMPTION
+- Phase 5: Stripe web only until 20 paying users; RevenueCat/IAP deferred
+- App store cut rationale corrected (15% Small Business Program, not 30%)
+- Part F: Studio Hub tension with Principle #10 documented; founder decision to keep Coming Soon cards recorded
+- I1: appId immutability warning added
+
+**GROUP F — Engineering Hygiene**
+- Header: v6.0, August 24 2026, STATUS.md pointer
+- L1: per-question KPIs added
+- NEXT 5 ACTIONS: replaced with current-state actions (doc consolidation → audit → responses → WhatsApp → HKD 388 ask)
+
+**Corrections from Stage 1 Audit**
+- Generator count: 329 (not 217 or 600+)
+- Repo name: oneup24/maths-up (not maths-exam)
+- PostHog events: 18 (not 12); quiz_start/quiz_complete (not exam_start/exam_complete)
+- Exam targets: 10/20/35 (not 12/15/24)
+- Section ratios: mc:15%, fill:20%, calc:20%, short:15%, work:30% (not v4 values)
+- Difficulty labels: 基礎鞏固/呈分實戰/奧數拔尖 (not Basic/Standard/Challenge)
+- Google OAuth: not in codebase; README incorrect
 
 ---
 

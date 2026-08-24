@@ -9,7 +9,7 @@ Founder answers: Q4 unsure · Q5 unsure · Q6 4/10 · Q7 com.oneup24.mathsup/Mat
 - [x] 5.  GROUP D (content CSV layer, topic_map, grade-label fix, trap merge, report standard)
 - [x] 6.  GROUP E (Stripe-only, break-even, CAC assumption, Studio Hub, appId)
 - [x] 7.  GROUP F edits inside MASTER_PLAN.md (KPIs, 3D questions, next-5-actions)
-- [ ] 8.  Appendix E — v6.0 changelog listing every applied edit
+- [x] 8.  Appendix E — v6.0 changelog listing every applied edit
 - [ ] 9.  STATUS.md
 - [ ] 10. DECISIONS.md
 - [ ] 11. CLAUDE.md append (F5)
