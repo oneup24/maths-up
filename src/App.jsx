@@ -143,11 +143,12 @@ export default function App(){
   var trapCount=sections.reduce((s,sec)=>s+sec.qs.filter(q=>q.trap).length,0);
 
   var markExam=()=>{
-    var res={},sc=0;
+    var res={},sc=0,qi_t=0;
     sections.forEach((sec,si)=>sec.qs.forEach((q,qi)=>{
       var k=si+'-'+qi,ok=false;
       if(q.isMC){ok=!!mcSel[k]&&mcSel[k]===q.a}else{ok=chkAns(answers[k],q.a)}
       var pts=ok?(q.sc||2):0;sc+=pts;res[k]={ok,pts,max:q.sc||2};
+      track('question_answered',{grade,topic_id:q.topicId||'unknown',q_type:q.tp,q_index:qi_t++,is_correct:ok,has_trap:!!q.trap,trap_hit:!!q.trap&&!ok});
     }));
     setMarkRes(res);setTotScore(sc);setIsMarked(true);setRunning(false);setShowSubmit(false);
     var sp_pct=grandTotal>0?Math.round(sc/grandTotal*100):0;
