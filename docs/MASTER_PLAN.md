@@ -735,8 +735,31 @@ Rationale: 4A is distribution; distribution before product-market fit is wasted.
 **AI Generator MVP (DeepSeek):**
 - **PREREQUISITE:** Benchmark V3.2 vs R1 on 20 P5-P6 multi-step problems
 - Generate 應用題 (word problems) only — hardcode handles calc/fill
-- Validation pipeline (structure, math verify, context, dedup)
 - **IRON RULE: NEVER serve unvalidated AI questions to students**
+
+**AI-emits-templates architecture (replaces step-2 "math verify"):**
+
+The previous plan described "Step 2: Math verification — solve independently using Layer 1 chkAns." This is not achievable. `chkAns` compares a student string against a stored answer; it cannot solve a natural-language word problem.
+
+Correct architecture: **AI emits templates, never finished questions.** AI outputs:
+```json
+{
+  "skill_id": "p4_fractions_add_unlike",
+  "body_zh": "{{a}}個蘋果中有{{b}}個是紅色的，{{c}}個是綠色的，紅色的蘋果佔幾分之幾？",
+  "slots": {"a": {"range": [8,20]}, "b": {"range": [2,6]}, "c": {"range": [1,3]}},
+  "constraints": ["b + c <= a", "gcd(b,a) > 1"],
+  "answer_expr": "b/a",
+  "traps": [
+    {"expr": "(b+c)/a", "misconception_code": "add_parts_then_divide"},
+    {"expr": "b/(a-c)", "misconception_code": "subtract_before_denominator"}
+  ]
+}
+```
+Layer 1 fills parameters, computes the answer from `answer_expr`. The AI never asserts a numeric answer.
+
+**Payoff:** Risk #7 shifts from "mitigated" to "structurally eliminated." Human review drops from 20 finished questions to 1 template. Validation becomes algebraic evaluation, not NLP. `question_bank` is unchanged; `item_templates` is a new layer beside it.
+
+This extends the plan's own AI-as-Factory principle: the factory should build the machines (templates), not the products (finished questions).
 
 ### Phase 4C: Stripe Web Payments
 
@@ -809,7 +832,13 @@ Rationale: 4A is distribution; distribution before product-market fit is wasted.
 | 7 | Duplicate questions in session | Hash-based dedup |
 | 8 | MC options leak answer | Distractor generation rules |
 
-**Fix Strategy:** 3-layer schema + validation gate + automated audit script. Ships Gate 0 (quarantine) / Phase 4B (full refactor).
+**Gate 0 fix strategy — quarantine, not refactor:**
+
+`scripts/audit-generators.js` runs every generator × 500 times and machine-checks 6 invariants: (a) answer ≠ any given value [bug 4], (b) division yields integer where grade requires it [bug 2], (c) no diagram label equals an unknown value [bug 1], (d) answer > 0 [bug 6], (e) MC options unique and format-consistent [bug 8], (f) shape aspect ratio ≤ 5:1 [bug 5].
+
+Violators get `status: 'quarantined'` and are excluded from `buildExam`. This is a filter, not a fix. The 3-layer schema (`given` / `unknown` / `display`) is the real fix, scheduled Phase 4B.
+
+**Rationale:** 150 clean generators beats 329 buggy ones, because a small bank can be grown later but trust cannot be rebuilt. This is the plan's own Risk #7 (wrong answers seen by children). Quarantine moves Risk #7 from "mitigated" to "structurally eliminated at Gate 0."
 
 ## D7. time_spent_ms Diagnostic Matrix
 
@@ -821,6 +850,46 @@ Rationale: 4A is distribution; distribution before product-market fit is wasted.
 | **Wrong** | Careless / guessing → re-read habit | Conceptual gap → re-teach from foundation |
 
 "Knows it but slow" and "doesn't know it" produce completely different parent advice. Without `time_spent_ms`, the parent report cannot distinguish them and defaults to generic feedback. This is why time is mandatory in `responses`, not optional.
+
+## D8. Content Coverage Analysis
+
+**The richness problem:** `question_bank` stores fixed questions. If it holds ~2,004 rows (unverified — see STATUS.md Q4):
+
+- 2,004 ÷ (6 grades × ~8 topics × 3 difficulties × 5 types ≈ 720 buckets) ≈ **2.8 questions per bucket**
+- For P4 specifically: ~334 questions ÷ 9 topics ÷ 3 difficulties ≈ **12 per topic-difficulty**
+
+**Consequences:**
+- A single 15-question single-topic paper exhausts a bucket
+- The "no repeat per student" rule is mathematically impossible at this coverage level
+- A Topic Quest station retried 3 times must repeat
+- ~3 months of weekly use burns >50% of a grade's bank
+
+**Layer 1 generators do not have this problem** — 329 generator functions produce infinite unique instances. The coverage gap is specifically for `question_bank` (Layer 3 stored content), not Layer 1.
+
+**The fix is not more stored questions.** The fix is templates × contexts × parameter space:
+- Each `item_templates` entry + a context set of 20 scenarios × 10 parameter combinations = 200 unique surface forms from 1 template
+- `content/contexts.csv` (exported from `contexts.js`) makes contexts editable by non-engineers
+- This recalculates coverage to ~2.8 × 200 = 560 per bucket — exhaustion takes years, not months
+
+## D9. Past-Paper Copyright Policy
+
+Mathematical structures, concepts, and question types are not protected by copyright. Expression is. Past papers are a source of **blueprint intelligence**, not content.
+
+**Safe to extract from past papers:**
+- Which skills are tested at which grade and mark weight
+- Mark distribution and timing (minutes per mark)
+- Format mix (MC vs short vs working)
+- Mathematical structure (e.g. "fraction comparison requiring LCD finding")
+- Typical trap types used
+
+**Never store or use:**
+- Original wording from any past paper
+- School names in marketing materials
+- Any content with `license: restricted`
+
+**In the database:** `question_bank.source = 'derived_structure'` is the correct value for questions whose structure was inspired by a past paper but whose wording is original.
+
+**CI enforcement:** Any migration or seed containing `license: restricted` must hard-fail the build. The `notes` column must never contain original wording from a source paper.
 
 ---
 
