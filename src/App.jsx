@@ -29,6 +29,7 @@ import GuestBanner from './components/home/GuestBanner';
 import TrapInfoBox from './components/home/TrapInfoBox';
 import SplashScreen from './components/SplashScreen';
 import BottomTabBar from './components/ui/BottomTabBar';
+import Sidebar from './components/ui/Sidebar';
 import CurlbooHero from './components/home/CurlbooHero';
 import SettingsView from './components/settings/SettingsView';
 import ScoreReport from './components/exam/ScoreReport';
@@ -261,184 +262,197 @@ export default function App(){
     <Suspense fallback={null}><Login onAuth={{ signUp, signIn, skip: () => setSkippedLogin(true), isRecovery, resetPassword, updatePassword }} lang={lang} /></Suspense>
   );
 
-  /* ════════ PROFILE ════════ */
-  if(view==='profile')return(<><Suspense fallback={null}><Profile onBack={()=>{setView('home');setActiveTab('home');}} lang={lang} setLang={v=>{setLang(v);localStorage.setItem('lang',v);}} soundOn={soundOn} setSoundOn={v=>{setSoundOn(v);localStorage.setItem('sound_on',v?'1':'0');}} studentName={studentName} setStudentName={setStudentName} grade={grade} setGrade={setGrade} streak={streak} user={user} signOut={async()=>{await signOut();setSkippedLogin(false);}} goToLogin={()=>setSkippedLogin(false)}/></Suspense><BottomTabBar activeTab="profile" onTab={handleTab} lang={lang}/></>);
-
-  /* ════════ VIEWS ════════ */
-  if(view==='home')return(
-    <><motion.div key="home" {...pageTransition}><PageShell>
-      {(activeTab==='home'||activeTab==='quests')&&(
-        <>
-          <CurlbooHero name={studentName} streak={streak} isBirthday={isBirthday} lang={lang}/>
-          {!user&&<GuestBanner onSignUp={()=>setSkippedLogin(false)} lang={lang}/>}
-          <GradeGrid gradeBest={gradeBest} onSelect={g=>{setGrade(g);track('grade_selected',{grade:g});setView('settings')}} L={L}/>
-        </>
-      )}
-      {activeTab==='history'&&(
-        <RecordTab streak={streak} gradeBest={gradeBest} history={history} onClear={()=>{clearHistory();setHistory([])}} lang={lang} L={L} user={user}/>
-      )}
-      <AnimatePresence>{showPrivacy&&<Suspense fallback={null}><PrivacyPolicy onClose={()=>setShowPrivacy(false)}/></Suspense>}</AnimatePresence>
-    </PageShell></motion.div>
-    <QuestsModal isOpen={showQuests} onClose={()=>setShowQuests(false)} lang={lang}/>
-    <BottomTabBar activeTab={activeTab} onTab={handleTab} lang={lang}/></>
-  );
-
-  /* ════════ SETTINGS ════════ */
-  if(view==='settings')return(
-    <motion.div key="settings" {...pageTransition}>
-      <SettingsView grade={grade} difficulty={difficulty} setDifficulty={setDifficulty} selTopics={selTopics} toggleTopic={toggleTopic} toggleAll={toggleAll} examType={examType} setExamType={setExamType} useTimer={useTimer} setUseTimer={setUseTimer} timerMins={timerMins} setTimerMins={setTimerMins} generate={generate} onBack={()=>setView('home')} L={L}/>
-    </motion.div>
-  );
-
-  /* ════════ EXAM ════════ */
+  /* ════════ AUTHENTICATED APP ════════ */
+  var sidebarActiveTab=view==='profile'?'profile':activeTab;
   return(
-    <motion.div key="exam" {...pageTransition}>
-    <div className="min-h-screen bg-[#FFF4EC] p-3 pb-24">
+    <>
+      <QuestsModal isOpen={showQuests} onClose={()=>setShowQuests(false)} lang={lang}/>
       <SubmitModal isOpen={showSubmit} onClose={()=>setShowSubmit(false)} onConfirm={markExam} answeredQs={answeredQs} totalQs={totalQs} L={L}/>
       <PrintModal isOpen={showPrint} onClose={()=>setShowPrint(false)} studentName={studentName} onNameChange={setStudentName} printAns={printAns} setPrintAns={setPrintAns} onPrint={()=>{printExam(sections,grade,printAns,studentName,difficulty);setShowPrint(false)}} L={L}/>
       <SignUpPromptModal isOpen={showSignUpPrompt} onClose={()=>setShowSignUpPrompt(false)} onSignUp={()=>{setShowSignUpPrompt(false);setSkippedLogin(false);track('guest_signup_prompt_clicked');}} lang={lang}/>
       <PinModal isOpen={showPinModal} onClose={()=>{setShowPinModal(false);setPendingRevealKey(null);setPendingRevealType(null);}} onSuccess={onPinSuccess} lang={lang}/>
+      <div className="lg:flex min-h-screen" style={{background:'linear-gradient(160deg,#FFF4EC 0%,#FFF8F2 50%,#FFF1E6 100%)'}}>
+        <Sidebar activeTab={sidebarActiveTab} onTab={handleTab} lang={lang} user={user} onSignOut={async()=>{await signOut();setSkippedLogin(false);}}/>
+        <div className="flex-1 min-w-0">
 
-      <div className="max-w-xl mx-auto">
-        <ExamHeader grade={grade} co={co} difficulty={difficulty} totalQs={totalQs} grandTotal={grandTotal} trapCount={trapCount} useTimer={useTimer} isMarked={isMarked} running={running} setRunning={setRunning} timeLeft={timeLeft} fmt={fmt} answeredQs={answeredQs} onBack={()=>{setRunning(false);setView('settings')}} L={L} lang={lang}/>
+          {/* ── Profile ── */}
+          {view==='profile'&&(
+            <Suspense fallback={null}><Profile onBack={()=>{setView('home');setActiveTab('home');}} lang={lang} setLang={v=>{setLang(v);localStorage.setItem('lang',v);}} soundOn={soundOn} setSoundOn={v=>{setSoundOn(v);localStorage.setItem('sound_on',v?'1':'0');}} studentName={studentName} setStudentName={setStudentName} grade={grade} setGrade={setGrade} streak={streak} user={user} signOut={async()=>{await signOut();setSkippedLogin(false);}} goToLogin={()=>setSkippedLogin(false)}/></Suspense>
+          )}
 
-        <ScoreReport isMarked={isMarked} animScore={animScore} animPct={animPct} pct={pct} grandTotal={grandTotal} fb={fb} user={user} cloudSaved={cloudSaved} lang={lang} sections={sections} secScores={secScores} topicSummary={topicSummary} wrongOnly={wrongOnly} setWrongOnly={setWrongOnly} resetMarking={resetMarking} generate={generate} retryWrong={retryWrong} markRes={markRes} answers={answers} mcSel={mcSel} totScore={totScore} grade={grade} studentName={studentName} L={L}/>
+          {/* ── Home ── */}
+          {view==='home'&&(
+            <motion.div key="home" {...pageTransition}><PageShell>
+              {(activeTab==='home'||activeTab==='quests')&&(
+                <>
+                  <CurlbooHero name={studentName} streak={streak} isBirthday={isBirthday} lang={lang}/>
+                  {!user&&<GuestBanner onSignUp={()=>setSkippedLogin(false)} lang={lang}/>}
+                  <GradeGrid gradeBest={gradeBest} onSelect={g=>{setGrade(g);track('grade_selected',{grade:g});setView('settings')}} L={L}/>
+                </>
+              )}
+              {activeTab==='history'&&(
+                <RecordTab streak={streak} gradeBest={gradeBest} history={history} onClear={()=>{clearHistory();setHistory([])}} lang={lang} L={L} user={user}/>
+              )}
+              <AnimatePresence>{showPrivacy&&<Suspense fallback={null}><PrivacyPolicy onClose={()=>setShowPrivacy(false)}/></Suspense>}</AnimatePresence>
+            </PageShell></motion.div>
+          )}
 
-        {/* Section nav */}
-        <div className="flex gap-1 mb-2 overflow-x-auto pb-1 -mx-1 px-1">
-          {sections.map((sec,i)=>(
-            <a key={i} href={'#s'+i} className="shrink-0 px-3 py-2 bg-white border rounded-lg text-xs font-bold text-gray-600 hover:bg-indigo-50 active:bg-indigo-100 active:scale-[0.97] flex items-center gap-1 transition-all duration-200">
-              {sec.label}（{sec.qs.length}）{isMarked&&<span className="text-xs text-gray-400">{secScores(i)}/{sec.total}</span>}
-            </a>
-          ))}
-        </div>
+          {/* ── Settings ── */}
+          {view==='settings'&&(
+            <motion.div key="settings" {...pageTransition}>
+              <SettingsView grade={grade} difficulty={difficulty} setDifficulty={setDifficulty} selTopics={selTopics} toggleTopic={toggleTopic} toggleAll={toggleAll} examType={examType} setExamType={setExamType} useTimer={useTimer} setUseTimer={setUseTimer} timerMins={timerMins} setTimerMins={setTimerMins} generate={generate} onBack={()=>setView('home')} L={L}/>
+            </motion.div>
+          )}
 
-        {/* Questions */}
-        {sections.map((sec,si)=>{
-          var filteredQs=sec.qs.map((q,qi)=>({q,qi,k:si+'-'+qi})).filter(item=>!wrongOnly||!(markRes[item.k]||{}).ok);
-          if(wrongOnly&&filteredQs.length===0)return null;
-          return(
-            <div key={si} id={'s'+si} className="mb-4">
-              <div className={"bg-gradient-to-r "+GC[co]+" text-white rounded-t-xl px-4 py-2"}>
-                <div className="flex justify-between items-center"><span className="font-bold text-sm sm:text-base">{sec.label}. {sec.nm}（{sec.qs.length}題）</span><span className="text-sm font-bold">{isMarked?secScores(si)+'/':''}{sec.total}分</span></div>
-                <p className="text-xs opacity-80">{sec.nt}</p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm rounded-b-xl border border-t-0 border-white/50 divide-y divide-gray-100">
-                {filteredQs.map(item=>{
-                  var q=item.q,qi=item.qi,k=item.k;
-                  var isR=revealed[k],isS=stepsShown[k],mr=markRes[k];
+          {/* ── Exam ── */}
+          {view==='exam'&&(
+            <motion.div key="exam" {...pageTransition}>
+            <div className="min-h-screen p-3 pb-24 lg:pb-8" style={{background:'linear-gradient(160deg,#FFF4EC 0%,#FFF8F2 50%,#FFF1E6 100%)'}}>
+              <div className="max-w-xl lg:max-w-3xl mx-auto">
+                <ExamHeader grade={grade} co={co} difficulty={difficulty} totalQs={totalQs} grandTotal={grandTotal} trapCount={trapCount} useTimer={useTimer} isMarked={isMarked} running={running} setRunning={setRunning} timeLeft={timeLeft} fmt={fmt} answeredQs={answeredQs} onBack={()=>{setRunning(false);setView('settings')}} L={L} lang={lang}/>
+
+                <ScoreReport isMarked={isMarked} animScore={animScore} animPct={animPct} pct={pct} grandTotal={grandTotal} fb={fb} user={user} cloudSaved={cloudSaved} lang={lang} sections={sections} secScores={secScores} topicSummary={topicSummary} wrongOnly={wrongOnly} setWrongOnly={setWrongOnly} resetMarking={resetMarking} generate={generate} retryWrong={retryWrong} markRes={markRes} answers={answers} mcSel={mcSel} totScore={totScore} grade={grade} studentName={studentName} L={L}/>
+
+                {/* Section nav */}
+                <div className="flex gap-1 mb-2 overflow-x-auto pb-1 -mx-1 px-1">
+                  {sections.map((sec,i)=>(
+                    <a key={i} href={'#s'+i} className="shrink-0 px-3 py-2 bg-white border rounded-lg text-xs font-bold text-gray-600 hover:bg-indigo-50 active:bg-indigo-100 active:scale-[0.97] flex items-center gap-1 transition-all duration-200">
+                      {sec.label}（{sec.qs.length}）{isMarked&&<span className="text-xs text-gray-400">{secScores(i)}/{sec.total}</span>}
+                    </a>
+                  ))}
+                </div>
+
+                {/* Questions */}
+                {sections.map((sec,si)=>{
+                  var filteredQs=sec.qs.map((q,qi)=>({q,qi,k:si+'-'+qi})).filter(item=>!wrongOnly||!(markRes[item.k]||{}).ok);
+                  if(wrongOnly&&filteredQs.length===0)return null;
                   return(
-                    <div key={qi} className={"p-4 transition-colors duration-200 "+(isMarked?(mr&&mr.ok?'bg-emerald-50/30':'bg-red-50/30'):'')}>
-                      <div className="flex items-start gap-2">
-                        <div className="flex items-center gap-1 shrink-0 w-8">
-                          <span className="text-base font-extrabold text-gray-300">{qi+1}.</span>
-                          {isMarked&&(mr&&mr.ok?<Check size={14} className="text-emerald-500"/>:<X size={14} className="text-red-500"/>)}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-start gap-1.5 flex-wrap">
-                            <p className="text-base font-semibold text-gray-800 whitespace-pre-line flex-1">{q.q}</p>
-                            {q.trap&&!isMarked&&<span className="shrink-0 text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 flex items-center gap-0.5"><AlertTriangle size={8}/>含干擾</span>}
-                          </div>
-                          {q.sc>2&&<span className="text-xs text-gray-400">（{q.sc}分）</span>}
-                          {q.fig&&<div className="my-2 flex justify-center" dangerouslySetInnerHTML={{__html:q.fig}}/>}
-                          {q.isMC&&q.opts&&(
-                            <div className="mt-2 grid grid-cols-1 gap-1">{q.opts.map(o=>{
-                              var isSel=mcSel[k]===o.l;
-                              var cls=isMarked?(o.l===q.a?'border-emerald-400 bg-emerald-50 font-bold text-emerald-700':isSel&&o.l!==q.a?'border-red-400 bg-red-50 text-red-700 line-through':'border-gray-200 bg-gray-50 text-gray-400'):(isSel?'border-indigo-400 bg-indigo-100 font-bold text-indigo-700 ring-2 ring-indigo-200':'border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer');
-                              return(
-                                <motion.button key={o.l} whileTap={isMarked?{}:{scale:0.97}} onClick={()=>{if(!isMarked)setMcSel(p=>({...p,[k]:o.l}))}} disabled={isMarked}
-                                  className={"text-sm px-3 py-3 rounded-xl border-2 text-left flex items-center gap-2 transition-all duration-200 "+cls}>
-                                  <span className={"w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold "+(isSel&&!isMarked?'bg-indigo-500 border-indigo-500 text-white':isMarked&&o.l===q.a?'bg-emerald-500 border-emerald-500 text-white':'border-gray-300 text-gray-400')}>{o.l}</span>
-                                  <span>{o.v}</span>
-                                  {isMarked&&o.l===q.a&&<Check size={14} className="ml-auto text-emerald-500"/>}
-                                  {isMarked&&isSel&&o.l!==q.a&&<X size={14} className="ml-auto text-red-500"/>}
-                                </motion.button>
-                              );
-                            })}</div>
-                          )}
-                          {!q.isMC&&(sec.id==='work'?(
-                            <textarea value={answers[k]||''} onChange={e=>{if(!isMarked)setAnswers(p=>({...p,[k]:e.target.value}))}}
-                              placeholder={L('workPH')} disabled={isMarked}
-                              className={"w-full mt-2 px-4 py-3 border-2 rounded-2xl text-base resize-y focus:outline-none "+(isMarked?(mr&&mr.ok?'border-emerald-300 bg-emerald-50':'border-red-300 bg-red-50'):'border-gray-200 focus:border-indigo-400')} rows={3}/>
-                          ):(
-                            <input type="text" inputMode="decimal" value={answers[k]||''} onChange={e=>{if(!isMarked)setAnswers(p=>({...p,[k]:e.target.value}))}}
-                              placeholder={L('ansPH')} disabled={isMarked}
-                              className={"w-full mt-2 px-4 py-3 border-2 rounded-2xl text-base focus:outline-none "+(isMarked?(mr&&mr.ok?'border-emerald-300 bg-emerald-50':'border-red-300 bg-red-50'):'border-gray-200 focus:border-indigo-400')}/>
-                          ))}
-                          {isMarked&&mr&&(
-                            <div className={"mt-2 px-3 py-2 rounded-lg border "+(mr.ok?'bg-emerald-50 border-emerald-200':'bg-red-50 border-red-200')}>
-                              {mr.ok?<span className="text-emerald-700 font-bold text-sm">{L('correct',mr.pts)}</span>
-                              :<div><span className="text-red-600 font-bold text-sm">{L('wrongAns')}</span><span className="text-red-800 font-bold text-sm">{q.a}</span></div>}
-                            </div>
-                          )}
-                          {isMarked&&q.trap&&(
-                            <div className="mt-2 px-3 py-2 rounded-lg bg-amber-50 border border-amber-200">
-                              <div className="flex items-start gap-1.5">
-                                <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0"/>
-                                <div>
-                                  <p className="text-xs font-bold text-amber-700">{L('trapInfoTitle')}</p>
-                                  <p className="text-xs text-amber-600 mt-0.5">{L('trapInfoDesc',q.trap)}</p>
+                    <div key={si} id={'s'+si} className="mb-4">
+                      <div className={"bg-gradient-to-r "+GC[co]+" text-white rounded-t-xl px-4 py-2"}>
+                        <div className="flex justify-between items-center"><span className="font-bold text-sm sm:text-base">{sec.label}. {sec.nm}（{sec.qs.length}題）</span><span className="text-sm font-bold">{isMarked?secScores(si)+'/':''}{sec.total}分</span></div>
+                        <p className="text-xs opacity-80">{sec.nt}</p>
+                      </div>
+                      <div className="bg-white/80 backdrop-blur-sm rounded-b-xl border border-t-0 border-white/50 divide-y divide-gray-100">
+                        {filteredQs.map(item=>{
+                          var q=item.q,qi=item.qi,k=item.k;
+                          var isR=revealed[k],isS=stepsShown[k],mr=markRes[k];
+                          return(
+                            <div key={qi} className={"p-4 transition-colors duration-200 "+(isMarked?(mr&&mr.ok?'bg-emerald-50/30':'bg-red-50/30'):'')}>
+                              <div className="flex items-start gap-2">
+                                <div className="flex items-center gap-1 shrink-0 w-8">
+                                  <span className="text-base font-extrabold text-gray-300">{qi+1}.</span>
+                                  {isMarked&&(mr&&mr.ok?<Check size={14} className="text-emerald-500"/>:<X size={14} className="text-red-500"/>)}
                                 </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start gap-1.5 flex-wrap">
+                                    <p className="text-base font-semibold text-gray-800 whitespace-pre-line flex-1">{q.q}</p>
+                                    {q.trap&&!isMarked&&<span className="shrink-0 text-[10px] font-bold text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200 flex items-center gap-0.5"><AlertTriangle size={8}/>含干擾</span>}
+                                  </div>
+                                  {q.sc>2&&<span className="text-xs text-gray-400">（{q.sc}分）</span>}
+                                  {q.fig&&<div className="my-2 flex justify-center" dangerouslySetInnerHTML={{__html:q.fig}}/>}
+                                  {q.isMC&&q.opts&&(
+                                    <div className="mt-2 grid grid-cols-1 gap-1">{q.opts.map(o=>{
+                                      var isSel=mcSel[k]===o.l;
+                                      var cls=isMarked?(o.l===q.a?'border-emerald-400 bg-emerald-50 font-bold text-emerald-700':isSel&&o.l!==q.a?'border-red-400 bg-red-50 text-red-700 line-through':'border-gray-200 bg-gray-50 text-gray-400'):(isSel?'border-indigo-400 bg-indigo-100 font-bold text-indigo-700 ring-2 ring-indigo-200':'border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer');
+                                      return(
+                                        <motion.button key={o.l} whileTap={isMarked?{}:{scale:0.97}} onClick={()=>{if(!isMarked)setMcSel(p=>({...p,[k]:o.l}))}} disabled={isMarked}
+                                          className={"text-sm px-3 py-3 rounded-xl border-2 text-left flex items-center gap-2 transition-all duration-200 "+cls}>
+                                          <span className={"w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold "+(isSel&&!isMarked?'bg-indigo-500 border-indigo-500 text-white':isMarked&&o.l===q.a?'bg-emerald-500 border-emerald-500 text-white':'border-gray-300 text-gray-400')}>{o.l}</span>
+                                          <span>{o.v}</span>
+                                          {isMarked&&o.l===q.a&&<Check size={14} className="ml-auto text-emerald-500"/>}
+                                          {isMarked&&isSel&&o.l!==q.a&&<X size={14} className="ml-auto text-red-500"/>}
+                                        </motion.button>
+                                      );
+                                    })}</div>
+                                  )}
+                                  {!q.isMC&&(sec.id==='work'?(
+                                    <textarea value={answers[k]||''} onChange={e=>{if(!isMarked)setAnswers(p=>({...p,[k]:e.target.value}))}}
+                                      placeholder={L('workPH')} disabled={isMarked}
+                                      className={"w-full mt-2 px-4 py-3 border-2 rounded-2xl text-base resize-y focus:outline-none "+(isMarked?(mr&&mr.ok?'border-emerald-300 bg-emerald-50':'border-red-300 bg-red-50'):'border-gray-200 focus:border-indigo-400')} rows={3}/>
+                                  ):(
+                                    <input type="text" inputMode="decimal" value={answers[k]||''} onChange={e=>{if(!isMarked)setAnswers(p=>({...p,[k]:e.target.value}))}}
+                                      placeholder={L('ansPH')} disabled={isMarked}
+                                      className={"w-full mt-2 px-4 py-3 border-2 rounded-2xl text-base focus:outline-none "+(isMarked?(mr&&mr.ok?'border-emerald-300 bg-emerald-50':'border-red-300 bg-red-50'):'border-gray-200 focus:border-indigo-400')}/>
+                                  ))}
+                                  {isMarked&&mr&&(
+                                    <div className={"mt-2 px-3 py-2 rounded-lg border "+(mr.ok?'bg-emerald-50 border-emerald-200':'bg-red-50 border-red-200')}>
+                                      {mr.ok?<span className="text-emerald-700 font-bold text-sm">{L('correct',mr.pts)}</span>
+                                      :<div><span className="text-red-600 font-bold text-sm">{L('wrongAns')}</span><span className="text-red-800 font-bold text-sm">{q.a}</span></div>}
+                                    </div>
+                                  )}
+                                  {isMarked&&q.trap&&(
+                                    <div className="mt-2 px-3 py-2 rounded-lg bg-amber-50 border border-amber-200">
+                                      <div className="flex items-start gap-1.5">
+                                        <AlertTriangle size={14} className="text-amber-500 mt-0.5 shrink-0"/>
+                                        <div>
+                                          <p className="text-xs font-bold text-amber-700">{L('trapInfoTitle')}</p>
+                                          <p className="text-xs text-amber-600 mt-0.5">{L('trapInfoDesc',q.trap)}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                  {isR&&!isMarked&&(
+                                    <div className="mt-2 bg-emerald-50 rounded-xl px-3 py-2.5 border border-emerald-200">
+                                      <p className="text-sm font-bold text-emerald-700">💡 {q.a}</p>
+                                    </div>
+                                  )}
+                                  {isS&&!isMarked&&q.s&&q.s.length>0&&(
+                                    <div className="mt-2 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
+                                      <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsTitle')}</p>
+                                      {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
+                                    </div>
+                                  )}
+                                  {isMarked&&q.s&&q.s.length>0&&sec.id==='work'&&(
+                                    <div className="mt-2 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
+                                      <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsWork')}</p>
+                                      {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
+                                    </div>
+                                  )}
+                                  {isMarked&&q.s&&q.s.length>0&&sec.id!=='work'&&mr&&!mr.ok&&(
+                                    <div className="mt-2 bg-orange-50 rounded-xl px-3 py-2.5 border border-orange-300">
+                                      <p className="text-sm font-bold text-orange-700 mb-2">{L('stepsWrong')}</p>
+                                      {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-orange-200 text-orange-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-orange-800')}>{isTrap||isFin?st:st}</p></div>);})}
+                                    </div>
+                                  )}
+                                  {isMarked&&q.s&&q.s.length>0&&sec.id!=='work'&&mr&&mr.ok&&(
+                                    <>
+                                      <button onClick={()=>setStepsShown(p=>({...p,[k]:!p[k]}))} className="mt-2 text-sm text-sky-600 font-medium flex items-center gap-1 hover:text-sky-800 transition-colors">
+                                        <ListOrdered size={14}/>{isS?L('stepsHide'):L('stepsShow')}
+                                      </button>
+                                      {isS&&(
+                                        <div className="mt-1.5 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
+                                          <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsTitle')}</p>
+                                          {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
+                                        </div>
+                                      )}
+                                    </>
+                                  )}
+                                </div>
+                                {!isMarked&&(
+                                  <div className="flex flex-col gap-1 shrink-0">
+                                    <button onClick={()=>tryReveal(k,'eye')} aria-label={lang==='zh'?'顯示答案':'Show answer'} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isR?'bg-emerald-200 text-emerald-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><Eye size={14}/></button>
+                                    {q.s&&q.s.length>0&&<button onClick={()=>tryReveal(k,'steps')} aria-label={L('stepsBtn')} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isS?'bg-sky-200 text-sky-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><ListOrdered size={14}/></button>}
+                                  </div>
+                                )}
                               </div>
                             </div>
-                          )}
-                          {isR&&!isMarked&&(
-                            <div className="mt-2 bg-emerald-50 rounded-xl px-3 py-2.5 border border-emerald-200">
-                              <p className="text-sm font-bold text-emerald-700">💡 {q.a}</p>
-                            </div>
-                          )}
-                          {isS&&!isMarked&&q.s&&q.s.length>0&&(
-                            <div className="mt-2 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
-                              <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsTitle')}</p>
-                              {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
-                            </div>
-                          )}
-                          {isMarked&&q.s&&q.s.length>0&&sec.id==='work'&&(
-                            <div className="mt-2 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
-                              <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsWork')}</p>
-                              {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
-                            </div>
-                          )}
-                          {isMarked&&q.s&&q.s.length>0&&sec.id!=='work'&&mr&&!mr.ok&&(
-                            <div className="mt-2 bg-orange-50 rounded-xl px-3 py-2.5 border border-orange-300">
-                              <p className="text-sm font-bold text-orange-700 mb-2">{L('stepsWrong')}</p>
-                              {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-orange-200 text-orange-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-orange-800')}>{isTrap||isFin?st:st}</p></div>);})}
-                            </div>
-                          )}
-                          {isMarked&&q.s&&q.s.length>0&&sec.id!=='work'&&mr&&mr.ok&&(
-                            <>
-                              <button onClick={()=>setStepsShown(p=>({...p,[k]:!p[k]}))} className="mt-2 text-sm text-sky-600 font-medium flex items-center gap-1 hover:text-sky-800 transition-colors">
-                                <ListOrdered size={14}/>{isS?L('stepsHide'):L('stepsShow')}
-                              </button>
-                              {isS&&(
-                                <div className="mt-1.5 bg-sky-50 rounded-xl px-3 py-2.5 border border-sky-200">
-                                  <p className="text-sm font-bold text-sky-700 mb-2">{L('stepsTitle')}</p>
-                                  {q.s.map((st,i)=>{var isTrap=st.startsWith('🔍'),isFin=st.startsWith('✅')||st.startsWith('❌');return(<div key={i} className="flex items-start gap-2 mt-1.5"><span className={"shrink-0 w-5 h-5 rounded-full text-xs font-bold flex items-center justify-center mt-0.5 "+(isTrap?'bg-amber-100 text-amber-600':isFin?'bg-emerald-100 text-emerald-600':'bg-sky-200 text-sky-700')}>{isTrap?'⚠':isFin?'✓':(i+1)}</span><p className={"text-sm leading-snug "+(isTrap?'text-amber-700 font-bold':isFin?'text-emerald-700 font-bold':'text-sky-800')}>{isTrap||isFin?st:st}</p></div>);})}
-                                </div>
-                              )}
-                            </>
-                          )}
-                        </div>
-                        {!isMarked&&(
-                          <div className="flex flex-col gap-1 shrink-0">
-                            <button onClick={()=>tryReveal(k,'eye')} aria-label={lang==='zh'?'顯示答案':'Show answer'} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isR?'bg-emerald-200 text-emerald-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><Eye size={14}/></button>
-                            {q.s&&q.s.length>0&&<button onClick={()=>tryReveal(k,'steps')} aria-label={L('stepsBtn')} className={"p-2.5 min-w-[44px] min-h-[44px] rounded-lg font-bold transition-all duration-200 flex items-center justify-center "+(isS?'bg-sky-200 text-sky-700':'bg-gray-100 text-gray-400 active:bg-gray-200 active:scale-[0.97]')}><ListOrdered size={14}/></button>}
-                          </div>
-                        )}
+                          );
+                        })}
                       </div>
                     </div>
                   );
                 })}
+
+                <ExamActions isMarked={isMarked} co={co} resetMarking={resetMarking} generate={generate} onPrint={()=>{if(user)setShowPrint(true);else{setShowSignUpPrompt(true);track('guest_signup_prompt_shown');}}} onHome={()=>{setRunning(false);setView('home')}} L={L}/>
               </div>
+              <FloatingSubmit isMarked={isMarked} answeredQs={answeredQs} totalQs={totalQs} onSubmit={()=>{if(soundOn)playSubmit();setShowSubmit(true);}} L={L}/>
             </div>
-          );
-        })}
+            </motion.div>
+          )}
 
-        <ExamActions isMarked={isMarked} co={co} resetMarking={resetMarking} generate={generate} onPrint={()=>{if(user)setShowPrint(true);else{setShowSignUpPrompt(true);track('guest_signup_prompt_shown');}}} onHome={()=>{setRunning(false);setView('home')}} L={L}/>
+        </div>
       </div>
-
-      <FloatingSubmit isMarked={isMarked} answeredQs={answeredQs} totalQs={totalQs} onSubmit={()=>{if(soundOn)playSubmit();setShowSubmit(true);}} L={L}/>
-    </div>
-    </motion.div>
+      {(view==='home'||view==='profile')&&<BottomTabBar activeTab={sidebarActiveTab} onTab={handleTab} lang={lang}/>}
+    </>
   );
 }

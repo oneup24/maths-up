@@ -10,7 +10,7 @@ const TABS = [
 export default function BottomTabBar({ activeTab, onTab, lang = 'zh' }) {
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-40"
+      className="fixed bottom-0 left-0 right-0 z-40 lg:hidden"
       style={{
         background: 'rgba(255,252,248,0.92)',
         backdropFilter: 'blur(16px)',

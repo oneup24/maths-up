@@ -1,7 +1,7 @@
 export default function CurlbooHero({ name, streak, isBirthday, lang }) {
   return (
     <div
-      className="relative rounded-3xl overflow-hidden shadow-xl mb-4"
+      className="relative rounded-3xl overflow-hidden shadow-xl mb-4 lg:min-h-[210px]"
       style={{
         background: 'linear-gradient(135deg,#FF8C42 0%,#FFA850 45%,#FFB347 100%)',
         minHeight: '160px',
