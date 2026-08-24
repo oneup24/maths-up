@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-08-24 (Gate 0 — exam_sessions RLS version-controlled)
+**Last updated:** 2026-08-24 (Q5/Q7/Q9 settled by founder)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -104,11 +104,11 @@
 | # | Question | Options |
 |---|----------|---------|
 | Q4 | How many rows in `question_bank` in Supabase right now? | Run `SELECT count(*) FROM question_bank` |
-| Q5 | RLS: should USING(true) policies be corrected (setup.sql) and exam_sessions RLS added as a migration file? | (A) Yes, Gate 0 item · (B) Fix USING(true) but leave dashboard RLS · (C) No change |
-| Q6 | How many of the 10 soft-launch families are recruited? (last known: 4/10) | Exact number |
-| Q7 | appId confirmed as `com.oneup24.mathsup`, appName as `Maths-Up`? | (A) Confirm · (B) Different values |
+| Q5 | RLS fixes done — migrations 20260824000002 + 20260824000003 applied | SETTLED: 2026-08-24 |
+| Q6 | How many of the 10 soft-launch families are recruited? (last known: 4/10) | Pending — some fixes first |
+| Q7 | appId confirmed as `com.oneup24.mathsup`, appName as `Maths-Up` | SETTLED: confirmed by founder 2026-08-24 |
 | Q8 | Studio Hub + 3 Coming Soon cards | SETTLED: keep (2026-08-24) |
-| Q9 | IG consolidation: @oneup24game (200) as primary, link from @curlboo.bear? | (A) Confirm · (B) Keep both · (C) Other |
+| Q9 | IG consolidation: @oneup24game as primary, link from @curlboo.bear | SETTLED: confirmed by founder 2026-08-24 |
 | Q10 | First Topic Quest chain | SETTLED: Fractions P1→P4 (2026-08-24) |
 
 ---
