@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-08-24 (Q4 confirmed — 2,004 rows in question_bank)
+**Last updated:** 2026-08-25 (GROUP G complete — §I0–§I10 aligned verbatim with patching_20260925.md)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -78,6 +78,7 @@
 | appId updated in capacitor.config.json | ✅ | `com.oneup24.mathsup` (was `com.mathexam.app`) — IMMUTABLE after first App Store submission |
 | Topic Quest grade-label recorded in DECISIONS.md | ✅ | `docs/DECISIONS.md` §grade-label — child sees quest_station_name_zh; parent report shows topic_name_zh with grade |
 | MASTER_PLAN.md v6.0 final cleanup | ✅ | Tail residue removed; Appendix E → v6.0/Aug 24; A5 → 98 commits/maths-up; PART K2 → PART M; §I0 (I0a–I0g); §I5 CSV Column Specs; §I7 Pipeline; §I8 exam_sessions cols; §I9 CI checks; §I10 Agent Rules; Appendix F added |
+| MASTER_PLAN.md §I0–§I10 verbatim alignment | ✅ | All sections replaced verbatim per patching_20260925.md: §I0 doctrine + I0g ID naming; §I4 LLM-at-runtime append; §I5 I5a–I5h; §I7 four-stage pipeline + matched_trap; §I9 12 assertions + test:golden + error example; §I10 May/Must/Never + recipe; Gate 0 +5 items + CI condition; Appendix A +3 principles; Appendix B filter #7; PART J risks 10–11; Appendix F Five Commands |
 | exam_sessions additive columns | ✅ | `supabase/migrations/20260825000001_extend_exam_and_responses.sql` — child_id, blueprint_id, seed, content_version, paper_json (all nullable); child_id added to responses |
 | content/ directory + ID_REGISTRY.json | ✅ | `content/ID_REGISTRY.json` (empty registry); `content/VERSION` = 2026-08-25.1 |
 | content/items.csv (legacy generators) | ✅ | `scripts/import-legacy-generators.js` → 397 generators registered (291 live, 106 quarantined) |
