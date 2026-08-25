@@ -48,11 +48,13 @@ PART I — TECHNICAL ARCHITECTURE
 PART J — RISK MATRIX
 PART K — FUNDRAISE STRATEGY
 PART L — METRICS, MILESTONES & GATES
+PART M — PHASE GATES
 APPENDIX A — Strategic Principles
 APPENDIX B — Decision Framework
 APPENDIX C — Market Data Sources
 APPENDIX D — Claude Code Notes
 APPENDIX E — Document Control
+APPENDIX F — Content Authoring Reference
 ```
 
 ---
@@ -129,7 +131,7 @@ This means: Maths Quests is NOT a question-generating machine. It is a **system 
 | Metric | Status |
 |---|---|
 | Product | Live at maths-exam.vercel.app |
-| GitHub | 26 commits, 2 releases, public repo |
+| GitHub | 98 commits, oneup24/maths-up, public repo |
 | Tech Stack | React + Vite + Tailwind CSS + Capacitor + Supabase |
 | IG Followers (combined) | 332 |
 | WhatsApp Groups | Not started |
@@ -1102,6 +1104,36 @@ TO SCHOOLS:
 
 # PART I — TECHNICAL ARCHITECTURE
 
+## I0. Architecture Accountability Standards (架構責任規範)
+
+These rules apply to all agents working in this repository and override any general-purpose defaults.
+
+**I0a — Single Source of Truth**
+`docs/MASTER_PLAN.md` (strategy) and `docs/STATUS.md` (execution status) are the two authoritative documents. If they conflict on any point, **stop work and ask the founder** — never resolve conflicts by choosing one document over the other.
+
+**I0b — STATUS.md Commit Rule**
+Every task commit must update `docs/STATUS.md`. A commit that implements a feature or fix without a corresponding STATUS.md update is incomplete. Do not mark a task done until STATUS.md reflects the change.
+
+**I0c — Content Immutability**
+`content/*.csv` is the source of truth for all curriculum data. Agents must NOT add, alter, or delete any math question text, answer expression, trap expression, or misconception description in these files. Agents may only write parsers, validators, renderers, and migration scripts that read from these files.
+
+**I0d — AI Answer Rule**
+AI (Claude, DeepSeek, or any model) must never assert or output a numeric answer to a math question. All AI-generated content must use `answer_expr` — an algebraic expression evaluated by Layer 1 (`chkAns`). This structurally eliminates the "AI got the math wrong" failure class.
+
+**I0e — Schema Migration Rule**
+All schema changes (`CREATE TABLE`, `ALTER TABLE`, `CREATE INDEX`, `CREATE POLICY`, `DROP INDEX`) must be expressed in `supabase/migrations/*.sql`. Never instruct the user to edit the Supabase dashboard — agents cannot verify dashboard state, and dashboard edits leave no audit trail.
+
+**I0f — RLS and Key Rules**
+Every new table requires two lines before any other use: `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` and a `CREATE POLICY` scoped to `auth.uid()`. `USING(true)` and `WITH CHECK(true)` are forbidden — they grant global read/write access. `SERVICE_ROLE_KEY` must never carry a `VITE_` prefix; it must never be shipped to the client bundle.
+
+**I0g — Data Integrity Rules**
+- Never `DROP` or `TRUNCATE` `question_bank` — it is the company's primary content asset.
+- Every exam question answered by a student must write a `responses` row. No question may be served and then silently dropped from the record.
+- `android/` and `ios/` directories are frozen until 20 paying users exist. Do not propose or make changes to either directory.
+- Do not reopen decisions recorded in `docs/DECISIONS.md`. Surface conflicts to the founder; do not silently work around settled decisions.
+
+---
+
 ## I1. Stack
 
 ```
@@ -1341,15 +1373,16 @@ Future:   AI → Validate → Store in Supabase → Serve from DB → Learn ($�
 The content bank + topic_breakdown JSONB = the company's two most valuable assets.
 ```
 
-## I5. Content CSV Layer
+## I5. CSV Column Specs
 
-The `content/` directory holds additive metadata files that sit **on top of** the existing engine. Not a replacement for `question_bank`, `contexts.js`, `gradeRules.js`, or the generators. These files make curriculum data editable by non-engineers.
+The `content/` directory holds additive metadata files that sit **on top of** the existing engine — not a replacement for `question_bank`, `contexts.js`, `gradeRules.js`, or the generators. These files make curriculum data editable by non-engineers. See Appendix F for authoring conventions and Google Sheets export procedure.
 
+**Directory:**
 ```
 content/
-  README.md              — Chinese column documentation (mandatory — founder reads this)
+  README.md              — Chinese column documentation (founder reads this)
   topic_map.csv          — prerequisite chains; source of truth for topic_map table
-  skills.csv             — sub-skill layer, FIRST 3 TOPICS ONLY (~6 sub-skills each ≈ 18 rows total)
+  skills.csv             — sub-skill layer, FIRST 3 TOPICS ONLY (~6 sub-skills each ≈ 18 rows)
   traps.csv              — trap + distractor + misconception + trap_fall_rate (unified system)
   misconceptions.csv     — parent_advice_zh library (~25 rows)
   item_templates.csv     — AI-emits-templates output (richness fix)
@@ -1359,29 +1392,119 @@ content/
   VERSION                — content version tag; written to responses.content_version
 ```
 
-**Three hard rules:**
-1. Multi-value fields use `|` not commas (commas corrupt CSV parsing)
+**Three immutable rules:**
+1. Multi-value fields use `|` not commas — commas corrupt CSV parsing.
 2. Files must be UTF-8 without BOM — author in Google Sheets, export CSV. Excel corrupts Traditional Chinese by default. CI checks encoding.
 3. IDs are never renamed or reused once live, because `responses` references them. A renamed ID is a broken foreign key.
 
-**sub-skill layer (D5):** `skills.csv` covers the first 3 topics only (~6 sub-skills each ≈ 18 rows). Do not build a 900-skill taxonomy. Sub-skills are needed for specific parent advice (e.g. "added denominators together" = a specific sub-skill of fractions addition), not for routing.
+### topic_map.csv
 
-**Trap / Distractor / Misconception unification (D4):** These are the same thing from different angles — trap = the planted wrong path; distractor = the wrong answer it produces; misconception = the name of the reasoning error; trap_fall_rate = the measurement. One `traps.csv`, one engine. Benefit: trap_fall_rate upgrades from a number into a parent report sentence. The #1 differentiator becomes the #1 diagnostic asset. This reduces total build scope (one system, not three).
+| Column | Type | Required | Notes |
+|--------|------|----------|-------|
+| `topic_id` | TEXT | ✓ | Must match `topicId` in `src/engine/`. Never rename once live. |
+| `topic_name_zh` | TEXT | ✓ | Shown in parent report. May include grade (e.g. "異分母分數加減（P4）"). |
+| `topic_name_en` | TEXT | ✓ | English equivalent. |
+| `quest_station_name_zh` | TEXT | ✓ | Shown to child inside Quest. **No grade label.** |
+| `grade` | INT | ✓ | 1–6. |
+| `prereq_topic_ids` | TEXT | | Pipe-separated `topic_id`s that must be mastered first. Empty = root node. |
+| `unlocks` | TEXT | | Pipe-separated `topic_id`s this topic enables. |
+| `importance` | TEXT | ✓ | `critical` \| `high` \| `medium` \| `low` |
 
-**blueprint_sections.csv `use_weak_topics` flag (D7):** When true, the paper visibly adapts to the specific child's weak topics. This single flag is the retention mechanism — not gamification. A parent who sees a paper that "knows" what their child struggles with renews before trying a competitor.
+### skills.csv (first 3 topics only — ~18 rows total)
 
-**CI assertions (`npm run content:check`):**
-1. All cross-file ID references resolve (no orphan topic_ids)
-2. No cycles in `prereq_topic_ids`
-3. Every template × 100 seeds satisfies constraints and computes an answer
-4. Every `example_seed` still yields `example_answer` (regression guard)
-5. `license: restricted` fails the build
-6. `plausible_min`/`plausible_max` always present
-7. UTF-8, no BOM
-8. Live templates have ≥ 2 traps
-9. Every `topic_map` row has `quest_station_name_zh`
+| Column | Type | Required | Notes |
+|--------|------|----------|-------|
+| `skill_id` | TEXT | ✓ | Unique. Format: `{topic_id}_{slug}`. |
+| `topic_id` | TEXT | ✓ | FK → topic_map.topic_id. |
+| `skill_name_zh` | TEXT | ✓ | Short name for parent report sentence. |
+| `skill_name_en` | TEXT | ✓ | |
+| `description_zh` | TEXT | | One sentence describing the sub-skill. |
 
-Error messages must print **Chinese + filename + line number** — the founder reads them, not an agent.
+**Scope limit:** `skills.csv` covers the first 3 topics only. Do not build a 900-skill taxonomy. Sub-skills are needed for specific parent advice ("added denominators together"), not for routing.
+
+### traps.csv
+
+| Column | Type | Required | Notes |
+|--------|------|----------|-------|
+| `trap_id` | TEXT | ✓ | Unique. Never reuse. |
+| `topic_id` | TEXT | ✓ | FK → topic_map.topic_id. |
+| `trap_type` | TEXT | ✓ | Short slug (e.g. `add_denominators`). |
+| `distractor_expr` | TEXT | ✓ | Algebraic expression producing the wrong answer (e.g. `(a+c)/(b+d)`). |
+| `misconception_code` | TEXT | ✓ | FK → misconceptions.misconception_code. |
+| `plausible_min` | INT | ✓ | Minimum plausible distractor value. CI enforces presence. |
+| `plausible_max` | INT | ✓ | Maximum plausible distractor value. |
+
+**Unification note:** Trap = planted wrong path; distractor = wrong answer it produces; misconception = reasoning error name; trap_fall_rate = measurement. One `traps.csv`, one engine. `trap_fall_rate` upgrades from a number into a parent report sentence. The #1 differentiator becomes the #1 diagnostic asset.
+
+### misconceptions.csv (~25 rows)
+
+| Column | Type | Required | Notes |
+|--------|------|----------|-------|
+| `misconception_code` | TEXT | ✓ | Unique slug. Referenced by traps.csv. |
+| `topic_id` | TEXT | ✓ | FK → topic_map.topic_id. |
+| `name_zh` | TEXT | ✓ | Short name of the error (e.g. "分母相加謬誤"). |
+| `parent_advice_zh` | TEXT | ✓ | Actionable one-sentence advice for parent report. |
+| `remediation_station_id` | TEXT | | Optional `quest_station_name_zh` of the station that addresses this misconception. |
+
+### item_templates.csv
+
+| Column | Type | Required | Notes |
+|--------|------|----------|-------|
+| `template_id` | TEXT | ✓ | Unique. Never rename once live. |
+| `skill_id` | TEXT | ✓ | FK → skills.csv. |
+| `grade` | INT | ✓ | 1–6. |
+| `topic_id` | TEXT | ✓ | FK → topic_map.topic_id. |
+| `difficulty` | TEXT | ✓ | `basic` \| `standard` \| `challenge` |
+| `q_type` | TEXT | ✓ | `mc` \| `fill` \| `calc` \| `short` \| `working` |
+| `body_zh` | TEXT | ✓ | Template body with `{{slot}}` placeholders. |
+| `body_en` | TEXT | | Optional English variant. |
+| `slots` | TEXT | ✓ | JSON: `{"a":{"range":[2,9]},"b":{"range":[1,4]}}` |
+| `constraints` | TEXT | | Pipe-separated constraint expressions (e.g. `a>b\|gcd(a,b)>1`). |
+| `answer_expr` | TEXT | ✓ | Algebraic expression only. Never a numeric literal. |
+| `traps` | TEXT | | JSON array of `{distractor_expr, misconception_code}`. Live templates require ≥ 2 traps. |
+| `source` | TEXT | ✓ | `hardcode` \| `ai_v32` \| `ai_r1` \| `exam_mimic` |
+| `license` | TEXT | ✓ | `original` \| `derived_structure`. `restricted` hard-fails CI. |
+| `plausible_min` | INT | ✓ | CI enforces presence. |
+| `plausible_max` | INT | ✓ | |
+| `example_seed` | TEXT | ✓ | JSON: `{"a":3,"b":2}`. Regression guard. |
+| `example_answer` | TEXT | ✓ | Expected output for example_seed. CI asserts match. |
+| `context_version` | INT | | Defaults to 1. Increment when template is materially revised. |
+
+### contexts.csv
+
+| Column | Type | Required | Notes |
+|--------|------|----------|-------|
+| `context_id` | TEXT | ✓ | Unique. |
+| `topic_id` | TEXT | ✓ | FK → topic_map.topic_id. |
+| `context_zh` | TEXT | ✓ | Real-world story context in Chinese. |
+| `context_en` | TEXT | | English equivalent. |
+| `grade_min` | INT | ✓ | Lowest grade this context suits. |
+| `grade_max` | INT | ✓ | Highest grade. |
+| `tags` | TEXT | | Pipe-separated (e.g. `food\|shopping\|sports`). |
+
+### blueprints.csv + blueprint_sections.csv
+
+**blueprints.csv:**
+
+| Column | Type | Required | Notes |
+|--------|------|----------|-------|
+| `blueprint_id` | TEXT | ✓ | Unique. |
+| `name_zh` | TEXT | ✓ | Display name. |
+| `grade` | INT | ✓ | 1–6. |
+| `total_questions` | INT | ✓ | Target question count. |
+| `time_limit_min` | INT | | Time limit in minutes. |
+
+**blueprint_sections.csv:**
+
+| Column | Type | Required | Notes |
+|--------|------|----------|-------|
+| `section_id` | TEXT | ✓ | Unique. |
+| `blueprint_id` | TEXT | ✓ | FK → blueprints.blueprint_id. |
+| `topic_id` | TEXT | ✓ | FK → topic_map.topic_id. |
+| `q_type` | TEXT | ✓ | `mc` \| `fill` \| `calc` \| `short` \| `working` |
+| `difficulty` | TEXT | ✓ | `basic` \| `standard` \| `challenge` |
+| `count` | INT | ✓ | Number of questions for this section. |
+| `use_weak_topics` | BOOLEAN | ✓ | When `true`, substitutes the student's weak topics at runtime — the primary retention mechanism. A parent who sees a paper that "knows" their child's weaknesses renews before trying a competitor. |
 
 ## I6. Guest Mode Data Policy
 
@@ -1392,6 +1515,126 @@ Guest = localStorage only = zero cloud diagnostic data, while also being the fri
 **Post-3D option:** Anonymous `device_id` sessions stored locally, merged on signup. This allows diagnostic data collection before the auth friction. Do not build this unless Phase 3D data proves the parent report is actionable — building the merge mechanism before validating the report is premature.
 
 **Permanent rule (do not change):** Guest mode must always work. Full exam features are available without an account. The sign-up prompt is a banner, never a hard gate for exam completion.
+
+---
+
+## I7. Content Pipeline
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  CONTENT PIPELINE: from CSV to student question              │
+│                                                              │
+│  1. AUTHOR                                                   │
+│     Founder authors content/*.csv in Google Sheets.          │
+│     Export as UTF-8 CSV (see Appendix F). Never use Excel.   │
+│                                                              │
+│  2. VALIDATE (CI)                                            │
+│     npm run content:check                                    │
+│     → 9 assertions (see §I9)                                 │
+│     → Fails on license:restricted, broken IDs, cycles        │
+│     → Error output: Chinese + filename + line number         │
+│                                                              │
+│  3. MIGRATE                                                  │
+│     supabase/migrations/*.sql seeds:                         │
+│       topic_map table       ← topic_map.csv                  │
+│       misconceptions table  ← misconceptions.csv             │
+│       item_templates table  ← item_templates.csv             │
+│     All other CSVs read at runtime by the app.               │
+│                                                              │
+│  4. RUNTIME QUESTION SELECTION (Phase 4B modified buildExam) │
+│     Priority 1: question_bank (Layer 3, stored)              │
+│     Priority 2: item_templates (Layer 1 fills slots)         │
+│     Priority 3: AI generate (DeepSeek — Phase 4B+)           │
+│     Fallback:   Layer 1 hardcode generators                  │
+│                                                              │
+│  5. VERSION TRACKING                                         │
+│     content/VERSION → written to responses.content_version   │
+│     Query: "which sessions used the buggy template?"         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**content/VERSION tag format:** `YYYY-MM-DD.N` (e.g. `2026-08-24.1`). Increment `.N` for same-day revisions. Increment the date portion whenever content is deployed to production. The value is written to `responses.content_version` so you can filter responses by content cohort after fixing a generator or template bug.
+
+---
+
+## I8. exam_sessions Column Specs
+
+Full reference for the `exam_sessions` table (live in Supabase):
+
+| Column | Type | Nullable | Notes |
+|--------|------|----------|-------|
+| `id` | UUID | No | PK, `gen_random_uuid()`. |
+| `user_id` | UUID | No | FK → `auth.users(id)`. RLS owner key. |
+| `level` | INT | No | 1–6 (P1–P6). Written from student profile grade. |
+| `topic_code` | TEXT | No | `'mixed'` for full exam; specific `topic_id` for single-topic drill. |
+| `total_questions` | INT | No | Count of questions in session. |
+| `correct_count` | INT | No | Count of correct answers. |
+| `score_percent` | DECIMAL | No | `correct_count / total_questions × 100`. |
+| `time_spent` | INT | No | Total session duration in **seconds** (legacy unit — not ms). |
+| `topic_breakdown` | JSONB | No | Per-topic aggregate: `{"topicId":{"total":N,"wrong":N}}`. **The moat.** Aggregate read cache only — `responses` is source of truth for per-question diagnostics. |
+| `completed_at` | TIMESTAMPTZ | Yes | NULL if session was abandoned mid-exam. |
+| `created_at` | TIMESTAMPTZ | No | Auto-set `DEFAULT now()`. |
+
+**RLS:** `CREATE POLICY "owner" ON exam_sessions USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());`
+
+**topic_breakdown shape:**
+```json
+{"3M": {"total": 3, "wrong": 3}, "3N5": {"total": 2, "wrong": 1}}
+```
+Key = `topic_id` string. `wrong` = incorrect answers. `total − wrong` = correct answers. This is an aggregate cache; per-question detail lives in `responses`.
+
+**Columns to never add:** Do not denormalize `score_percent` variants, `was_completed`, or per-question data into this table. Compute at query time from existing columns; per-question detail belongs in `responses`.
+
+---
+
+## I9. CI Checks (`npm run content:check`)
+
+All assertions run against `content/*.csv`. Failure output must print **Chinese + filename + line number** — the founder reads it, not an agent.
+
+| # | Check | Files | Fails when |
+|---|-------|-------|-----------|
+| 1 | Cross-file ID resolution | All | Any `topic_id`, `skill_id`, `misconception_code`, or `template_id` referenced in one file does not exist in its source file |
+| 2 | No prerequisite cycles | topic_map.csv | `prereq_topic_ids` contains a cycle (DFS check) |
+| 3 | Template constraint satisfaction | item_templates.csv | Any template × 100 random seeds fails its own `constraints` expression |
+| 4 | Example seed regression | item_templates.csv | `example_seed` + `answer_expr` does not yield `example_answer` |
+| 5 | No restricted license | item_templates.csv, question_bank seeds | Any row with `license: restricted` |
+| 6 | Plausible range present | traps.csv, item_templates.csv | `plausible_min` or `plausible_max` absent |
+| 7 | UTF-8, no BOM | All | File opens with BOM bytes `EF BB BF` |
+| 8 | Live templates have ≥ 2 traps | item_templates.csv | Any live-status template has fewer than 2 trap entries in the `traps` JSON array |
+| 9 | quest_station_name_zh present | topic_map.csv | Any row missing `quest_station_name_zh` |
+
+**Additional code-layer checks (`npm run lint:security`):**
+
+| # | Check | Fails when |
+|---|-------|-----------|
+| 10 | No SERVICE_ROLE_KEY with VITE_ prefix | Any `VITE_SUPABASE_SERVICE_ROLE_KEY` appears in env files or source |
+| 11 | No USING(true) in migrations | Any migration SQL contains `USING(true)` or `WITH CHECK(true)` |
+
+---
+
+## I10. Agent Rules (v6.0)
+
+These rules apply to Claude Code and any AI agent working in this repository. They mirror and extend §I0 with implementation-level guidance.
+
+1. **Read before writing.** Before any task, read `docs/MASTER_PLAN.md` (strategy) and `docs/STATUS.md` (execution status). If they conflict on any point, stop and ask the founder.
+
+2. **Update STATUS.md in every commit.** No exceptions. A commit without a STATUS.md update is incomplete — do not mark the task done.
+
+3. **Never alter math content.** `content/*.csv` math question text, answer expressions, trap expressions, and misconception descriptions are the founder's intellectual work. Agents write code that reads, validates, or displays this content; they do not edit it.
+
+4. **AI emits templates, never answers.** Any AI-generated question must use `answer_expr` (algebraic expression). Never output a numeric answer from a model. Layer 1 computes the actual number at serve time.
+
+5. **Schema via migrations only.** All `CREATE TABLE`, `ALTER TABLE`, `CREATE INDEX`, `CREATE POLICY` statements go into `supabase/migrations/*.sql`. Never instruct the user to run SQL in the Supabase dashboard.
+
+6. **RLS on every new table.** Pattern: `ALTER TABLE t ENABLE ROW LEVEL SECURITY; CREATE POLICY "owner" ON t USING (user_id = auth.uid()) WITH CHECK (user_id = auth.uid());` Omitting this is a security regression.
+
+7. **Protect question_bank.** Never `DROP` or `TRUNCATE`. Never `DELETE` without a `WHERE` clause scoped to specific `id`s.
+
+8. **Every question answered writes a `responses` row.** If you modify the exam flow, verify the `responses` write path is intact. This is Gate 0 and blocks 8 downstream features (see §I3).
+
+9. **Frozen directories.** Do not propose or make changes to `android/` or `ios/` until the founder confirms 20 paying users exist.
+
+10. **Settled decisions stay settled.** Do not reopen entries in `docs/DECISIONS.md`. Surface conflicts to the founder rather than silently working around them.
 
 ---
 
@@ -1447,7 +1690,7 @@ Guest = localStorage only = zero cloud diagnostic data, while also being the fri
 
 ---
 
-# PART K2 — PHASE GATES (Consolidated)
+# PART M — PHASE GATES (Consolidated)
 
 | Gate | Condition | If not met |
 |------|-----------|------------|
@@ -1658,9 +1901,9 @@ Guest = localStorage only = zero cloud diagnostic data, while also being the fri
 # APPENDIX E — Document Control
 
 ```
-Version:       5.1
+Version:       6.0
 Author:        OneUp24 Founder
-Date:          April 17, 2026
+Date:          August 24, 2026
 Status:        ACTIVE
 
 Previous versions:
@@ -1811,24 +2054,44 @@ Applied edits from docs/prompts/v6_regen.md Stage 2. Verified against codebase b
 
 ---
 
-*Save this file as `/docs/MASTER_PLAN_v5.md`. This is your single source of truth.*
+# APPENDIX F — Content Authoring Reference
 
----
+## F1. ID Naming Conventions
 
-**From a growth perspective, let me highlight why the 7 additions from the Poe chat matter so much for your business, not just your product:**
+All IDs in `content/*.csv` are permanent. Once a row is live in production its ID must never be changed or reused — a renamed ID breaks any `responses` row that referenced it.
 
-1. **The `quest_progress` table** — This isn't just a database table. It's your **retention analytics backbone**. Knowing where kids abandon quests tells you where your content is weak, which is a goldmine for product iteration and investor storytelling.
+| File | ID column | Convention | Example |
+|------|-----------|-----------|---------|
+| topic_map.csv | `topic_id` | `p{grade}_{slug}` | `p3_fractions_equiv` |
+| skills.csv | `skill_id` | `{topic_id}_{action}` | `p3_fractions_equiv_identify` |
+| traps.csv | `trap_id` | `{topic_id}_trap_{n}` | `p4_fractions_add_unlike_trap_1` |
+| misconceptions.csv | `misconception_code` | `{action}_{what}` | `add_denominators` |
+| item_templates.csv | `template_id` | `{topic_id}_t{n}` | `p4_fractions_add_unlike_t1` |
+| contexts.csv | `context_id` | `ctx_{slug}` | `ctx_fruit_sharing` |
+| blueprints.csv | `blueprint_id` | `bp_{grade}_{slug}` | `bp_4_mixed_standard` |
+| blueprint_sections.csv | `section_id` | `{blueprint_id}_s{n}` | `bp_4_mixed_standard_s1` |
 
-2. **The 5 progression skills** — This isn't academic theory. This is your **marketing copy engine**. When a parent asks "why not just buy more worksheets?" you say: "Worksheets give gear. We build timing, pattern recognition, intuition, confidence, and sequence memory. Just like how your kid plays games."
+## F2. Google Sheets Export Procedure
 
-3. **Curlboo station reactions** — This is your **screenshot-worthy moment**. Parents WILL screenshot "Curlboo 戴皇冠" and send it to family WhatsApp groups. That's organic viral distribution you can't buy.
+Excel corrupts Traditional Chinese characters by default. Use Google Sheets exclusively.
 
-4. **2-3x data per Quest** — This isn't just a nice stat. It means **every Pro user generates 2-3x more usable data** than a free user, which means your AI gets smarter faster from your paying users. The people who pay you the most also train your system the most. Beautiful flywheel.
+1. Author content in Google Sheets
+2. **File → Download → Comma Separated Values (.csv)**
+3. Verify encoding: `file -i content/topic_map.csv` should show `charset=utf-8`
+4. Verify no BOM: `xxd content/topic_map.csv | head -1` should NOT start with `efbbbf`
+5. If BOM is present: `sed -i 's/\xEF\xBB\xBF//' content/file.csv`
+6. Commit to `content/` and run `npm run content:check` before pushing
 
-5. **Paywall gate #4** — This is arguably your **highest-converting gate** because it fires at the exact moment a parent discovers their child has a foundation gap. That's peak anxiety + peak intent. No other ed-tech times their paywall this well.
+## F3. Adding a New Topic Chain (Checklist)
 
-6. **The philosophy quote in A2** — This isn't soft. This is your **one-liner for investors**. When they ask "what makes you different?" you say the quote. It sticks.
+When adding a new prerequisite chain to `topic_map.csv`:
 
-7. **Decision filter #5** — Adding "journey vs save file" to your decision framework means **every future feature** gets tested against this lens. It prevents feature bloat by asking the right question before code is ever written.
+- [ ] Each `topic_id` follows F1 conventions and does not collide with existing IDs
+- [ ] `quest_station_name_zh` contains no grade label (child sees this — no "P1", "P2")
+- [ ] `prereq_topic_ids` forms a DAG (no cycles — CI check #2 catches violations)
+- [ ] At least one row per grade level represented in the chain
+- [ ] Corresponding `skills.csv` rows added for first 3 topics only (§I5 scope limit)
+- [ ] At least 25 rows in `misconceptions.csv` total before adding new traps
+- [ ] Every `traps.csv` row references an existing `misconception_code`
+- [ ] Run `npm run content:check` — zero errors before committing
 
-This document is now your **complete single source of truth**. Every Poe chat insight, every strategic decision, every technical detail — all in one place. 🎯

@@ -24,7 +24,7 @@ export const grade3={
   ()=>{const arr=[ri(10000,50000),ri(50001,99999),ri(5000,9999)];const sorted=[...arr].sort((a,b)=>a-b);
     return{d:2,tp:'fill',q:'由小到大：'+shuffle([...arr]).join('、')+' → ____',a:sorted.join(', '),s:[sorted.join(' < ')],sc:2}},
   // d:2 — digit card: smallest 5-digit number
-  ()=>{const d=[ri(1,3),ri(4,6),ri(7,9),0,0];const shuffled=[...d].sort(()=>Math.random()-0.5);
+  ()=>{const d=[ri(1,3),ri(4,6),ri(7,9),0,0];const shuffled=shuffle([...d]);
     return{d:2,tp:'fill',q:'用 '+shuffled.join('、')+' 五張數字卡，排成一個最小的五位數（每個數字必須用一次）是____。',
       a:String(d[0]*10000+0*1000+0*100+d[1]*10+d[2]),
       s:['最小的五位數：萬位不能是 0，所以把最小的非零數字放在萬位，其餘由小到大排列。','答案：'+d[0]+'00'+d[1]+''+d[2]],sc:2}},

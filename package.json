@@ -13,7 +13,9 @@
     "mobile:ios": "npx cap open ios",
     "mobile:android": "npx cap open android",
     "mobile:sync": "npx cap sync",
-    "test": "vitest run"
+    "test": "vitest run",
+    "arch:check": "node scripts/arch-check.js",
+    "content:check": "node scripts/content-check.js"
   },
   "dependencies": {
     "@capacitor/android": "^8.3.0",

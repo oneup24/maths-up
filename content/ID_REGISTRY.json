@@ -1,0 +1,11 @@
+{
+  "_comment": "Permanent record of all IDs used in content/*.csv. IDs are immutable once live — never rename or reuse a registered ID. A renamed ID is a broken foreign key in responses.",
+  "_version": "2026-08-25.1",
+  "topic_ids": [],
+  "skill_ids": [],
+  "trap_ids": [],
+  "misconception_codes": [],
+  "template_ids": [],
+  "context_ids": [],
+  "blueprint_ids": []
+}

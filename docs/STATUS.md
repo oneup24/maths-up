@@ -77,6 +77,13 @@
 | Brand name unified to Maths-Up | ✅ | `manifest.json` name, `capacitor.config.json` appName, `app.json` name/slug all updated to Maths-Up |
 | appId updated in capacitor.config.json | ✅ | `com.oneup24.mathsup` (was `com.mathexam.app`) — IMMUTABLE after first App Store submission |
 | Topic Quest grade-label recorded in DECISIONS.md | ✅ | `docs/DECISIONS.md` §grade-label — child sees quest_station_name_zh; parent report shows topic_name_zh with grade |
+| MASTER_PLAN.md v6.0 final cleanup | ✅ | Tail residue removed; Appendix E → v6.0/Aug 24; A5 → 98 commits/maths-up; PART K2 → PART M; §I0 (I0a–I0g); §I5 CSV Column Specs; §I7 Pipeline; §I8 exam_sessions cols; §I9 CI checks; §I10 Agent Rules; Appendix F added |
+| exam_sessions additive columns | ✅ | `supabase/migrations/20260825000001_extend_exam_and_responses.sql` — child_id, blueprint_id, seed, content_version, paper_json (all nullable); child_id added to responses |
+| content/ directory + ID_REGISTRY.json | ✅ | `content/ID_REGISTRY.json` (empty registry); `content/VERSION` = 2026-08-25.1 |
+| content/items.csv (legacy generators) | ✅ | `scripts/import-legacy-generators.js` → 397 generators registered (291 live, 106 quarantined) |
+| arch:check script (5 rules) | ✅ | `scripts/arch-check.js` — all 5 rules pass: no supabase, no react, no fetch, no Math.random outside core.js, no Date.now in grades/ |
+| content:check v0 script | ✅ | `scripts/content-check.js` — checks UTF-8 no BOM, items.csv headers, ID_REGISTRY.json valid JSON |
+| grade3.js Math.random bug | ✅ | `src/engine/grades/grade3.js:27` — replaced inline `.sort(()=>Math.random()-0.5)` with `shuffle()` |
 | 10 soft-launch families sign in | ⚠️ | 4/10 recruited → NEEDS FOUNDER: current count |
 
 ## Phase 3D — Soft Launch
@@ -91,7 +98,7 @@
 
 | Item | Status | Evidence |
 |------|--------|----------|
-| content/topic_map.csv (Fractions P1→P4) | ☐ | `content/` directory does not exist |
+| content/topic_map.csv (Fractions P1→P4) | ☐ | `content/` directory created; topic_map.csv not yet authored |
 | content/misconceptions.csv | ☐ | Not created |
 | 3-page PDF (student + answers + parent report) | ☐ | Current PDF is single-format |
 | Topic Quest v1 (Fractions hardcoded) | ☐ | Not started |
