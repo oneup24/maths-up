@@ -1805,7 +1805,7 @@ These rules apply to Claude Code and any AI agent working in this repository. Th
 ┌────────────────────────────────────────────────────────────┐
 │  FOR CLAUDE CODE: KEY CONTEXT WHEN WORKING ON THIS REPO    │
 │                                                            │
-│  REPO: github.com/oneup24/maths-exam                       │
+│  REPO: github.com/oneup24/maths-up                         │
 │  REF:  CLAUDE.md in root (project-specific instructions)   │
 │                                                            │
 │  PRIORITY ORDER (always):                                  │
