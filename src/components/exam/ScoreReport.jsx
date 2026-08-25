@@ -7,14 +7,14 @@ import ExportPDFButton from '../ExportPDFButton';
 export default function ScoreReport({isMarked,animScore,animPct,pct,grandTotal,fb,user,cloudSaved,lang,sections,secScores,topicSummary,wrongOnly,setWrongOnly,resetMarking,generate,retryWrong,markRes,answers,mcSel,totScore,grade,studentName,L}){
   return(
     <AnimatePresence>{isMarked&&(
-      <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 mb-3 shadow-lg border-2 border-indigo-200" aria-live="polite">
+      <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 mb-3 shadow-lg border-2 border-[#e3e8ee]" aria-live="polite">
         <div className="flex items-center justify-center gap-1 mb-1"><Trophy size={20} className="text-yellow-500"/><h3 className="font-black text-lg">{L('scoreReport')}</h3></div>
         <div className="text-center my-3">
-          <div><span className="text-5xl font-black text-indigo-600">{animScore}</span><span className="text-2xl text-gray-300"> / {grandTotal}</span></div>
-          <div className="w-full bg-gray-200 rounded-full h-3 mt-2 overflow-hidden">
+          <div><span className="text-5xl font-black text-[#5b3e1e]">{animScore}</span><span className="text-2xl text-[#e3e8ee]"> / {grandTotal}</span></div>
+          <div className="w-full bg-[#e3e8ee] rounded-full h-3 mt-2 overflow-hidden">
             <motion.div initial={{width:0}} animate={{width:pct+'%'}} transition={{duration:1}} className={"h-3 rounded-full "+(pct>=70?'bg-emerald-500':pct>=50?'bg-amber-500':'bg-red-500')}/>
           </div>
-          <span className="text-sm font-bold text-gray-500 mt-1 inline-block">{animPct}%</span>
+          <span className="text-sm font-bold text-[#64748d] mt-1 inline-block">{animPct}%</span>
           <div className="mt-2">
             <motion.img src={pct>=100?'/mascot-astronaut.webp':pct>=80?'/mascot-happy.webp':pct>=50?'/mascot-ok.webp':'/mascot-sad.webp'} alt={pct>=80?'Curlboo Bear and Fluffy Bunny celebrating':'Curlboo Bear and Fluffy Bunny encouraging'}
               initial={{scale:0.7,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:'spring',stiffness:200}}
@@ -28,25 +28,25 @@ export default function ScoreReport({isMarked,animScore,animPct,pct,grandTotal,f
         <div className="border-t pt-2 space-y-1">
           {sections.map((sec,si)=>{var ss=secScores(si);var sp=sec.total>0?Math.round(ss/sec.total*100):0;return(
             <div key={si} className="flex items-center gap-2 text-sm">
-              <span className="font-bold text-gray-500 w-6">{sec.label}.</span>
-              <span className="flex-1 text-gray-600 truncate">{sec.nm}（{sec.qs.length}題）</span>
-              <div className="w-20 bg-gray-200 rounded-full h-2"><div className={"h-2 rounded-full transition-all duration-300 "+(sp>=70?'bg-emerald-500':sp>=50?'bg-amber-500':'bg-red-400')} style={{width:sp+'%'}}/></div>
+              <span className="font-bold text-[#64748d] w-6">{sec.label}.</span>
+              <span className="flex-1 text-[#273951] truncate">{sec.nm}（{sec.qs.length}題）</span>
+              <div className="w-20 bg-[#e3e8ee] rounded-full h-2"><div className={"h-2 rounded-full transition-all duration-300 "+(sp>=70?'bg-emerald-500':sp>=50?'bg-amber-500':'bg-red-400')} style={{width:sp+'%'}}/></div>
               <span className="text-xs font-bold w-12 text-right">{ss}/{sec.total}</span>
             </div>
           )})}
         </div>
         {topicSummary.length>0&&(
-          <div className="mt-3 rounded-xl p-3 bg-gray-50">
-            <h4 className="font-bold text-sm text-gray-700 mb-2">📊 {lang==='zh'?'各單元表現':'Topic Performance'}</h4>
+          <div className="mt-3 rounded-xl p-3 bg-[#f6f9fc]">
+            <h4 className="font-bold text-sm text-[#0d253d] mb-2">📊 {lang==='zh'?'各單元表現':'Topic Performance'}</h4>
             <div className="space-y-1.5">
               {topicSummary.map(t=>{var tcls=t.pct>=80?'border-l-emerald-500':t.pct>=50?'border-l-amber-500':'border-l-red-500';var txtcls=t.pct>=80?'text-emerald-600':t.pct>=50?'text-amber-600':'text-red-500';var barcls=t.pct>=80?'bg-emerald-500':t.pct>=50?'bg-amber-500':'bg-red-400';var emoji=t.pct>=80?'✅':t.pct>=50?'⚠️':'❌';return(
                 <div key={t.id} className={"bg-white rounded-lg px-3 py-2 border-l-4 "+tcls}>
                   <div className="flex items-center gap-2">
                     <span className="text-sm shrink-0">{emoji}</span>
-                    <span className="text-xs font-bold text-gray-700 flex-1 truncate">{t.name}</span>
+                    <span className="text-xs font-bold text-[#0d253d] flex-1 truncate">{t.name}</span>
                     <span className={"text-xs font-bold shrink-0 "+txtcls}>{t.correct}/{t.total} ({t.pct}%)</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-1.5 mt-1.5"><div className={"h-1.5 rounded-full transition-all duration-300 "+barcls} style={{width:t.pct+'%'}}/></div>
+                  <div className="w-full bg-[#e3e8ee] rounded-full h-1.5 mt-1.5"><div className={"h-1.5 rounded-full transition-all duration-300 "+barcls} style={{width:t.pct+'%'}}/></div>
                 </div>
               )})}
             </div>
