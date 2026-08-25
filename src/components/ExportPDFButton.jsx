@@ -78,18 +78,18 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
       // ── Header ──
       doc.setFont(FONT,'normal');
       doc.setFontSize(18);
-      doc.setTextColor(55,48,163);
+      doc.setTextColor(83,58,253); // {colors.primary} #533afd
       doc.text('Maths Quests \u6578\u5B78\u7DF4\u7FD2 \u2014 \u6E2C\u9A57\u5831\u544A',pageW/2,20,{align:'center'});
 
       doc.setFont(FONT,'normal');
       doc.setFontSize(10);
-      doc.setTextColor(120,120,120);
+      doc.setTextColor(100,116,141); // {colors.ink-mute} #64748d
       doc.text(dateStr,pageW/2,27,{align:'center'});
 
       // ── Grade + Score row ──
       doc.setFont(FONT,'normal');
       doc.setFontSize(12);
-      doc.setTextColor(55,65,81);
+      doc.setTextColor(39,57,81); // {colors.ink-secondary} #273951
       doc.text((zh?'\u5E74\u7D1A':'Grade')+': P'+grade,margin,36);
 
       doc.setFont(FONT,'normal');
@@ -100,13 +100,13 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
       if(displayName){
         doc.setFont(FONT,'normal');
         doc.setFontSize(11);
-        doc.setTextColor(75,85,99);
+        doc.setTextColor(13,37,61); // {colors.ink} #0d253d
         doc.text((zh?'\u5B78\u751F':'Student')+': '+displayName,margin,43);
       }
 
       // Divider
       const dividerY=displayName?47:39;
-      doc.setDrawColor(200,200,200);
+      doc.setDrawColor(227,232,238); // {colors.hairline} #e3e8ee
       doc.setLineWidth(0.5);
       doc.line(margin,dividerY,pageW-margin,dividerY);
 
@@ -114,7 +114,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
       const tableHeaderY=dividerY+8;
       doc.setFont(FONT,'normal');
       doc.setFontSize(12);
-      doc.setTextColor(55,65,81);
+      doc.setTextColor(39,57,81); // {colors.ink-secondary} #273951
       doc.text(zh?'\u984C\u76EE\u8A73\u60C5':'Question Details',margin,tableHeaderY);
 
       const allQs=[];
@@ -145,7 +145,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
           row.ok?'\u2713':'\u2717'
         ]),
         styles:{font:FONT,fontStyle:'normal',fontSize:8,cellPadding:2},
-        headStyles:{font:FONT,fontStyle:'normal',fillColor:[238,242,255],textColor:[55,48,163]},
+        headStyles:{font:FONT,fontStyle:'normal',fillColor:[185,185,249],textColor:[83,58,253]}, // {colors.primary-bg-subdued-hover} / {colors.primary}
         bodyStyles:{font:FONT,fontStyle:'normal'},
         columnStyles:{
           0:{cellWidth:8,halign:'center'},
@@ -175,7 +175,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
         const topicY=doc.lastAutoTable.finalY+8;
         doc.setFont(FONT,'normal');
         doc.setFontSize(12);
-        doc.setTextColor(55,65,81);
+        doc.setTextColor(39,57,81); // {colors.ink-secondary} #273951
         doc.text(zh?'\u5404\u55AE\u5143\u8868\u73FE':'Topic Performance',margin,topicY);
 
         autoTable(doc,{
@@ -192,7 +192,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
             return[tp.name,tp.total,tp.correct,indicator+' '+tp.pct+'%'];
           }),
           styles:{font:FONT,fontStyle:'normal',fontSize:9,cellPadding:2.5},
-          headStyles:{font:FONT,fontStyle:'normal',fillColor:[238,242,255],textColor:[55,48,163]},
+          headStyles:{font:FONT,fontStyle:'normal',fillColor:[185,185,249],textColor:[83,58,253]}, // {colors.primary-bg-subdued-hover} / {colors.primary}
           bodyStyles:{font:FONT,fontStyle:'normal'},
           columnStyles:{
             0:{cellWidth:'auto'},
@@ -217,7 +217,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
         const stepsHeaderY=(doc.lastAutoTable?doc.lastAutoTable.finalY:200)+8;
         doc.setFont(FONT,'normal');
         doc.setFontSize(12);
-        doc.setTextColor(55,65,81);
+        doc.setTextColor(39,57,81); // {colors.ink-secondary} #273951
         doc.text(zh?'參考解題步驟':'Suggested Steps',margin,stepsHeaderY);
         autoTable(doc,{
           startY:stepsHeaderY+3,
@@ -240,7 +240,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
             }).join('\n')
           ]),
           styles:{font:FONT,fontStyle:'normal',fontSize:8,cellPadding:3},
-          headStyles:{font:FONT,fontStyle:'normal',fillColor:[224,242,254],textColor:[7,89,133]},
+          headStyles:{font:FONT,fontStyle:'normal',fillColor:[185,185,249],textColor:[68,52,212]}, // {colors.primary-bg-subdued-hover} / {colors.primary-deep}
           bodyStyles:{font:FONT,fontStyle:'normal'},
           columnStyles:{
             0:{cellWidth:8,halign:'center'},
@@ -257,12 +257,12 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
 
       // ── Footer ──
       const footerY=(doc.lastAutoTable?doc.lastAutoTable.finalY:200)+12;
-      doc.setDrawColor(200,200,200);
+      doc.setDrawColor(227,232,238); // {colors.hairline} #e3e8ee
       doc.setLineWidth(0.3);
       doc.line(margin,footerY,pageW-margin,footerY);
       doc.setFont(FONT,'normal');
       doc.setFontSize(8);
-      doc.setTextColor(160,160,160);
+      doc.setTextColor(100,116,141); // {colors.ink-mute} #64748d
       doc.text('Generated by Maths Quests \u2014 oneup24.com',pageW/2,footerY+5,{align:'center'});
 
       doc.save(generateFilename(grade,studentName));
