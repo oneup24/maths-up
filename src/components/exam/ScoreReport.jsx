@@ -7,7 +7,7 @@ import ExportPDFButton from '../ExportPDFButton';
 export default function ScoreReport({isMarked,animScore,animPct,pct,grandTotal,fb,user,cloudSaved,lang,sections,secScores,topicSummary,wrongOnly,setWrongOnly,resetMarking,generate,retryWrong,markRes,answers,mcSel,totScore,grade,studentName,L}){
   return(
     <AnimatePresence>{isMarked&&(
-      <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 mb-3 shadow-lg border-2 border-[#e3e8ee]" aria-live="polite">
+      <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 mb-3 border-2 border-[#e3e8ee]" style={{boxShadow:'rgba(0,55,112,0.08) 0 8px 24px, rgba(0,55,112,0.04) 0 2px 6px'}} aria-live="polite">
         <div className="flex items-center justify-center gap-1 mb-1"><Trophy size={20} className="text-yellow-500"/><h3 className="font-black text-lg">{L('scoreReport')}</h3></div>
         <div className="text-center my-3">
           <div><span className="text-5xl font-black text-[#5b3e1e]">{animScore}</span><span className="text-2xl text-[#e3e8ee]"> / {grandTotal}</span></div>

@@ -277,7 +277,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
   return(
     <>
       <button onClick={handleExport} disabled={loading}
-        className="flex-1 min-w-[80px] py-2 rounded-xl text-xs font-bold border-2 border-purple-300 bg-purple-50 text-purple-700 flex items-center justify-center gap-1 active:bg-purple-100 disabled:opacity-50">
+        className="flex-1 min-w-[80px] py-2 rounded-xl text-xs font-bold border-2 border-[#533afd] bg-white text-[#533afd] flex items-center justify-center gap-1 active:bg-[#f6f9fc] disabled:opacity-50">
         {loading?<Loader2 size={12} className="animate-spin"/>:<Download size={12}/>}
         {loading?(lang==='zh'?'生成中...':'Generating...'):(lang==='zh'?'匯出 PDF':'Export PDF')}
       </button>
@@ -300,7 +300,7 @@ export default function ExportPDFButton({sections,markRes,answers,mcSel,topicSum
               <p className="text-sm text-emerald-600 font-bold py-2">{t(lang,'pdfVerifySent')}</p>
             ):(
               <button onClick={handleResend} disabled={sendingVerify}
-                className="w-full py-3 rounded-xl font-bold text-sm text-white bg-gradient-to-r from-orange-500 to-amber-500 disabled:opacity-50 flex items-center justify-center gap-2">
+                className="w-full py-3 rounded-xl font-bold text-sm text-white bg-[#533afd] active:bg-[#2e2b8c] disabled:opacity-50 flex items-center justify-center gap-2">
                 {sendingVerify?<Loader2 size={14} className="animate-spin"/>:null}
                 {t(lang,'pdfVerifyBtn')}
               </button>
