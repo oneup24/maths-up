@@ -53,11 +53,11 @@ export default function ScoreReport({isMarked,animScore,animPct,pct,grandTotal,f
           </div>
         )}
         <div className="flex gap-2 mt-3 flex-wrap">
-          <button onClick={()=>setWrongOnly(!wrongOnly)} className={"flex-1 min-w-[80px] py-2.5 rounded-xl text-xs font-bold border-2 transition-all duration-200 active:scale-[0.97] "+(wrongOnly?'border-red-400 bg-red-50 text-red-600':'border-gray-200 text-gray-500')}>{wrongOnly?L('showAll'):L('showWrong')}</button>
-          <button onClick={resetMarking} className="flex-1 min-w-[80px] py-2.5 rounded-xl text-xs font-bold border-2 border-blue-200 text-blue-600 flex items-center justify-center gap-1 transition-all duration-200 active:scale-[0.97]"><RotateCcw size={12}/>{L('retry')}</button>
-          <button onClick={generate} className="flex-1 min-w-[80px] py-2.5 rounded-xl text-xs font-bold border-2 border-indigo-200 text-indigo-600 flex items-center justify-center gap-1 transition-all duration-200 active:scale-[0.97]"><RotateCcw size={12}/>{L('newExam')}</button>
+          <button onClick={()=>setWrongOnly(!wrongOnly)} className={"flex-1 min-w-[80px] py-2.5 rounded-full text-xs font-bold border-2 transition-all duration-200 active:scale-[0.97] "+(wrongOnly?'border-red-400 bg-red-50 text-red-600':'border-[#e3e8ee] text-[#64748d]')}>{wrongOnly?L('showAll'):L('showWrong')}</button>
+          <button onClick={resetMarking} className="flex-1 min-w-[80px] py-2.5 rounded-full text-xs font-bold border-2 border-[#533afd] text-[#533afd] flex items-center justify-center gap-1 transition-all duration-200 active:scale-[0.97]"><RotateCcw size={12}/>{L('retry')}</button>
+          <button onClick={generate} className="flex-1 min-w-[80px] py-2.5 rounded-full text-xs font-bold border-2 border-[#533afd] text-[#533afd] flex items-center justify-center gap-1 transition-all duration-200 active:scale-[0.97]"><RotateCcw size={12}/>{L('newExam')}</button>
           <ExportPDFButton sections={sections} markRes={markRes} answers={answers} mcSel={mcSel} topicSummary={topicSummary} totScore={totScore} grandTotal={grandTotal} pct={pct} grade={grade} lang={lang} studentName={studentName} user={user}/>
-          {Object.values(markRes).some(r=>!r.ok)&&<button onClick={retryWrong} className="w-full py-2.5 rounded-xl text-xs font-bold border-2 border-rose-300 bg-rose-50 text-rose-600 flex items-center justify-center gap-1 mt-1 transition-all duration-200 active:scale-[0.97]">{L('reviewWrong')}</button>}
+          {Object.values(markRes).some(r=>!r.ok)&&<button onClick={retryWrong} className="w-full py-2.5 rounded-full text-xs font-bold border-2 border-rose-300 bg-rose-50 text-rose-600 flex items-center justify-center gap-1 mt-1 transition-all duration-200 active:scale-[0.97]">{L('reviewWrong')}</button>}
         </div>
       </motion.div>
     )}</AnimatePresence>
