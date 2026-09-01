@@ -1,4 +1,25 @@
-// Grade gradient colors (dark, for card backgrounds)
+// Grade solid hex colors — keyed by GRADE_INFO[g].co name
+// (co names are legacy; hex values match GradeCard's visual grade colors)
+export const GC_HEX = {
+  rose:    '#FF6B95',
+  orange:  '#FFA040',
+  amber:   '#9B6EE8',
+  emerald: '#2DC99A',
+  sky:     '#4BA3E8',
+  violet:  '#5DC44A',
+};
+
+// Soft tint surfaces for grade badges
+export const GC_SOFT = {
+  rose:    { bg: '#fff0f4', text: '#b5395a' },
+  orange:  { bg: '#fff3e6', text: '#9a5100' },
+  amber:   { bg: '#f3eeff', text: '#6132b0' },
+  emerald: { bg: '#e6faf3', text: '#0e7a52' },
+  sky:     { bg: '#e8f3ff', text: '#1c5fa8' },
+  violet:  { bg: '#edfae6', text: '#2e7a19' },
+};
+
+// Grade gradient colors (dark, for card backgrounds) — kept for any remaining uses
 export const GC = {
   rose: 'from-rose-500 to-rose-600',
   orange: 'from-orange-500 to-orange-600',

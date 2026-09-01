@@ -14,7 +14,7 @@ export default function PrintModal({isOpen,onClose,studentName,onNameChange,prin
         <button onClick={()=>setPrintAns(false)} className={"flex-1 py-2 rounded-xl text-sm font-bold border-2 "+(!printAns?'border-indigo-500 bg-indigo-50':'border-gray-200 text-gray-400')}>{L('studentVer')}</button>
         <button onClick={()=>setPrintAns(true)} className={"flex-1 py-2 rounded-xl text-sm font-bold border-2 "+(printAns?'border-emerald-500 bg-emerald-50':'border-gray-200 text-gray-400')}>{L('answerVer')}</button>
       </div>
-      <button onClick={onPrint} className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-extrabold rounded-xl active:scale-[0.97] transition-all duration-200">{L('openPrint')}</button>
+      <button onClick={onPrint} className="w-full py-3 text-white font-extrabold rounded-xl transition-opacity duration-150 active:opacity-70" style={{background:'#111'}}>{L('openPrint')}</button>
     </Modal>
   );
 }

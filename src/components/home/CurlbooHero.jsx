@@ -1,50 +1,48 @@
 export default function CurlbooHero({ name, streak, isBirthday, lang }) {
   return (
     <div
-      className="relative rounded-3xl overflow-hidden shadow-xl mb-4 lg:min-h-[210px]"
-      style={{
-        background: 'linear-gradient(135deg,#FF8C42 0%,#FFA850 45%,#FFB347 100%)',
-        minHeight: '160px',
-      }}
+      className="relative rounded-2xl overflow-hidden mb-4"
+      style={{ background: '#f5f5f5', border: '1px solid #e8e8e8', minHeight: '140px' }}
     >
-      {/* Decorative circles */}
-      <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full bg-white/10"/>
-      <div className="absolute -bottom-4 left-16 w-16 h-16 rounded-full bg-white/10"/>
-
       {/* Left: text */}
-      <div className="absolute left-0 top-0 bottom-0 w-[55%] flex flex-col justify-center pl-5 py-5 z-10">
+      <div className="absolute left-0 top-0 bottom-0 w-[58%] flex flex-col justify-center pl-5 py-5 z-10">
         {name && (
-          <p className="text-white/90 font-bold text-xs mb-0.5">
-            {lang === 'en' ? `Hi, ${name}!` : `你好，${name}！`}
+          <p className="text-xs font-medium mb-1" style={{ color: '#999' }}>
+            {lang === 'en' ? `Hi, ${name}` : `你好，${name}`}
           </p>
         )}
-        <h2 className="text-white font-black text-[26px] leading-tight tracking-tight drop-shadow-sm">
+        <h2 className="font-black text-2xl leading-tight" style={{ color: '#111', letterSpacing: '-0.5px' }}>
           數學特訓
         </h2>
-        <p className="text-white/80 text-[11px] font-semibold mb-3 tracking-wide">
+        <p className="text-xs font-medium mt-0.5" style={{ color: '#aaa' }}>
           Maths Quests
         </p>
-
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5 mt-3">
           {streak > 0 && (
-            <span className="inline-flex items-center gap-1 bg-white/25 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/30">
+            <span
+              className="text-[11px] font-bold px-2.5 py-1 rounded-full"
+              style={{ background: '#111', color: '#fff' }}
+            >
               🔥 {streak}{lang === 'en' ? 'd streak' : '日連續'}
             </span>
           )}
           {isBirthday && (
-            <span className="inline-flex items-center gap-1 bg-white/25 backdrop-blur-sm text-white text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/30">
-              🎂 {lang === 'en' ? 'Happy Birthday!' : '生日快樂！'}
+            <span
+              className="text-[11px] font-bold px-2.5 py-1 rounded-full"
+              style={{ background: '#111', color: '#fff' }}
+            >
+              🎂 {lang === 'en' ? 'Birthday!' : '生日快樂！'}
             </span>
           )}
         </div>
       </div>
 
-      {/* Right: mascot */}
-      <div className="absolute right-0 bottom-0 w-[50%] h-[130%] flex items-end justify-end pr-1">
+      {/* Right: mascot — dedicated illustrated zone, no overlap with UI */}
+      <div className="absolute right-0 bottom-0 w-[48%] h-[130%] flex items-end justify-end pr-1">
         <img
           src="/curlboo_herobanner.png"
-          alt="Curlboo Bear and Fluffy Bunny"
-          className="w-full h-full object-contain object-bottom drop-shadow-2xl"
+          alt="Curlboo Bear"
+          className="w-full h-full object-contain object-bottom"
         />
       </div>
     </div>

@@ -12,7 +12,7 @@ export default function SignUpPromptModal({isOpen,onClose,onSignUp,lang}){
       </div>
       <div className="flex gap-2">
         <button onClick={onClose} className="flex-1 py-2.5 border-2 border-gray-200 rounded-xl font-bold text-sm text-gray-500 active:bg-gray-100 active:scale-[0.97] transition-all duration-200">{zh?'稍後再說':'Maybe Later'}</button>
-        <button onClick={onSignUp} className="flex-1 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-xl font-bold text-sm active:scale-[0.97] transition-all duration-200">{zh?'免費註冊':'Sign Up Free'}</button>
+        <button onClick={onSignUp} className="flex-1 py-2.5 rounded-xl font-bold text-sm text-white transition-opacity duration-150 active:opacity-70" style={{background:'#111'}}>{zh?'免費註冊':'Sign Up Free'}</button>
       </div>
     </Modal>
   );
