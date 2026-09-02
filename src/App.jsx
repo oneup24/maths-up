@@ -7,12 +7,12 @@ const Profile      = lazy(() => import('./Profile'));
 const Login        = lazy(() => import('./pages/Login'));
 // eslint-disable-next-line no-unused-vars -- motion is used as <motion.div> in JSX
 import {motion,AnimatePresence} from 'framer-motion';
-import {Eye,ChevronDown,ChevronUp,X,Check,AlertTriangle,ListOrdered} from 'lucide-react';
-import {TOPICS,GRADE_INFO,DIFF_INFO,buildExam,printExam,chkAns,saveHistory,loadHistory,clearHistory} from './engine/index';
+import {Eye,X,Check,AlertTriangle,ListOrdered} from 'lucide-react';
+import {TOPICS,GRADE_INFO,buildExam,printExam,chkAns,saveHistory,loadHistory,clearHistory} from './engine/index';
 import {t} from './lib/i18n';
 import { useAuth } from './hooks/useAuth';
 import { saveExamResult, saveResponses } from './services/api';
-import {GC} from './lib/colors';
+import {GC,GC_HEX} from './lib/colors';
 import {track} from './lib/track';
 import {pageTransition} from './lib/animations';
 import { setSentryUser, setSentryContext } from './lib/sentry';
@@ -22,15 +22,11 @@ import PrintModal from './components/modals/PrintModal';
 import SignUpPromptModal from './components/modals/SignUpPromptModal';
 import PinModal from './components/modals/PinModal';
 import PageShell from './components/ui/PageShell';
-import GradeGrid from './components/home/GradeGrid';
-import HistoryList from './components/home/HistoryList';
 import RecordTab from './components/home/RecordTab';
-import GuestBanner from './components/home/GuestBanner';
-import TrapInfoBox from './components/home/TrapInfoBox';
 import SplashScreen from './components/SplashScreen';
 import BottomTabBar from './components/ui/BottomTabBar';
 import Sidebar from './components/ui/Sidebar';
-import CurlbooHero from './components/home/CurlbooHero';
+import HomeDashboard from './components/home/HomeDashboard';
 import SettingsView from './components/settings/SettingsView';
 import ScoreReport from './components/exam/ScoreReport';
 import ExamHeader from './components/exam/ExamHeader';
@@ -247,18 +243,13 @@ export default function App(){
 
   /* ════════ AUTH LOADING ════════ */
   if(authLoading) return (
-    <div className="min-h-screen bg-[#FFF4EC] p-4 pb-20">
+    <div className="min-h-screen bg-white p-4 pb-20">
       <div className="max-w-lg mx-auto">
-        <div className="flex justify-between items-center mb-1">
-          {[1,2,3].map(i=><div key={i} className="w-11 h-11 rounded-xl bg-white/60 animate-pulse"/>)}
-        </div>
-        <div className="flex flex-col items-center py-8 mb-4">
-          <div className="w-48 h-48 rounded-3xl bg-white/60 animate-pulse mb-3"/>
-          <div className="w-40 h-6 rounded-lg bg-white/60 animate-pulse mb-2"/>
-          <div className="w-56 h-4 rounded-lg bg-white/40 animate-pulse"/>
-        </div>
-        <div className="grid grid-cols-2 gap-3 mb-3">
-          {[1,2,3,4,5,6].map(i=><div key={i} className="h-28 rounded-3xl bg-white/40 animate-pulse"/>)}
+        <div className="h-10 w-32 rounded-xl bg-gray-100 animate-pulse mb-4"/>
+        <div className="h-16 w-full rounded-2xl bg-gray-100 animate-pulse mb-4"/>
+        <div className="h-28 w-full rounded-2xl bg-gray-100 animate-pulse mb-3"/>
+        <div className="grid grid-cols-2 gap-3">
+          {[1,2,3,4].map(i=><div key={i} className="h-20 rounded-2xl bg-gray-100 animate-pulse"/>)}
         </div>
       </div>
     </div>
@@ -284,7 +275,7 @@ export default function App(){
       <PrintModal isOpen={showPrint} onClose={()=>setShowPrint(false)} studentName={studentName} onNameChange={setStudentName} printAns={printAns} setPrintAns={setPrintAns} onPrint={()=>{printExam(sections,grade,printAns,studentName,difficulty);setShowPrint(false)}} L={L}/>
       <SignUpPromptModal isOpen={showSignUpPrompt} onClose={()=>setShowSignUpPrompt(false)} onSignUp={()=>{setShowSignUpPrompt(false);setSkippedLogin(false);track('guest_signup_prompt_clicked');}} lang={lang}/>
       <PinModal isOpen={showPinModal} onClose={()=>{setShowPinModal(false);setPendingRevealKey(null);setPendingRevealType(null);}} onSuccess={onPinSuccess} lang={lang}/>
-      <div className="lg:flex min-h-screen" style={{background:'linear-gradient(160deg,#FFF4EC 0%,#FFF8F2 50%,#FFF1E6 100%)'}}>
+      <div className="lg:flex min-h-screen bg-white">
         <Sidebar activeTab={sidebarActiveTab} onTab={handleTab} lang={lang} user={user} onSignOut={async()=>{await signOut();setSkippedLogin(false);}}/>
         <div className="flex-1 min-w-0">
 
@@ -297,11 +288,19 @@ export default function App(){
           {view==='home'&&(
             <motion.div key="home" {...pageTransition}><PageShell>
               {(activeTab==='home'||activeTab==='quests')&&(
-                <>
-                  <CurlbooHero name={studentName} streak={streak} isBirthday={isBirthday} lang={lang}/>
-                  {!user&&<GuestBanner onSignUp={()=>setSkippedLogin(false)} lang={lang}/>}
-                  <GradeGrid gradeBest={gradeBest} onSelect={g=>{setGrade(g);track('grade_selected',{grade:g});setView('settings')}} L={L}/>
-                </>
+                <HomeDashboard
+                  grade={grade}
+                  onGradeChange={g=>{setGrade(g);localStorage.setItem('selected_grade',g);track('grade_selected',{grade:g});}}
+                  gradeBest={gradeBest}
+                  history={history}
+                  streak={streak}
+                  isBirthday={isBirthday}
+                  user={user}
+                  lang={lang}
+                  L={L}
+                  onStartExam={()=>setView('settings')}
+                  onSignUp={()=>setSkippedLogin(false)}
+                />
               )}
               {activeTab==='history'&&(
                 <RecordTab streak={streak} gradeBest={gradeBest} history={history} onClear={()=>{clearHistory();setHistory([])}} lang={lang} L={L} user={user}/>
@@ -320,7 +319,7 @@ export default function App(){
           {/* ── Exam ── */}
           {view==='exam'&&(
             <motion.div key="exam" {...pageTransition}>
-            <div className="min-h-screen p-3 pb-24 lg:pb-8" style={{background:'linear-gradient(160deg,#FFF4EC 0%,#FFF8F2 50%,#FFF1E6 100%)'}}>
+            <div className="min-h-screen bg-white p-3 pb-24 lg:pb-8">
               <div className="max-w-xl lg:max-w-3xl mx-auto">
                 <ExamHeader grade={grade} co={co} difficulty={difficulty} totalQs={totalQs} grandTotal={grandTotal} trapCount={trapCount} useTimer={useTimer} isMarked={isMarked} running={running} setRunning={setRunning} timeLeft={timeLeft} fmt={fmt} answeredQs={answeredQs} onBack={()=>{setRunning(false);setView('settings')}} L={L} lang={lang}/>
 
@@ -329,7 +328,7 @@ export default function App(){
                 {/* Section nav */}
                 <div className="flex gap-1 mb-2 overflow-x-auto pb-1 -mx-1 px-1">
                   {sections.map((sec,i)=>(
-                    <a key={i} href={'#s'+i} className="shrink-0 px-3 py-2 bg-white border rounded-lg text-xs font-bold text-gray-600 hover:bg-indigo-50 active:bg-indigo-100 active:scale-[0.97] flex items-center gap-1 transition-all duration-200">
+                    <a key={i} href={'#s'+i} className="shrink-0 px-3 py-2 bg-white border rounded-lg text-xs font-bold text-gray-600 active:bg-gray-50 active:scale-[0.97] flex items-center gap-1 transition-all duration-200" style={{borderColor:'#e8e8e8'}}>
                       {sec.label}（{sec.qs.length}）{isMarked&&<span className="text-xs text-gray-400">{secScores(i)}/{sec.total}</span>}
                     </a>
                   ))}
@@ -341,11 +340,11 @@ export default function App(){
                   if(wrongOnly&&filteredQs.length===0)return null;
                   return(
                     <div key={si} id={'s'+si} className="mb-4">
-                      <div className={"bg-gradient-to-r "+GC[co]+" text-white rounded-t-xl px-4 py-2"}>
+                      <div className="text-white rounded-t-xl px-4 py-2" style={{background:GC_HEX[co]}}>
                         <div className="flex justify-between items-center"><span className="font-bold text-sm sm:text-base">{sec.label}. {sec.nm}（{sec.qs.length}題）</span><span className="text-sm font-bold">{isMarked?secScores(si)+'/':''}{sec.total}分</span></div>
                         <p className="text-xs opacity-80">{sec.nt}</p>
                       </div>
-                      <div className="bg-white/80 backdrop-blur-sm rounded-b-xl border border-t-0 border-white/50 divide-y divide-gray-100">
+                      <div className="bg-white rounded-b-xl border border-t-0 divide-y" style={{borderColor:'#e8e8e8',divideColor:'#f5f5f5'}}>
                         {filteredQs.map(item=>{
                           var q=item.q,qi=item.qi,k=item.k;
                           var isR=revealed[k],isS=stepsShown[k],mr=markRes[k];
@@ -366,11 +365,14 @@ export default function App(){
                                   {q.isMC&&q.opts&&(
                                     <div className="mt-2 grid grid-cols-1 gap-1">{q.opts.map(o=>{
                                       var isSel=mcSel[k]===o.l;
-                                      var cls=isMarked?(o.l===q.a?'border-emerald-400 bg-emerald-50 font-bold text-emerald-700':isSel&&o.l!==q.a?'border-red-400 bg-red-50 text-red-700 line-through':'border-gray-200 bg-gray-50 text-gray-400'):(isSel?'border-indigo-400 bg-indigo-100 font-bold text-indigo-700 ring-2 ring-indigo-200':'border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer');
+                                      var gcHex=GC_HEX[co]||'#111';var gcSoftBg=GC_HEX[co]+'18';
+                                      var cls=isMarked?(o.l===q.a?'border-emerald-400 bg-emerald-50 font-bold text-emerald-700':isSel&&o.l!==q.a?'border-red-400 bg-red-50 text-red-700 line-through':'border-gray-200 bg-gray-50 text-gray-400'):(isSel?'font-bold cursor-pointer':'border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer');
                                       return(
                                         <motion.button key={o.l} whileTap={isMarked?{}:{scale:0.97}} onClick={()=>{if(!isMarked)setMcSel(p=>({...p,[k]:o.l}))}} disabled={isMarked}
-                                          className={"text-sm px-3 py-3 rounded-xl border-2 text-left flex items-center gap-2 transition-all duration-200 "+cls}>
-                                          <span className={"w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold "+(isSel&&!isMarked?'bg-indigo-500 border-indigo-500 text-white':isMarked&&o.l===q.a?'bg-emerald-500 border-emerald-500 text-white':'border-gray-300 text-gray-400')}>{o.l}</span>
+                                          className={"text-sm px-3 py-3 rounded-xl border-2 text-left flex items-center gap-2 transition-all duration-200 "+cls}
+                                          style={!isMarked&&isSel?{borderColor:gcHex,background:gcSoftBg,color:gcHex}:{}}>
+                                          <span className={"w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold "+(isMarked&&o.l===q.a?'bg-emerald-500 border-emerald-500 text-white':'border-gray-300 text-gray-400')}
+                                            style={!isMarked&&isSel?{background:gcHex,borderColor:gcHex,color:'#fff'}:{}}>{o.l}</span>
                                           <span>{o.v}</span>
                                           {isMarked&&o.l===q.a&&<Check size={14} className="ml-auto text-emerald-500"/>}
                                           {isMarked&&isSel&&o.l!==q.a&&<X size={14} className="ml-auto text-red-500"/>}
@@ -381,11 +383,12 @@ export default function App(){
                                   {!q.isMC&&(sec.id==='work'?(
                                     <textarea value={answers[k]||''} onChange={e=>{if(!isMarked)setAnswers(p=>({...p,[k]:e.target.value}))}}
                                       placeholder={L('workPH')} disabled={isMarked}
-                                      className={"w-full mt-2 px-4 py-3 border-2 rounded-2xl text-base resize-y focus:outline-none "+(isMarked?(mr&&mr.ok?'border-emerald-300 bg-emerald-50':'border-red-300 bg-red-50'):'border-gray-200 focus:border-indigo-400')} rows={3}/>
+                                      className={"w-full mt-2 px-4 py-3 border-2 rounded-2xl text-base resize-y focus:outline-none "+(isMarked?(mr&&mr.ok?'border-emerald-300 bg-emerald-50':'border-red-300 bg-red-50'):'border-gray-200')}
+                                      style={!isMarked?{'--tw-border-opacity':1}:{}} rows={3}/>
                                   ):(
                                     <input type="text" inputMode="decimal" value={answers[k]||''} onChange={e=>{if(!isMarked)setAnswers(p=>({...p,[k]:e.target.value}))}}
                                       placeholder={L('ansPH')} disabled={isMarked}
-                                      className={"w-full mt-2 px-4 py-3 border-2 rounded-2xl text-base focus:outline-none "+(isMarked?(mr&&mr.ok?'border-emerald-300 bg-emerald-50':'border-red-300 bg-red-50'):'border-gray-200 focus:border-indigo-400')}/>
+                                      className={"w-full mt-2 px-4 py-3 border-2 rounded-2xl text-base focus:outline-none "+(isMarked?(mr&&mr.ok?'border-emerald-300 bg-emerald-50':'border-red-300 bg-red-50'):'border-gray-200')}/>
                                   ))}
                                   {isMarked&&mr&&(
                                     <div className={"mt-2 px-3 py-2 rounded-lg border "+(mr.ok?'bg-emerald-50 border-emerald-200':'bg-red-50 border-red-200')}>
