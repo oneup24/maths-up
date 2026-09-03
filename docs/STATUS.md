@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-08-25 (GROUP G complete — §I0–§I10 aligned verbatim with patching_20260925.md)
+**Last updated:** 2026-09-03 (ScoreReport parent-report design tokens applied: backdrop-blur removed, 1px hairline border, solid white canvas)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -86,6 +86,17 @@
 | content:check v0 script | ✅ | `scripts/content-check.js` — checks UTF-8 no BOM, items.csv headers, ID_REGISTRY.json valid JSON |
 | grade3.js Math.random bug | ✅ | `src/engine/grades/grade3.js:27` — replaced inline `.sort(()=>Math.random()-0.5)` with `shuffle()` |
 | 10 soft-launch families sign in | ⚠️ | 4/10 recruited → NEEDS FOUNDER: current count |
+
+## UI/UX Overhaul (2026-09-02)
+
+| Item | Status | Evidence |
+|------|--------|----------|
+| kid-practice.DESIGN.md tokens applied to home + exam | ✅ | White canvas, hairline borders, zero backdrop-blur across PageShell, BottomTabBar, Sidebar, ExamHeader, ExamActions, FloatingSubmit, modals |
+| GradeCard avatars stripped | ✅ | `src/components/home/GradeCard.jsx` — solid hex fills, no avatar panel |
+| GC_HEX + GC_SOFT color tokens | ✅ | `src/lib/colors.js` — 6 grade solid hex values + soft tints |
+| HomeDashboard (kid's 3-col dashboard) | ✅ | `src/components/home/HomeDashboard.jsx` — grade chip picker, START EXAM CTA, last result, recent history, desktop right widget panel |
+| Login page desktop 2-col layout | ✅ | `src/pages/Login.jsx` — left panel canvas-dark (#010120) + right panel white; mobile = form only |
+| ScoreReport design tokens (parent-report.DESIGN.md) | ✅ | `src/components/exam/ScoreReport.jsx:10` — `bg-white` solid canvas (was `bg-white/90`), `border` 1px hairline (was `border-2`), no backdrop-blur, no inline shadow. Buttons `border` 1px (was `border-2`); `py-2` matches parent-report `button-secondary` 8px vertical padding |
 
 ## Phase 3D — Soft Launch
 

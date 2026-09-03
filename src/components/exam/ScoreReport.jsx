@@ -7,7 +7,7 @@ import ExportPDFButton from '../ExportPDFButton';
 export default function ScoreReport({isMarked,animScore,animPct,pct,grandTotal,fb,user,cloudSaved,lang,sections,secScores,topicSummary,wrongOnly,setWrongOnly,resetMarking,generate,retryWrong,markRes,answers,mcSel,totScore,grade,studentName,L}){
   return(
     <AnimatePresence>{isMarked&&(
-      <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 mb-3 border-2 border-[#e3e8ee]" style={{boxShadow:'rgba(0,55,112,0.08) 0 8px 24px, rgba(0,55,112,0.04) 0 2px 6px'}} aria-live="polite">
+      <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} className="bg-white rounded-2xl p-4 mb-3 border border-[#e3e8ee]" aria-live="polite">
         <div className="flex items-center justify-center gap-1 mb-1"><Trophy size={20} className="text-yellow-500"/><h3 className="font-light text-lg">{L('scoreReport')}</h3></div>
         <div className="text-center my-3">
           <div><span className="text-5xl font-light tracking-[-0.96px] tabular-nums text-[#5b3e1e]">{animScore}</span><span className="text-2xl text-[#e3e8ee]"> / {grandTotal}</span></div>
@@ -53,11 +53,11 @@ export default function ScoreReport({isMarked,animScore,animPct,pct,grandTotal,f
           </div>
         )}
         <div className="flex gap-2 mt-3 flex-wrap">
-          <button onClick={()=>setWrongOnly(!wrongOnly)} className={"flex-1 min-w-[80px] py-2.5 rounded-full text-xs font-bold border-2 transition-all duration-200 active:scale-[0.97] "+(wrongOnly?'border-red-400 bg-red-50 text-red-600':'border-[#e3e8ee] text-[#64748d]')}>{wrongOnly?L('showAll'):L('showWrong')}</button>
-          <button onClick={resetMarking} className="flex-1 min-w-[80px] py-2.5 rounded-full text-xs font-bold border-2 border-[#533afd] text-[#533afd] flex items-center justify-center gap-1 transition-all duration-200 active:scale-[0.97]"><RotateCcw size={12}/>{L('retry')}</button>
-          <button onClick={generate} className="flex-1 min-w-[80px] py-2.5 rounded-full text-xs font-bold border-2 border-[#533afd] text-[#533afd] flex items-center justify-center gap-1 transition-all duration-200 active:scale-[0.97]"><RotateCcw size={12}/>{L('newExam')}</button>
+          <button onClick={()=>setWrongOnly(!wrongOnly)} className={"flex-1 min-w-[80px] py-2 rounded-full text-xs font-bold border transition-all duration-200 active:scale-[0.97] "+(wrongOnly?'border-red-400 bg-red-50 text-red-600':'border-[#e3e8ee] text-[#64748d]')}>{wrongOnly?L('showAll'):L('showWrong')}</button>
+          <button onClick={resetMarking} className="flex-1 min-w-[80px] py-2 rounded-full text-xs font-bold border border-[#533afd] text-[#533afd] flex items-center justify-center gap-1 transition-all duration-200 active:scale-[0.97]"><RotateCcw size={12}/>{L('retry')}</button>
+          <button onClick={generate} className="flex-1 min-w-[80px] py-2 rounded-full text-xs font-bold border border-[#533afd] text-[#533afd] flex items-center justify-center gap-1 transition-all duration-200 active:scale-[0.97]"><RotateCcw size={12}/>{L('newExam')}</button>
           <ExportPDFButton sections={sections} markRes={markRes} answers={answers} mcSel={mcSel} topicSummary={topicSummary} totScore={totScore} grandTotal={grandTotal} pct={pct} grade={grade} lang={lang} studentName={studentName} user={user}/>
-          {Object.values(markRes).some(r=>!r.ok)&&<button onClick={retryWrong} className="w-full py-2.5 rounded-full text-xs font-bold border-2 border-rose-300 bg-rose-50 text-rose-600 flex items-center justify-center gap-1 mt-1 transition-all duration-200 active:scale-[0.97]">{L('reviewWrong')}</button>}
+          {Object.values(markRes).some(r=>!r.ok)&&<button onClick={retryWrong} className="w-full py-2 rounded-full text-xs font-bold border border-rose-300 bg-rose-50 text-rose-600 flex items-center justify-center gap-1 mt-1 transition-all duration-200 active:scale-[0.97]">{L('reviewWrong')}</button>}
         </div>
       </motion.div>
     )}</AnimatePresence>
