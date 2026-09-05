@@ -24,7 +24,7 @@ const slideVariants={
   exit:{x:-80,opacity:0,transition:{duration:0.3}},
 };
 
-/* ── Progress dots — white on orange bg ── */
+/* ── Progress dots — indigo on white bg ── */
 function OnboardingProgress({current}){
   var dotIdx=current-1;
   if(dotIdx<0||dotIdx>4)return null;
@@ -32,9 +32,9 @@ function OnboardingProgress({current}){
     <div className="flex gap-2 justify-center mt-5">
       {[0,1,2,3,4].map(i=>(
         <div key={i} className={'rounded-full transition-all duration-300 '+(
-          i===dotIdx?'w-6 h-2.5 bg-white'
-          :i<dotIdx?'w-2.5 h-2.5 bg-white/60'
-          :'w-2.5 h-2.5 bg-white/30'
+          i===dotIdx?'w-6 h-2.5 bg-[#533afd]'
+          :i<dotIdx?'w-2.5 h-2.5 bg-[#533afd]/60'
+          :'w-2.5 h-2.5 bg-gray-300'
         )}/>
       ))}
     </div>
@@ -116,19 +116,19 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
   var cardPt=step===3?'pt-16':step===1?'pt-0':step===5&&authMode?'pt-8':'pt-20';
 
   return(
-    <div className="min-h-screen bg-gradient-to-b from-orange-500 to-amber-400 flex flex-col items-center justify-center p-5">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-5">
 
       {/* Top progress bar — steps 1-5 */}
       {step>=1&&step<=5&&(
-        <div className="fixed top-0 left-0 right-0 h-1.5 bg-white/25 z-50">
-          <div className="h-full bg-white rounded-full transition-all duration-500" style={{width:(step/5*100)+'%'}}/>
+        <div className="fixed top-0 left-0 right-0 h-1.5 bg-gray-200 z-50">
+          <div className="h-full bg-[#533afd] rounded-full transition-all duration-500" style={{width:(step/5*100)+'%'}}/>
         </div>
       )}
 
-      {/* Back button — white ghost on orange */}
+      {/* Back button — light ghost on white */}
       {step>=1&&step<=5&&(
         <button onClick={goBack} aria-label="Back"
-          className="fixed top-3 left-4 p-2.5 min-w-[44px] min-h-[44px] rounded-xl bg-white/20 text-white active:bg-white/30 active:scale-[0.97] transition-all flex items-center justify-center z-50">
+          className="fixed top-3 left-4 p-2.5 min-w-[44px] min-h-[44px] rounded-xl bg-gray-100 text-gray-700 active:bg-gray-200 active:scale-[0.97] transition-all flex items-center justify-center z-50">
           <ArrowLeft size={20}/>
         </button>
       )}
@@ -152,11 +152,11 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
             {/* Title */}
             <motion.h1
               initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{delay:0.3}}
-              className="text-4xl font-black text-white mb-1 drop-shadow-md"
+              className="text-4xl font-black text-gray-800 mb-1"
             >Maths Quests</motion.h1>
             <motion.p
               initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.4}}
-              className="text-white/75 text-sm font-semibold mb-10 tracking-wide"
+              className="text-gray-500 text-sm font-semibold mb-10 tracking-wide"
             >Curlboo Bear &amp; Friends</motion.p>
 
             {/* Language buttons */}
@@ -391,7 +391,7 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
         </div>
       )}
 
-      {/* Progress dots — white on orange bg */}
+      {/* Progress dots — indigo on white bg */}
       <OnboardingProgress current={step}/>
 
     </div>
