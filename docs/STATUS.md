@@ -1,7 +1,23 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-09-03 (ScoreReport parent-report design tokens applied: backdrop-blur removed, 1px hairline border, solid white canvas)
+**Last updated:** 2026-09-09 (Phase 1B complete: 16 missing HK EDB topics added — 48 new generators, 79/79 curriculum coverage)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
+
+---
+
+## Phase 1B — Engine Topic Coverage Completion (NEW)
+
+| Item | Status | Evidence |
+|------|--------|----------|
+| 16 missing HK EDB topics added | ✅ | 2M1/2M2/2M3/2S1/2S2/2S3/2S4 in `grade2.js`; 3M1-3M5/3S1/3S2 in `grade3.js`; 5A1/5A2 in `grade5.js` |
+| 48 new generators (16 topics × 3 d-levels) | ✅ | `node -e "import('./src/engine/grades/grade{2,3,5}.js')"` → 16 new pools with 3 generators each |
+| config.js TOPICS individual sub-topics | ✅ | `grep -E "2M1\|2M2\|2M3\|2S1\|2S2\|2S3\|2S4\|3M1-5\|3S1\|3S2\|5A1\|5A2" src/engine/config.js` |
+| 79/79 curriculum coverage (100%) | ✅ | `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md` |
+| `arch:check` 5 rules pass | ✅ | `pnpm arch:check` → all green |
+| `content:check` pass | ✅ | `pnpm content:check` → all green |
+| Smoke test 2400 invocations | ✅ | No empty answers, no multiple-correct MC options, no syntax errors |
+
+See `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md` for full audit history.
 
 ---
 
@@ -9,8 +25,8 @@
 
 | Item | Status | Evidence |
 |------|--------|----------|
-| 329 procedural generators (P1-P6) | ✅ | `rg -c '\(\)=>\{' src/engine/grades/*.js → 329 total` |
-| HK EDB curriculum topics | ✅ | `src/engine/grades/*.js` |
+| 377 procedural generators (P1-P6) [was 329, +48 in Phase 1B] | ✅ | `rg -c '\(\)=>\{' src/engine/grades/*.js` |
+| HK EDB curriculum topics (100% coverage) | ✅ | `src/engine/grades/*.js` (all 79 official units covered) |
 | 5 question types, 3 difficulties | ✅ | `grep 'SECT_RATIOS\|DIFF_INFO' src/engine/config.js` |
 | Answer checker (chkAns) | ✅ | `src/engine/core.js:1` |
 | Trap items, SVG figures | ✅ | `src/engine/grades/*.js` |

@@ -270,9 +270,29 @@ export const grade5={
   ()=>{var items=[{l:'一月',v:ri(100,200)},{l:'二月',v:ri(80,180)},{l:'三月',v:ri(120,250)},{l:'四月',v:ri(90,200)}];var total=items.reduce((s,i)=>s+i.v,0);var avg=Math.round(total/4);return{d:3,tp:'short',q:'棒形圖顯示四個月銷量。平均銷量是多少？哪個月最接近平均值？',fig:FIG.bars(items),a:avg+','+items.reduce((c,i)=>Math.abs(i.v-avg)<Math.abs(c.v-avg)?i:c,items[0]).l,s:['平均: '+avg,'逐一比較差距'],sc:3}},
   // 兩校男女生總數比較 (d:3)
   ()=>{var a1=ri(150,300),a2=ri(100,250),b1=ri(120,280),b2=ri(130,260);var items=[{l:'男A',v:a1},{l:'女A',v:a2},{l:'男B',v:b1},{l:'女B',v:b2}];return{d:3,tp:'short',q:'複合棒形圖顯示 A 校和 B 校的男女生人數。兩校的男生總數比女生總數相差多少人？',fig:FIG.bars(items),a:String(Math.abs((a1+b1)-(a2+b2))),s:['男生總數：'+a1+' + '+b1+' = '+(a1+b1),'女生總數：'+a2+' + '+b2+' = '+(a2+b2),'相差：|'+(a1+b1)+' − '+(a2+b2)+'| = '+Math.abs((a1+b1)-(a2+b2))],sc:3}}
+],
+
+/* ═══════════ 5A1 代數的初步認識 [Phase 1B] ═══════════ */
+'5A1':[
+  // d:1 substitution calc
+  ()=>{var a=ri(2,5),x=ri(3,8),b=ri(2,15);var ans=a*x+b;return{d:1,tp:'calc',q:'若 x = '+x+'，求 '+a+'x + '+b+' 的值。',a:String(ans),s:['代入：'+a+' × '+x+' + '+b+' = '+(a*x)+' + '+b+' = '+ans],sc:1}},
+  // d:2 fill — express total using variable then evaluate
+  ()=>{var h=ri(2,5);var d=ri(2,5);return{d:2,tp:'fill',q:nm()+'每天溫習 y 小時。'+d+' 天共溫習 ____ 小時（用 y 表示）。若 y = '+h+'，共溫習 ____ 小時。',a:d+'y,'+(d*h),s:[d+' 天 = y × '+d+' = '+d+'y','當 y = '+h+'：'+d+' × '+h+' = '+(d*h)],sc:2}},
+  // d:3 rectangle with variable
+  ()=>{var n=ri(3,8);return{d:3,tp:'work',q:'一個長方形，長是闊的 3 倍。設闊為 n cm。用 n 表示長是 ____ cm，周界是 ____ cm。再求 n = '+n+' 時的周界。',a:'3n,8n,'+(8*n),s:['長 = 3n','周界 = 2 × (3n + n) = 2 × 4n = 8n','當 n = '+n+'：周界 = 8 × '+n+' = '+(8*n)+' cm'],sc:3}}
+],
+
+/* ═══════════ 5A2 簡易方程(一) [Phase 1B] ═══════════ */
+'5A2':[
+  // d:1 solve x+A=B
+  ()=>{var x=ri(10,30),A=ri(15,40);var B=x+A;return{d:1,tp:'calc',q:'解方程：x + '+A+' = '+B,a:String(x),s:['移項：x = '+B+' − '+A+' = '+x,'✅ 答案：x = '+x],sc:1}},
+  // d:2 solve Cx=D (D = C*x so integer answer)
+  ()=>{var C=ri(3,8),x=ri(5,15);var D=C*x;return{d:2,tp:'calc',q:'解方程：'+C+'x = '+D,a:String(x),s:['兩邊除以 '+C+'：x = '+D+' ÷ '+C+' = '+x,'✅ 答案：x = '+x],sc:2}},
+  // d:3 word problem with age trap
+  ()=>{var A=ri(8,18),R=ri(20,50);var ans=R+A;var dAge=ri(7,10);return{d:3,tp:'work',q:nm()+'今年 '+dAge+' 歲，他有一些貼紙，給了弟弟 '+A+' 張後，剩下 '+R+' 張。他原有多少張貼紙？（設原有 x 張，列方程並求解）',a:String(ans),trap:'年齡（'+dAge+'歲）',s:['🔍 年齡是干擾資訊。','設原有 x 張：x − '+A+' = '+R,'x = '+R+' + '+A+' = '+ans+' 張'],sc:3}}
 ]
 };
 
-// Topics: 5N2, 5N3, 5N4, 5N5, 5A, 5M1, 5M2, 5S1, 5D1
-// Export: grade5 (object with 9 topic keys)
-// Total generators: 38
+// Topics: 5N2, 5N3, 5N4, 5N5, 5A, 5M1, 5M2, 5S1, 5D1, 5A1, 5A2
+// Export: grade5 (object with 11 topic keys)
+// Total generators: 44

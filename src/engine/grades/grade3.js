@@ -189,9 +189,79 @@ export const grade3={
     return{d:3,tp:'work',q:'折線圖顯示一間快餐店連續四天的漢堡包銷量。店裏有 '+dStaff+' 名員工。這四天一共賣出多少個漢堡包？',
       fig:FIG.line(data),a:String(total),trap:'員工人數（'+dStaff+'名）',
       s:['🔍 員工人數是無關資訊。','將四天的數值相加：'+data.map(d=>d.v).join(' + ')+' = '+total],sc:3}}
+],
+
+/* ═══════════ 3M1 長度和距離(四) [Phase 1B] ═══════════ */
+'3M1':[
+  // d:1 km+m to m
+  ()=>{var km=ri(1,5),m=ri(100,900,100),km2=ri(1,4),m2=ri(100,800,100);return{d:1,tp:'calc',q:km+'公里'+m+'米 + '+km2+'公里'+m2+'米 = ____ 米',a:String(km*1000+m+km2*1000+m2),s:[km+'公里 = '+km*1000+'米',km2+'公里 = '+km2*1000+'米','合計：'+km*1000+' + '+m+' + '+km2*1000+' + '+m2+' = '+(km*1000+m+km2*1000+m2)+'米'],sc:2}},
+  // d:2 hiking-distance with bus-fare trap
+  ()=>{var A=ri(2,5),B=ri(1,3);var dFare=ri(8,25);return{d:2,tp:'work',q:nm()+'由甲村步行 '+A+' 公里到乙村，再走 '+B+' 公里到丙村。巴士車費每程 $'+dFare+'（她沒有乘車）。甲村到丙村合共多少公里？',a:String(A+B),trap:'巴士車費（$'+dFare+'）',s:['🔍 她沒有乘車，車費是干擾資訊。','總距離：'+A+' + '+B+' = '+(A+B)+' 公里'],sc:2}},
+  // d:3 unit-chain fill
+  ()=>{var km=ri(2,5),m=ri(200,800,100);var total_m=km*1000+m;return{d:3,tp:'fill',q:km+'公里'+m+'米 = ____ 米 = ____ 厘米',a:total_m+','+(total_m*100),s:[km+'×1000 + '+m+' = '+total_m+' 米',total_m+' × 100 = '+(total_m*100)+' 厘米'],sc:3}}
+],
+
+/* ═══════════ 3M2 時間(三) [Phase 1B] ═══════════ */
+'3M2':[
+  // d:1 p.m. to 24h
+  ()=>{var H=ri(1,11),M=pk([0,15,20,30,45]);return{d:1,tp:'fill',q:'下午 '+H+' 時 '+M+' 分 = 24 小時制的 ____ 時 ____ 分',a:(H+12)+','+M,s:['下午 H 時 = 24 小時制的 (H+12) 時','答案是 '+(H+12)+' 時 '+M+' 分'],sc:1}},
+  // d:2 train arrival with ticket-price trap
+  ()=>{var h=ri(9,11),m=pk([0,10,20,30,40]);var A=ri(1,4),B=pk([0,10,15,20,30]);var dur=A*60+B;var endM=m+dur;var endH=h+Math.floor(endM/60);endM=endM%60;if(endH<10)endH='0'+endH;if(endM<10)endM='0'+endM;var dPrice=ri(15,45);return{d:2,tp:'work',q:'一班列車於 '+h+':'+m+' 開出，車程 '+A+' 小時 '+B+' 分。車票每張 $'+dPrice+'。到達時間是 24 小時制的幾時幾分？',a:endH+':'+endM,trap:'車票價錢（$'+dPrice+'）',s:['🔍 車票價錢與時間無關。',h+':'+m+' + '+(A*60+B)+' 分鐘','分鐘：'+m+' + '+B+' = '+(m+B)+'，進位 '+A+' 小時 → '+A+'h'+(m+B)+'m','結束：'+endH+':'+endM],sc:2}},
+  // d:3 elapsed-time work problem
+  ()=>{var h1=ri(13,15),m1=pk([15,30,45]);var h2=h1+ri(1,3),m2=pk([15,30,45]);var startMin=h1*60+m1,endMin=h2*60+m2;var dMin=endMin-startMin;var dH=Math.floor(dMin/60),dM=dMin%60;var dPeople=ri(20,50);return{d:3,tp:'work',q:'活動於 '+h1+':'+(m1<10?'0':'')+m1+' 開始，'+h2+':'+(m2<10?'0':'')+m2+' 結束。共有 '+dPeople+' 位參加者。活動歷時多久？',a:dH+'小時'+dM+'分',trap:'參加者人數（'+dPeople+'位）',s:['🔍 參加者人數與時間無關。','開始：'+h1+':'+m1,'結束：'+h2+':'+m2,'相減：'+dH+' 小時 '+dM+' 分'],sc:3}}
+],
+
+/* ═══════════ 3M3 容量 [Phase 1B] ═══════════ */
+'3M3':[
+  // d:1 L+mL to mL
+  ()=>{var A=ri(1,5),B=ri(100,900,100);return{d:1,tp:'calc',q:A+'升'+B+'毫升 = ____ 毫升',a:String(A*1000+B),s:[A+'升 = '+(A*1000)+' 毫升',A*1000+' + '+B+' = '+(A*1000+B)+' 毫升'],sc:1}},
+  // d:2 bottle drink with bottle-color trap
+  ()=>{var l=ri(1,3),ml=ri(200,800,100),pour=ri(150,400);var dColor=pk(['紅色','透明','藍色']);return{d:2,tp:'work',q:'一個'+dColor+'水樽內有 '+l+' 升 '+ml+' 毫升果汁。'+nm()+'喝了 '+pour+' 毫升後，水樽內還剩下多少毫升？',a:String(l*1000+ml-pour),trap:'水樽顏色（'+dColor+'）',s:['🔍 水樽顏色是無關資訊。',l+'升'+ml+'毫升 = '+(l*1000+ml)+' 毫升','剩下：'+(l*1000+ml)+' − '+pour+' = '+(l*1000+ml-pour)+' 毫升'],sc:2}},
+  // d:3 juice-machine short answer
+  ()=>{var rate=pk([100,200,250,500]),T=ri(3,8);var total=rate*T;var L=Math.floor(total/1000),rem_ml=total%1000;var dAge=ri(2,5);return{d:3,tp:'short',q:'一部榨汁機每分鐘製造 '+rate+' 毫升果汁，連續操作 '+T+' 分鐘。機器已使用 '+dAge+' 年。共製造多少毫升果汁？用升和毫升表示。',a:total+','+L+'升'+rem_ml+'毫升',trap:'機器使用年數（'+dAge+'年）',s:['🔍 機器使用年數是無關資訊。','總量：'+rate+' × '+T+' = '+total+' 毫升',L+' 升 = '+(L*1000)+' 毫升，'+L*1000+' + '+rem_ml+' = '+total],sc:3}}
+],
+
+/* ═══════════ 3M4 時間(四) [Phase 1B] ═══════════ */
+'3M4':[
+  // d:1 calendar facts fill
+  ()=>{return{d:1,tp:'fill',q:'一年有 ____ 個月；一星期有 ____ 天；2月通常有 ____ 天。',a:'12,7,28',s:['一年有 12 個月。','一星期有 7 天。','2月通常有 28 天（閏年 29 天）。'],sc:1}},
+  // d:2 date-arithmetic with student-count trap
+  ()=>{var days=['星期一','星期二','星期三','星期四','星期五','星期六','星期日'];var dStu=ri(20,30);var dStart=pk([1,2,3,5,6,7,8]);var dWeeks=ri(2,4);var dTotal=dStart+dWeeks*7;var targetDay=days[(dTotal-1)%7];return{d:2,tp:'work',q:'學校有 '+dStu+' 位學生。專題研習於每月 '+dStart+' 日展開，截止日是 '+dWeeks+' 週後。截止日是每月 ____ 日，是 ____。',a:dTotal+','+targetDay,trap:'學生人數（'+dStu+'位）',s:['🔍 學生人數與日期無關。',dWeeks+' 週 = '+dWeeks+' × 7 = '+(dWeeks*7)+' 天',dStart+' + '+(dWeeks*7)+' = '+dTotal,days[(dStart-1)%7]+' 起算，'+dWeeks+' 週後是 '+targetDay],sc:2}},
+  // d:3 leap-year MC
+  ()=>{return{d:3,tp:'mc',q:'今年二月有 28 天，去年二月也是 28 天。今年是閏年嗎？閏年的二月有多少天？',isMC:true,opts:[{l:'A',v:'不是閏年,29',c:true},{l:'B',v:'是閏年,29',c:false},{l:'C',v:'無法確定,28',c:false}],a:'A',s:['今年和去年二月都是 28 天 → 今年不是閏年。','閏年的二月有 29 天。'],sc:3}}
+],
+
+/* ═══════════ 3M5 重量 [Phase 1B] ═══════════ */
+'3M5':[
+  // d:1 kg+g to g
+  ()=>{var A=ri(1,4),B=ri(100,900,100),C=ri(1,3),D=ri(100,900,100);return{d:1,tp:'calc',q:A+'公斤'+B+'克 + '+C+'公斤'+D+'克 = ____ 克',a:String(A*1000+B+C*1000+D),s:[A+'kg'+B+'g = '+(A*1000+B)+' 克',C+'kg'+D+'g = '+(C*1000+D)+' 克','合計：'+(A*1000+B)+' + '+(C*1000+D)+' = '+(A*1000+B+C*1000+D)+' 克'],sc:2}},
+  // d:2 watermelon+apple with price-per-kg trap
+  ()=>{var P=ri(2,5),Q=pk([200,500]);var R=ri(150,400);var dPrice=ri(20,40);return{d:2,tp:'work',q:'西瓜重 '+P+' 公斤 '+Q+' 克，蘋果重 '+R+' 克。西瓜每公斤售 $'+dPrice+'。西瓜和蘋果共重多少克？',a:String(P*1000+Q+R),trap:'西瓜每公斤價錢（$'+dPrice+'）',s:['🔍 價錢與重量無關。','西瓜：'+P+'kg'+Q+'g = '+(P*1000+Q)+' 克','合計：'+(P*1000+Q)+' + '+R+' = '+(P*1000+Q+R)+' 克'],sc:2}},
+  // d:3 unit conversion fill
+  ()=>{return{d:3,tp:'fill',q:'1.5 公斤 = ____ 克；2750 克 = ____ 公斤 ____ 克',a:'1500,2,750',s:['1 公斤 = 1000 克 → 1.5 公斤 = 1500 克。','2750 克 = 2 × 1000 + 750 → 2 公斤 750 克。'],sc:3}}
+],
+
+/* ═══════════ 3S1 四邊形(二) [Phase 1B] ═══════════ */
+'3S1':[
+  // d:1 mc which-shape-must-have-two-pairs-parallel
+  ()=>{return{d:1,tp:'mc',q:'以下哪個四邊形必定有兩組對邊平行？',isMC:true,opts:[{l:'A',v:'平行四邊形',c:true},{l:'B',v:'梯形',c:false},{l:'C',v:'不規則四邊形',c:false}],a:'A',s:['平行四邊形定義：有兩組對邊分別平行。','梯形只有一組對邊平行。','不規則四邊形沒有平行的對邊。'],sc:1}},
+  // d:2 parallelogram perimeter with area trap
+  ()=>{var a=ri(6,12),b=ri(4,9);if(a===b)b+=1;var area=a*b;return{d:2,tp:'calc',q:'平行四邊形相鄰兩邊分別是 '+a+' cm 和 '+b+' cm，面積是 '+area+' cm²。它的周界是多少？',a:String(2*(a+b)),trap:'面積（'+area+' cm²）',s:['🔍 計算周界不需要面積，面積是干擾資訊。','周界 = 2 × ('+a+' + '+b+') = '+2*(a+b)+' cm'],sc:2}},
+  // d:3 rhombus word problem
+  ()=>{var S=ri(5,12),N=ri(3,6);return{d:3,tp:'work',q:nm()+'用金屬條鑲邊 '+N+' 個相同的菱形相框，邊長 '+S+' 厘米。鑲邊總共需要多少厘米金屬條？(「菱形一定有 4 個直角」這句話對嗎？)',a:String(4*S*N)+',不對',s:['菱形只有四邊等長，不一定有 4 個直角。','每個菱形有 4 條邊，每條 '+S+' cm。','總金屬條：4 × '+S+' × '+N+' = '+(4*S*N)+' cm'],sc:3}}
+],
+
+/* ═══════════ 3S2 三角形 [Phase 1B] ═══════════ */
+'3S2':[
+  // d:1 angle sum fill
+  ()=>{var A=ri(30,60),B=ri(40,80);if(A+B>=180){A=40;B=70;}return{d:1,tp:'fill',q:'三角形三個內角之和是 ____ 度。如果兩個角是 '+A+'° 和 '+B+'°，第三個角是 ____ 度。',a:'180,'+(180-A-B),s:['三角形內角和 = 180°。','第三角 = 180 − '+A+' − '+B+' = '+(180-A-B)+'°'],sc:1}},
+  // d:2 mc identify triangle type from angles
+  ()=>{var A=ri(30,60);var dStu=ri(20,30);return{d:2,tp:'mc',q:'一個三角形有一個角是 90°，另一個是 '+A+'°。班上有 '+dStu+' 位同學。這是哪種三角形？',isMC:true,opts:[{l:'A',v:'直角三角形',c:true},{l:'B',v:'鈍角三角形',c:false},{l:'C',v:'銳角三角形',c:false}],a:'A',trap:'學生人數（'+dStu+'位）',s:['🔍 學生人數與題目無關。','已有一個 90° 角 → 直角三角形。','第三角 = 90 − '+A+' = '+(90-A)+'°，小於 90°。'],sc:2}},
+  // d:3 triangle-inequality
+  ()=>{var s1=ri(3,5),s2=ri(4,6),s3=s1+s2+ri(1,3);return{d:3,tp:'work',q:nm()+'有三根竹籤，長度分別是 '+s1+' cm、'+s2+' cm 和 '+s3+' cm。這三根竹籤可以拼成一個三角形嗎？',a:'不能',s:['三角不等式：任意兩邊之和必須大於第三邊。',s1+' + '+s2+' = '+(s1+s2)+'，'+s1+s2+' < '+s3+'，所以不能。'],sc:3}}
 ]
 };
 
-// Topics: 3N1, 3N2, 3N3, 3N4, 3N5, 3N6, 3M, 3S, 3D1, 3D2
-// Export: grade3 (object with 10 topic keys)
-// Total generators: 58
+// Topics: 3N1, 3N2, 3N3, 3N4, 3N5, 3N6, 3M, 3S, 3D1, 3D2, 3M1, 3M2, 3M3, 3M4, 3M5, 3S1, 3S2
+// Export: grade3 (object with 17 topic keys)
+// Total generators: 79
