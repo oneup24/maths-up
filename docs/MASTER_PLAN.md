@@ -1,8 +1,8 @@
 ---
 
-# ONEUP24 MASTER PLAN v6.0
+# ONEUP24 MASTER PLAN v6.1
 ### Status: ACTIVE — The Comprehensive Bible — Company · Products · IP · Growth
-### Last Updated: August 24, 2026
+### Last Updated: September 9, 2026
 
 Execution status lives ONLY in docs/STATUS.md. This file describes WHAT and WHY, never WHETHER.
 
@@ -40,6 +40,17 @@ PART A — COMPANY: OneUp24 Studio
 PART B — IP UNIVERSE: Curlboo & Co.
 PART C — MARKET & COMPETITION
 PART D — PRODUCT: Maths Quests (Cash Cow)
+  D1. Overview
+  D2. Topic Quest (Flagship Feature)
+  D3. Phases 3A – 3E
+  D4. Diagnostic Milestones
+  D5. Delivery Phases (4–6)
+  D6. Known Generator Bugs — Fix Plan
+  D7. time_spent_ms Diagnostic Matrix
+  D8. Content Coverage Analysis
+  D9. Past-Paper Copyright Policy
+  D10. Actionable Parent Report Standard
+  D11. Phase 1B — Engine Curriculum Coverage Completion 🆕
 PART E — PRODUCT: Off-Track (FoodSwipe)
 PART F — PRODUCT: Future Portfolio
 PART G — BUSINESS MODEL & UNIT ECONOMICS
@@ -377,7 +388,7 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 |---|---|---|
 | 1 | **Trap Item Training (干擾項訓練)** — irrelevant data in word problems that tests reading comprehension. No competitor does this. | Engine built; structured engine v1 in Phase 4B |
 | 2 | **Per-Topic Diagnostic (📊 各單元表現)** — color-coded breakdown sorted worst-first. What tutors charge $300-500/hr for. | Live |
-| 3 | **Infinite Non-Repeating Generation** — 329 procedural generators (P1-P6), every quiz unique | Live |
+| 3 | **Infinite Non-Repeating Generation** — 377 procedural generators (P1-P6) covering 100% of official HK EDB curriculum (79/79 learning units), every quiz unique | Live (Phase 1B 2026-09-09: 329 → 377) |
 | 4 | **Physical-Digital Hybrid** — PDF export for printing + digital tracking | Live |
 | 5 | **Cognitive Fingerprinting** — topic_breakdown JSONB builds student weakness maps over time | Collecting data |
 
@@ -605,6 +616,8 @@ Topic Quest is the MOST NATURAL UI EXPRESSION of prerequisite chains.
 ### Phase 1: Core Engine
 
 329 procedural generators (P1-P6), HK EDB curriculum-aligned topics (6-11 per grade), 5 question types, 3 difficulty levels, exam builder with configurable targets, answer checker (unit stripping, fraction parsing, multi-part, tolerance), trap items, SVG figures, timer, onboarding wizard, Curlboo 4 moods, confetti, sound effects, streak tracker, grade star badges, Chinese/English toggle, wrong answer review, kid-friendly UI, privacy policy (COPPA/PDPO), PWA support.
+
+**Phase 1B (2026-09-09):** Engine curriculum coverage gap discovered and closed — 16 missing official HK EDB learning units added (P2 度量 + 圖形與空間, P3 度量 + 圖形與空間, P5 代數). Engine totals: 329 → 377 generators. Curriculum coverage: 80% → 100% (79/79). See **D11** for full context.
 
 ### Phase 2: Auth + Cloud
 
@@ -924,6 +937,94 @@ Requirements to produce it:
 
 ---
 
+## D11. Phase 1B — Engine Curriculum Coverage Completion 🆕
+
+**Date:** 2026-09-09  
+**Status:** ✅ Shipped (commit `ab8c392`)
+
+### D11a. The Problem Discovered Post-v6.0
+
+A coverage audit performed 2026-09-08 revealed that the engine — assumed complete at 329 generators — actually covered only **63/79 (80%)** of official HK EDB Primary Mathematics learning units. The missing 16 topics clustered in three blind spots:
+
+- **P2 度量 + 圖形與空間** (7 topics): entire strands missing
+- **P3 度量 + 圖形與空間** (7 topics): entire strands missing
+- **P5 代數** (2 topics): entire strand missing (the only Algebra entry in KS1+KS2)
+
+This was a **silent blocker** for two strategic features:
+
+1. **Phase 3D soft launch** — P2/P3/P5 users opening the app would see 6–8 topics in `📊各單元表現` with no questions available. Direct violation of Principle #5: "Validate before serve, always."
+2. **Phase 4B Topic Quest chains** — Geometry (2S4→3S1→3S2→4S1) and Algebra (5A1→5A2→6A1) prerequisite chains were unusable because the upstream topics didn't exist.
+
+### D11b. The Decision: Add a New Phase 1B (not extend Phase 1, not defer)
+
+Three options were considered:
+
+| Option | Verdict |
+|--------|---------|
+| (A) Extend Phase 1 retroactively | ❌ Too much work to silently fold into a "done" phase; loses history |
+| **(B) Add new Phase 1B between Phase 1 and Phase 3A** | ✅ **Chosen** — clear scope, prevents drift into Phase 3A, preserves Phase 1's "done" status |
+| (C) Defer to Phase 4B | ❌ Risky — Topic Quest chains depend on these topics; PMF is already threatened by soft-launch invisibility |
+
+**Architectural rule respected:** Phase 1B is the only "scope-extension" phase. Future additions of the same kind (e.g. adding a new topic for a new grade) should follow this Phase N+0.5B convention rather than silently re-opening a numbered phase.
+
+### D11c. What Was Built
+
+**16 new pools / 48 new generators** (3 per topic × d:1/d:2/d:3), all conforming to the existing generator style in `src/engine/grades/grade*.js`:
+
+| Grade | Strands | New Topics | New Generators |
+|-------|---------|-----------|----------------|
+| P2 | 度量 | 2M1, 2M2, 2M3 | 9 |
+| P2 | 圖形與空間 | 2S1, 2S2, 2S3, 2S4 | 12 |
+| P3 | 度量 | 3M1, 3M2, 3M3, 3M4, 3M5 | 15 |
+| P3 | 圖形與空間 | 3S1, 3S2 | 6 |
+| P5 | 代數 | 5A1, 5A2 | 6 |
+| **Total** | | **16 topics** | **48 generators** |
+
+**Engine totals: 329 → 377 generators. Coverage: 63/79 (80%) → 79/79 (100%).**
+
+### D11d. Hard Rules (All Preserved)
+
+| Rule | Compliance |
+|------|-----------|
+| No modifications to existing 329 generator functions | ✅ |
+| No changes to `core.js`, `index.js`, or any public signature in `config.js` | ✅ |
+| No renames of any existing topic_id (FK safety for `responses` table) | ✅ |
+| No new npm dependencies | ✅ |
+| Every new generator has `s: [...]` step explanation | ✅ |
+| Word problems with irrelevant data have `trap:` field | ✅ |
+| HK terminology (厘米, 公斤, 升, 毫升) — not mainland | ✅ |
+| D6 invariants (answer ≠ given value, integer division, positive answer) | ✅ |
+
+### D11e. The "Merged Pools Stay" Decision
+
+`grade2.js`, `grade3.js`, `grade5.js` previously used merged pools (`2M`, `2S`, `3M`, `3S`, `5A`) that served all P2 measures as one topic. Phase 1B adds individual sub-topic pools (`2M1`, `2M2`, etc.) — the **merged pools stay in code but are no longer in `config.js` TOPICS**. The topic picker shows 16 individual entries; the merged IDs are dormant legacy.
+
+**Why keep the old merged pools instead of removing them?** Per §I0g "Never rename an ID that has ever been live," deleting them would orphan any historical `topic_breakdown` JSONB row that referenced the merged ID. Cost of keeping: 5 dead keys. Cost of removing: corrupted diagnostic history (the moat). Keep.
+
+### D11f. Validation
+
+- `pnpm arch:check` — ✅ all 5 rules pass (engine purity preserved)
+- `pnpm content:check` — ✅ all checks pass
+- Smoke test: 16 topics × 10 calls = **480 invocations, 0 errors**
+- Extended test: 16 topics × 50 calls × 3 generators = **2,400 invocations, 0 issues** (no empty answers, no multiple-correct MC options, no syntax errors)
+
+### D11g. Lessons for the Next "Phase N+0.5B"
+
+The trigger for Phase 1B was a **silent coverage gap** — a known category of failure that the architecture's `topic_id` invariants were designed to prevent but didn't surface. Two corrective changes ship with v6.1:
+
+1. **`content:check` should add an assertion** that all 79 official HK EDB learning units have at least 1 generator pool in `config.js` TOPICS. Without this, the same gap could re-appear if a future "Phase 1C" is forgotten. Implementation deferred to next content:check refactor.
+2. **The audit document `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md`** is now the canonical record of "what the engine covers vs. what the curriculum requires." Re-run after any Phase 1-style work.
+
+### D11h. Cross-References
+
+- **Audit:** `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md`
+- **Plan:** `docs/audits/TOPIC_ENGINE_GAP_PLAN.md`
+- **Topic list:** `TOPIC.md` (now 100% ✅)
+- **Status:** `docs/STATUS.md` Phase 1B section
+- **Todo:** `TO-DO.md` (all Phase 1B items `[x]`)
+
+---
+
 # PART E — PRODUCT: FoodSwipe (Frozen)
 
 ## E1. Status: ❄️ FROZEN
@@ -1028,7 +1129,7 @@ The 53-subscriber figure may include founder salary or other ops costs — label
 
 | Layer | What | Cost | Status |
 |---|---|---|---|
-| Layer 1: Hardcode | 329 generators, instant, offline | $0 | built |
+| Layer 1: Hardcode | 377 generators (329 + 48 Phase 1B), instant, offline | $0 | built |
 | Layer 2: AI (DeepSeek) | V3.2 for word problems (pending benchmark) | ~$0.14-0.28/M tokens | Phase 4B |
 | Layer 3: Question Bank | Supabase table, reusable, self-improving | $0 per serve | Schema in Phase 3C |
 
@@ -1280,7 +1381,7 @@ Mobile:      Capacitor (iOS + Android prepared — android/ ios/ frozen until 20
              appId: com.oneup24.mathsup (Gate 0 item — update capacitor.config.json before any App Store submission;
              appId is IMMUTABLE after first submission — cannot be changed without a new listing)
 Backend:     Supabase Cloud (PostgreSQL, Auth, Storage, RLS, Edge Functions)
-Engine:      src/engine/ (329 generators, rule-based, $0 cost)
+Engine:      src/engine/ (377 generators — 329 + 48 Phase 1B, rule-based, $0 cost)
 Deploy:      Vercel (live — see docs/STATUS.md for URL)
 VCS:         GitHub (oneup24/maths-up, public, 98 commits)
 Analytics:   PostHog (live, 18 events — see STATUS.md for event list)
@@ -2168,9 +2269,9 @@ judgement on output, which no CI assertion replaces.
 # APPENDIX E — Document Control
 
 ```
-Version:       6.0
+Version:       6.1
 Author:        OneUp24 Founder
-Date:          August 24, 2026
+Date:          September 9, 2026
 Status:        ACTIVE
 
 Previous versions:
@@ -2178,6 +2279,8 @@ Previous versions:
 ├── v3.0 (April 3, 2026) — Added market data, 各單元表現
 ├── v4.0 (April 9, 2026) — Dev-focused roadmap, diagnostic milestones
 ├── v5.0 (April 17, 2026) — Full bible with IP, gamification, studio model
+├── v6.0 (August 24, 2026) — Architecture doctrine, content layer, AI-as-Factory, risk matrix expansion
+└── v6.1 (September 9, 2026) — Phase 1B engine curriculum coverage completion (D11)
 
 v5.1 Changes (from v5.0):
 ├── 🆕 quest_progress SQL schema added to Part I3 (Future Tables)
@@ -2285,13 +2388,55 @@ Applied edits from docs/prompts/v6_regen.md Stage 2. Verified against codebase b
 
 ---
 
+## v6.1 Changelog (September 9, 2026)
+
+Single-issue version: **Phase 1B — Engine Curriculum Coverage Completion (D11)**. Closes the 80% → 100% curriculum coverage gap discovered post-v6.0.
+
+**GROUP A — New Phase**
+- 🆕 **Phase 1B** added to the schedule: new "scope-extension" phase sitting between Phase 1 (Core Engine) and Phase 3A. Establishes the **Phase N+0.5B convention** for future topic-coverage extensions rather than re-opening numbered phases.
+- 🆕 **D11. Phase 1B — Engine Curriculum Coverage Completion** section added with: the problem statement, the decision (B over A/C), what was built, hard rules preserved, the "merged pools stay" rationale, validation results, and lessons for the next Phase N+0.5B.
+
+**GROUP B — Engine Code**
+- 16 new generator pools × 3 d-levels = 48 new generators, all in existing grade files:
+  - `src/engine/grades/grade2.js`: 2M1, 2M2, 2M3, 2S1, 2S2, 2S3, 2S4 (21 generators)
+  - `src/engine/grades/grade3.js`: 3M1, 3M2, 3M3, 3M4, 3M5, 3S1, 3S2 (21 generators)
+  - `src/engine/grades/grade5.js`: 5A1, 5A2 (6 generators)
+- `src/engine/config.js` TOPICS: replaced 5 merged entries (2M/2S/3M/3S/5A) with 16 individual sub-topic entries. Merged IDs still valid in `grade*.js` code (preserved for FK safety) but no longer in topic picker.
+- Engine totals: 329 → 377 generators. Curriculum coverage: 63/79 (80%) → 79/79 (100%).
+
+**GROUP C — Documentation**
+- 🆕 `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md` — canonical record of engine vs. curriculum coverage. Re-run after any Phase 1-style work.
+- 🆕 `docs/audits/TOPIC_ENGINE_GAP_PLAN.md` — detailed generator design plan (3 generators × 16 topics).
+- `TOPIC.md` — added "Phase 1B 引擎覆蓋更新" section; marked 16 newly-covered topics with `✅ Phase 1B`.
+- `docs/STATUS.md` — added Phase 1B section.
+- `TO-DO.md` — created with Phase 1B checklist (all items now `[x]`).
+
+**GROUP D — Architectural Hygiene Preserved**
+- ✅ Zero modifications to existing 329 generator functions
+- ✅ Zero changes to `core.js`, `index.js`, or any public signature in `config.js`
+- ✅ Zero renames of any existing topic_id (FK safety for `responses` table)
+- ✅ Zero new npm dependencies
+- ✅ `pnpm arch:check` passes (all 5 rules)
+- ✅ `pnpm content:check` passes
+- ✅ 2,400 invocations × 16 topics × 3 generators: 0 errors
+
+**GROUP E — Forward-Looking**
+- `content:check` should add an assertion that all 79 official HK EDB learning units have at least 1 generator pool in `config.js` TOPICS. Implementation deferred to next content:check refactor (see D11g).
+- Phase 1B is a precedent: future topic-coverage extensions should follow the same `Phase N+0.5B` naming rather than re-opening numbered phases (see D11b).
+
+**Corrections / Stale Value Updates**
+- Generator count: 329 → **377** (USP #3 in D1; also Appendix D Claude Code notes)
+- Curriculum coverage: implicit 100% (v6.0 incorrect) → **explicit 100% verified by audit**
+
+---
+
 ## 🎯 YOUR IMMEDIATE NEXT 5 ACTIONS
 
 ```
 ┌────────────────────────────────────────────────────────────┐
-│  1. Doc consolidation (this task — MASTER_PLAN.md,         │
-│     STATUS.md, DECISIONS.md)                               │
-│     → Single source of truth before any agent reads plan   │
+│  1. ✅ Phase 1B DONE (2026-09-09, commit ab8c392)           │
+│     Engine curriculum coverage: 80% → 100%                 │
+│     16 missing HK EDB topics added (48 new generators)     │
 │                                                            │
 │  2. Generator audit + quarantine                           │
 │     → scripts/audit-generators.js, quarantine violators   │
