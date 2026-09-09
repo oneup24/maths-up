@@ -111,7 +111,21 @@ export const grade2={
   // d:2 rope cut with weight trap
   ()=>{var total,part,part2;do{total=ri(300,600);part=ri(80,150);part2=ri(30,part-10);}while(total<=part+part2||part+part2<0);var dWeight=ri(2,5);return{d:2,tp:'work',q:nm()+'有一條長 '+total+' 厘米的繩子，重 '+dWeight+' 公斤。她先剪去 '+part+' 厘米，再剪去 '+part2+' 厘米。繩子還剩多少厘米？',a:String(total-part-part2),trap:'繩子的重量（'+dWeight+'公斤）',s:['🔍 繩子的重量與長度無關。','先減：'+total+' − '+part+' = '+(total-part),'再減：'+(total-part)+' − '+part2+' = '+(total-part-part2)+' 厘米'],sc:2}},
   // d:3 who-ran-further MC with age trap
-  ()=>{var n1=nm(),n2=nm();while(n1===n2)n2=nm();var m1=ri(50,200),cm1=ri(10,90);var m2=ri(50,200),cm2=ri(10,90);var d1=m1*100+cm1,d2=m2*100+cm2;if(d1===d2){m2+=1;d2=m2*100+cm2;}var who=d1>d2?n1:n2;var diff=Math.abs(d1-d2);var dAge=ri(7,9);return{d:3,tp:'mc',q:n1+' 今年 '+dAge+' 歲，跑了 '+m1+' 米 '+cm1+' 厘米。'+n2+' 跑了 '+m2+' 米 '+cm2+' 厘米。誰跑得較遠？遠多少厘米？',isMC:true,opts:[{l:'A',v:n1+','+diff,c:who===n1},{l:'B',v:n2+','+diff,c:who===n2},{l:'C',v:'一樣遠',c:false}],a:who===n1?'A':'B',trap:'年齡（'+dAge+'歲）',s:['🔍 年齡與距離無關。',n1+'：'+m1+'米'+cm1+'厘米 = '+(m1*100+cm1)+' 厘米',n2+'：'+m2+'米'+cm2+'厘米 = '+(m2*100+cm2)+' 厘米','相減：|'+d1+' − '+d2+'| = '+diff+' 厘米'],sc:3}}
+  ()=>{var n1=nm(),n2=nm();while(n1===n2)n2=nm();var m1=ri(50,200),cm1=ri(10,90);var m2=ri(50,200),cm2=ri(10,90);var d1=m1*100+cm1,d2=m2*100+cm2;if(d1===d2){m2+=1;d2=m2*100+cm2;}var who=d1>d2?n1:n2;var diff=Math.abs(d1-d2);var dAge=ri(7,9);return{d:3,tp:'mc',q:n1+' 今年 '+dAge+' 歲，跑了 '+m1+' 米 '+cm1+' 厘米。'+n2+' 跑了 '+m2+' 米 '+cm2+' 厘米。誰跑得較遠？遠多少厘米？',isMC:true,opts:[{l:'A',v:n1+','+diff,c:who===n1},{l:'B',v:n2+','+diff,c:who===n2},{l:'C',v:'一樣遠',c:false}],a:who===n1?'A':'B',trap:'年齡（'+dAge+'歲）',s:['🔍 年齡與距離無關。',n1+'：'+m1+'米'+cm1+'厘米 = '+(m1*100+cm1)+' 厘米',n2+'：'+m2+'米'+cm2+'厘米 = '+(m2*100+cm2)+' 厘米','相減：|'+d1+' − '+d2+'| = '+diff+' 厘米'],sc:3}},
+  // d:1 m → cm conversion (fill)
+  ()=>{var m=ri(2,9);return{d:1,tp:'fill',q:m+' 米 = ____ 厘米',a:String(m*100),s:['1 米 = 100 厘米',m+' × 100 = '+(m*100)+' 厘米'],sc:1}},
+  // d:1 cm → m + cm conversion (fill, with remainder)
+  ()=>{var total=ri(120,950);var m=Math.floor(total/100),cm=total%100;return{d:1,tp:'fill',q:total+' 厘米 = ____ 米 ____ 厘米',a:m+','+cm,s:['1 米 = 100 厘米',total+' ÷ 100 = '+m+' 餘 '+cm+'，即 '+m+' 米 '+cm+' 厘米'],sc:2}},
+  // d:2 m+cm subtraction → cm
+  ()=>{var m1=ri(3,9),cm1=ri(20,80);var m2=ri(1,m1-1),cm2=ri(10,90);var d1=m1*100+cm1,d2=m2*100+cm2;if(d1<=d2){m1+=1;d1=m1*100+cm1;}var diff=d1-d2;var rM=Math.floor(diff/100),rCm=diff%100;return{d:2,tp:'calc',q:m1+'米'+cm1+'厘米 − '+m2+'米'+cm2+'厘米 = ____ 厘米',a:String(diff),s:['化成厘米：'+m1+'米'+cm1+'厘米 = '+d1+' 厘米',m2+'米'+cm2+'厘米 = '+d2+' 厘米','相減：'+d1+' − '+d2+' = '+diff+' 厘米（即 '+rM+' 米 '+rCm+' 厘米）'],sc:2}},
+  // d:2 choose measuring unit (mc)
+  ()=>{var items=[{n:'一支鉛筆的長度',u:'厘米'},{n:'課室的長度',u:'米'},{n:'從學校到公園的路程',u:'米'}];var it=pk(items);return{d:2,tp:'mc',q:'量度 '+it.n+'，應該用什麼單位？',isMC:true,opts:[{l:'A',v:'厘米',c:it.u==='厘米'},{l:'B',v:'米',c:it.u==='米'},{l:'C',v:'公里',c:false}],a:it.u==='厘米'?'A':'B',s:[it.n+' 適宜用 '+it.u+' 量度。'],sc:1}},
+  // d:2 round trip total (work)
+  ()=>{var n=nm();var mAB=ri(50,300);return{d:2,tp:'work',q:n+' 由學校走到公園，單程 '+mAB+' 米。'+n+' 去程和回程共走了多少米？',a:String(mAB*2),s:['單程：'+mAB+' 米','去程＋回程：'+mAB+' × 2 = '+(mAB*2)+' 米'],sc:2}},
+  // d:3 three-runner, who ran furthest (mc)
+  ()=>{var m=[ri(50,150),ri(50,150),ri(50,150)],cm=[ri(10,90),ri(10,90),ri(10,90)];var d0=m[0]*100+cm[0],d1v=m[1]*100+cm[1],d2=m[2]*100+cm[2];while(d0===d1v||d1v===d2||d0===d2){cm[2]+=1;d2=m[2]*100+cm[2];}var maxI=d0>d1v?(d0>d2?0:2):(d1v>d2?1:2);return{d:3,tp:'mc',q:'甲跑了 '+m[0]+'米'+cm[0]+'厘米，乙跑了 '+m[1]+'米'+cm[1]+'厘米，丙跑了 '+m[2]+'米'+cm[2]+'厘米。誰跑得最遠？',isMC:true,opts:[{l:'A',v:'甲',c:maxI===0},{l:'B',v:'乙',c:maxI===1},{l:'C',v:'丙',c:maxI===2}],a:maxI===0?'A':(maxI===1?'B':'C'),s:['化成厘米：甲 '+d0+'、乙 '+d1v+'、丙 '+d2,'最遠的是 '+(maxI===0?'甲':(maxI===1?'乙':'丙'))+'（'+Math.max(d0,d1v,d2)+' 厘米）'],sc:3}},
+  // d:3 multi-step rope (work, with even-half safeguard)
+  ()=>{var total,cut1;do{total=ri(500,800);cut1=ri(100,200);}while((total-cut1)%2!==0);var dColor=pk(['紅','藍','綠']);return{d:3,tp:'work',q:'一條 '+dColor+' 色繩子長 '+total+' 厘米。先剪去 '+cut1+' 厘米，再用剩下的一半。還剩多少厘米？',a:String((total-cut1)/2),trap:dColor+'色',s:['🔍 顏色與長度無關','先剪：'+total+' − '+cut1+' = '+(total-cut1)+' 厘米','再用一半：'+(total-cut1)+' ÷ 2 = '+((total-cut1)/2)+' 厘米'],sc:3}}
 ],
 
 /* ═══════════ 2M2 時間(二) [Phase 1B] ═══════════ */
