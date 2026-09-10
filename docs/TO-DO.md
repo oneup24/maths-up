@@ -46,7 +46,7 @@
 
 - [x] **B. e2e tests (Playwright)** — **DONE 2026-09-10**. 3 smoke tests (boots without console errors, home renders, buildExam runs in browser context). Config uses system Chrome (macOS 12 limitation noted). Vitest excludes `e2e/**`; eslint handles node globals for `playwright.config.js` and `e2e/`. Scripts: `pnpm test:e2e`, `pnpm test:e2e:headed`. 630 unit + 3 e2e tests pass. Commit `95204f9`.
 
-- [ ] **C. UX fix: who-ran-further MC** — `grade2.js` d:3 who-ran-further still emits the same `diff` in both A and B options (correct name vs wrong name + same distance). Change B to a plausible wrong distance (e.g., `diff + ri(1,9)*10`) so each option has a unique `(name, distance)` pair. ~5 min.
+- [x] **C. UX fix: who-ran-further MC** — **DONE 2026-09-10**. `grade2.js` d:3 who-ran-further now uses a plausible wrong distance (`diff + ri(1,9)*10`) in the wrong-name option, so each option has a unique `(name, distance)` pair. 630 tests pass. Commit `e815c09`.
 
 - [ ] **D. Update MASTER_PLAN.md for Phase 1B + today's expansion** — add new sections to the phases roadmap reflecting (1) Phase 1B's 48 new generators + doctrine, (2) today's 40-generator thin-pool expansion, (3) exam.js variety cap. ~45 min.
 
@@ -60,6 +60,6 @@
 ### Progress log (2026-09-10)
 - ✅ A → done (40 gens, 630 tests pass)
 - ✅ B → done (3 e2e smoke tests, 633 total tests pass)
-- ⏳ C → next (5 min)
-- ⏳ E → after C
+- ✅ C → done (who-ran-further unique options)
+- ⏳ E → next (10 min)
 - ⏳ D → last
