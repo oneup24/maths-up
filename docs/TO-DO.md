@@ -50,7 +50,7 @@
 
 - [ ] **D. Update MASTER_PLAN.md for Phase 1B + today's expansion** — add new sections to the phases roadmap reflecting (1) Phase 1B's 48 new generators + doctrine, (2) today's 40-generator thin-pool expansion, (3) exam.js variety cap. ~45 min.
 
-- [ ] **E. Lint/cleanup** — fix pre-existing `_e1/_e2/_e3` unused-vars in `exam.js` (rename to `__e` or remove), fix `endH=endH` self-assign in `grade2.js` cinema generator. ~10 min.
+- [x] **E. Lint/cleanup** — **DONE 2026-09-10**. Removed unused `_e1/_e2/_e3` catch params in `exam.js`. Fixed `endH=endH` self-assign in `grade2.js` cinema generator (now `endH=endH-12` — afternoon times after noon wrap correctly, matching the activity end-time generator). 630 tests pass. Lint clean. Commit `abc271d`.
 
 ### Recommended execution order (revised)
 1. **C next** (5 min — quick UX win)
@@ -61,5 +61,5 @@
 - ✅ A → done (40 gens, 630 tests pass)
 - ✅ B → done (3 e2e smoke tests, 633 total tests pass)
 - ✅ C → done (who-ran-further unique options)
-- ⏳ E → next (10 min)
-- ⏳ D → last
+- ✅ E → done (lint clean, cinema wrap fix)
+- ⏳ D → last (45 min)
