@@ -139,7 +139,7 @@ export const grade2={
   // d:2 activity end-time with student-count trap
   ()=>{var h=ri(8,10),m=pk([0,10,20,30,40,50]),dur=pk([15,20,25,30,45]);var endM=m+dur;var endH=h+Math.floor(endM/60);endM=endM%60;if(endH>12)endH=endH-12;var dStu=ri(20,35);return{d:2,tp:'work',q:'課外活動有 '+dStu+' 位同學參加，於上午 '+h+' 時 '+m+' 分開始，活動歷時 '+dur+' 分鐘。活動何時結束？(用 12 小時制作答)',a:endH+'時'+endM+'分',trap:'學生人數（'+dStu+'位）',s:['🔍 學生人數與時間無關。',h+' 時 '+m+' 分 + '+dur+' 分鐘','分鐘：'+m+' + '+dur+' = '+(m+dur),'結束：'+endH+' 時 '+endM+' 分'],sc:2}},
   // d:3 cinema end-time with ticket price trap
-  ()=>{var h=ri(2,4),m=40;var dur=pk([55,65,80,95]);var endM=m+dur;var endH=h+Math.floor(endM/60);endM=endM%60;if(endH>12)endH=endH;var price=ri(80,120);return{d:3,tp:'work',q:'一場電影在下午 '+h+' 時 '+m+' 分開始播放，門票每張 $'+price+'。電影片長 '+dur+' 分鐘。電影在下午什麼時間結束？',a:endH+'時'+endM+'分',trap:'門票價錢（$'+price+'）',s:['🔍 門票價錢與時間無關。',h+':'+m+' + '+dur+' 分鐘','分鐘：'+m+' + '+dur+' = '+(m+dur),'進位：'+Math.floor((m+dur)/60)+' 小時 '+endM+' 分','結束：下午 '+endH+' 時 '+endM+' 分'],sc:3}}
+  ()=>{var h=ri(2,4),m=40;var dur=pk([55,65,80,95]);var endM=m+dur;var endH=h+Math.floor(endM/60);endM=endM%60;if(endH>12)endH=endH-12;var price=ri(80,120);return{d:3,tp:'work',q:'一場電影在下午 '+h+' 時 '+m+' 分開始播放，門票每張 $'+price+'。電影片長 '+dur+' 分鐘。電影在下午什麼時間結束？',a:endH+'時'+endM+'分',trap:'門票價錢（$'+price+'）',s:['🔍 門票價錢與時間無關。',h+':'+m+' + '+dur+' 分鐘','分鐘：'+m+' + '+dur+' = '+(m+dur),'進位：'+Math.floor((m+dur)/60)+' 小時 '+endM+' 分','結束：下午 '+endH+' 時 '+endM+' 分'],sc:3}}
 ],
 
 /* ═══════════ 2M3 貨幣(二) [Phase 1B] ═══════════ */
