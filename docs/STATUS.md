@@ -1,7 +1,20 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-09-09 (Phase 1B complete: 16 missing HK EDB topics added — 48 new generators, 79/79 curriculum coverage)
+**Last updated:** 2026-09-10 (Today's session: thin-pool expansion + exam variety cap; +40 generators; 630 tests pass)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
+
+---
+
+## Phase 1B.5 — Thin-Pool Expansion + Variety Cap (2026-09-10)
+
+| Item | Status | Evidence |
+|------|--------|----------|
+| Exam variety cap — each generator fires ≤2× per exam | ✅ | `src/engine/exam.js:38` `GEN_CAP=2`; removed `storyTypes` short-circuit |
+| Question `_genKey` tagging for testability | ✅ | `src/engine/exam.js:43` `q._genKey=item.tid+':'+item.gi` |
+| 18 cap-enforcement tests (6 grades × 3 modes) | ✅ | `src/engine/__tests__/buildExam.test.js` |
+| +40 generators across 24 thin topics | ✅ | G2 +15, G3 +12, G4 +4, G5 +3, G6 +6 — see `git log eaa5280 fe8db52 d2fc2a8` |
+| No thin (≤3 gen) topics remain below baseline | ✅ | `node -e "...G4-G6 thin..."` → all ≥3 except 6D2/6D3 which sit at baseline |
+| Test count 568 → 630 (+62 from new generators × 6-grade smoke) | ✅ | `npm test` |
 
 ---
 
