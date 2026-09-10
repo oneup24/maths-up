@@ -5,7 +5,7 @@
 
 ---
 
-## Phase 1B.5 — Thin-Pool Expansion + Variety Cap (2026-09-10)
+## Phase 1B.5 — Thin-Pool Expansion + Variety Cap + e2e (2026-09-10)
 
 | Item | Status | Evidence |
 |------|--------|----------|
@@ -14,7 +14,12 @@
 | 18 cap-enforcement tests (6 grades × 3 modes) | ✅ | `src/engine/__tests__/buildExam.test.js` |
 | +40 generators across 24 thin topics | ✅ | G2 +15, G3 +12, G4 +4, G5 +3, G6 +6 — see `git log eaa5280 fe8db52 d2fc2a8` |
 | No thin (≤3 gen) topics remain below baseline | ✅ | `node -e "...G4-G6 thin..."` → all ≥3 except 6D2/6D3 which sit at baseline |
-| Test count 568 → 630 (+62 from new generators × 6-grade smoke) | ✅ | `npm test` |
+| **Playwright e2e infrastructure** | ✅ | `playwright.config.js`, `e2e/smoke.spec.js` (3 tests) |
+| **e2e: app boots without console errors** | ✅ | `pnpm test:e2e` → 3 passed |
+| **e2e: home renders primary CTA** | ✅ | same |
+| **e2e: buildExam runs in browser context** | ✅ | same |
+| **macOS 12 limitation** | ⚠️ | Playwright bundles don't support mac12; uses system Chrome via `channel:'chrome'`. Will work natively on mac13+/CI. |
+| Test count 568 → 630 unit (+62 from new generators) + 3 e2e | ✅ | `npm test` and `pnpm test:e2e` |
 
 ---
 
