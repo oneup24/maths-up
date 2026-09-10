@@ -71,6 +71,17 @@ GRADES.forEach(grade => {
           });
         });
       });
+
+      it(`${examType} — no single generator fires more than 2 times (template variety cap)`, () => {
+        const secs = buildExam(grade, allTopics, examType, 2);
+        const counts = {};
+        secs.flatMap(s => s.qs).forEach(q => {
+          if (q._genKey) counts[q._genKey] = (counts[q._genKey] || 0) + 1;
+        });
+        Object.entries(counts).forEach(([k, v]) => {
+          expect(v, `_genKey=${k} fires ${v} times (> 2)`).toBeLessThanOrEqual(2);
+        });
+      });
     });
   });
 });
