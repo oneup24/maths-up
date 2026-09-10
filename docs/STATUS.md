@@ -22,6 +22,7 @@
 | Test count 568 → 630 unit (+62 from new generators) + 3 e2e | ✅ | `npm test` and `pnpm test:e2e` |
 | **who-ran-further MC: unique (name, distance) per option** | ✅ | `src/engine/grades/grade2.js` d:3 — wrong-name option now shows `diff + ri(1,9)*10` instead of correct diff. Commit `e815c09`. |
 | **Lint cleanup** | ✅ | `exam.js` — removed `_e1/_e2/_e3` unused catch params; `grade2.js` — fixed `endH=endH` self-assign in cinema generator (now `endH=endH-12`). Commit `abc271d`. |
+| **MASTER_PLAN refreshed to v6.2** | ✅ | New D12 section (~150 lines) + v6.2 changelog (~70 lines) + TOC/USP/Stack updates. Bumps engine count to 417 (377 + 40 Phase 1B.5). |
 
 ---
 

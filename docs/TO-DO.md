@@ -48,7 +48,7 @@
 
 - [x] **C. UX fix: who-ran-further MC** — **DONE 2026-09-10**. `grade2.js` d:3 who-ran-further now uses a plausible wrong distance (`diff + ri(1,9)*10`) in the wrong-name option, so each option has a unique `(name, distance)` pair. 630 tests pass. Commit `e815c09`.
 
-- [ ] **D. Update MASTER_PLAN.md for Phase 1B + today's expansion** — add new sections to the phases roadmap reflecting (1) Phase 1B's 48 new generators + doctrine, (2) today's 40-generator thin-pool expansion, (3) exam.js variety cap. ~45 min.
+- [x] **D. Update MASTER_PLAN.md for Phase 1B + today's expansion** — **DONE 2026-09-10**. Bumped to v6.2. Added D12 section (~150 lines: problem, decision, what was built, hard rules, validation, lessons, cross-references). Added v6.2 changelog (~70 lines: new phase, engine code, tests, cleanup, docs, hygiene, forward-looking). Updated TOC, USP #3 (D1), Layer 1 (I1), engine line (Stack table), version history. Commit pending.
 
 - [x] **E. Lint/cleanup** — **DONE 2026-09-10**. Removed unused `_e1/_e2/_e3` catch params in `exam.js`. Fixed `endH=endH` self-assign in `grade2.js` cinema generator (now `endH=endH-12` — afternoon times after noon wrap correctly, matching the activity end-time generator). 630 tests pass. Lint clean. Commit `abc271d`.
 
@@ -62,4 +62,6 @@
 - ✅ B → done (3 e2e smoke tests, 633 total tests pass)
 - ✅ C → done (who-ran-further unique options)
 - ✅ E → done (lint clean, cinema wrap fix)
-- ⏳ D → last (45 min)
+- ✅ D → done (MASTER_PLAN v6.2 + D12 + changelog)
+
+### All 5 today's tasks complete (A/B/C/D/E)

@@ -1,8 +1,8 @@
 ---
 
-# ONEUP24 MASTER PLAN v6.1
+# ONEUP24 MASTER PLAN v6.2
 ### Status: ACTIVE — The Comprehensive Bible — Company · Products · IP · Growth
-### Last Updated: September 9, 2026
+### Last Updated: September 10, 2026
 
 Execution status lives ONLY in docs/STATUS.md. This file describes WHAT and WHY, never WHETHER.
 
@@ -50,7 +50,8 @@ PART D — PRODUCT: Maths Quests (Cash Cow)
   D8. Content Coverage Analysis
   D9. Past-Paper Copyright Policy
   D10. Actionable Parent Report Standard
-  D11. Phase 1B — Engine Curriculum Coverage Completion 🆕
+  D11. Phase 1B — Engine Curriculum Coverage Completion
+  D12. Phase 1B.5 — Thin-Pool Expansion + Variety Cap + e2e 🆕
 PART E — PRODUCT: Off-Track (FoodSwipe)
 PART F — PRODUCT: Future Portfolio
 PART G — BUSINESS MODEL & UNIT ECONOMICS
@@ -388,7 +389,7 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 |---|---|---|
 | 1 | **Trap Item Training (干擾項訓練)** — irrelevant data in word problems that tests reading comprehension. No competitor does this. | Engine built; structured engine v1 in Phase 4B |
 | 2 | **Per-Topic Diagnostic (📊 各單元表現)** — color-coded breakdown sorted worst-first. What tutors charge $300-500/hr for. | Live |
-| 3 | **Infinite Non-Repeating Generation** — 377 procedural generators (P1-P6) covering 100% of official HK EDB curriculum (79/79 learning units), every quiz unique | Live (Phase 1B 2026-09-09: 329 → 377) |
+| 3 | **Infinite Non-Repeating Generation** — 417 procedural generators (P1-P6 + Phase 1B + 1B.5) covering 100% of official HK EDB curriculum (79/79 learning units), every quiz unique. `buildExam` enforces a 2-reuse-per-generator cap across all types. | Live (Phase 1B 2026-09-09: 329 → 377, Phase 1B.5 2026-09-10: 377 → 417) |
 | 4 | **Physical-Digital Hybrid** — PDF export for printing + digital tracking | Live |
 | 5 | **Cognitive Fingerprinting** — topic_breakdown JSONB builds student weakness maps over time | Collecting data |
 
@@ -618,6 +619,8 @@ Topic Quest is the MOST NATURAL UI EXPRESSION of prerequisite chains.
 329 procedural generators (P1-P6), HK EDB curriculum-aligned topics (6-11 per grade), 5 question types, 3 difficulty levels, exam builder with configurable targets, answer checker (unit stripping, fraction parsing, multi-part, tolerance), trap items, SVG figures, timer, onboarding wizard, Curlboo 4 moods, confetti, sound effects, streak tracker, grade star badges, Chinese/English toggle, wrong answer review, kid-friendly UI, privacy policy (COPPA/PDPO), PWA support.
 
 **Phase 1B (2026-09-09):** Engine curriculum coverage gap discovered and closed — 16 missing official HK EDB learning units added (P2 度量 + 圖形與空間, P3 度量 + 圖形與空間, P5 代數). Engine totals: 329 → 377 generators. Curriculum coverage: 80% → 100% (79/79). See **D11** for full context.
+
+**Phase 1B.5 (2026-09-10):** Coverage was complete on paper, but students hit a second problem: thin topic pools + unlimited generator reuse in `exam.js` produced 7 visually-identical questions in a row. Two complementary fixes shipped: (a) +40 generators across 24 thin topics (377 → 417), and (b) `buildExam` now caps each generator at 2 uses per exam across all 5 question types. Also: Playwright e2e infrastructure (3 smoke tests), `who-ran-further` MC UX fix, lint cleanup. See **D12** for full context.
 
 ### Phase 2: Auth + Cloud
 
@@ -1025,6 +1028,124 @@ The trigger for Phase 1B was a **silent coverage gap** — a known category of f
 
 ---
 
+## D12. Phase 1B.5 — Thin-Pool Expansion + Variety Cap + e2e 🆕
+
+**Date:** 2026-09-10
+**Status:** ✅ Shipped (commits `f11368a` `eaa5280` `fe8db52` `d2fc2a8` `95204f9` `e815c09` `abc271d`)
+
+### D12a. The Problem Discovered
+
+Phase 1B closed the **topic coverage** gap (79/79 topics), but a child testing the app in practice hit a second, distinct issue: **within a single topic, all generated questions looked the same**. A 7-year-old using a single-topic practice got 7 near-identical "who ran further by how much" MC questions because the 2M1 pool had only 3 generator templates and unlimited reuse. Coverage ≠ variety.
+
+Two independent root causes were identified:
+
+1. **Thin topic pools** — many topics that *existed* had only the Phase 1B baseline of 3 generator templates (d:1/d:2/d:3). A 10-question practice exam on a thin topic with `mc` ratio 15% would generate 1–2 mc questions, but with unlimited reuse, those questions could be from a single template × random numbers — visually identical except for digits.
+
+2. **Unlimited generator reuse in `exam.js`** — `usedGens` cap applied only to `short`/`work` types (`storyTypes.has(t)` short-circuit). `mc`, `fill`, and `calc` could reuse the same generator function unlimited times per exam, masking the thin-pool problem.
+
+### D12b. The Decision: Two Complementary Fixes
+
+| Option | Decision |
+|--------|----------|
+| (A) Content-only — add more generators | ✅ Done (40 new across 24 topics) |
+| (B) Code-only — cap generator reuse | ✅ Done (`GEN_CAP=2` across all types) |
+| (C) Both | ✅ **Chosen** — content raises the ceiling, code enforces variety immediately for every topic |
+
+Architectural rule applied: this is a **scope-extension Phase 1B.5** following the convention established by Phase 1B (D11b). It does not re-open any numbered phase.
+
+### D12c. What Was Built
+
+**1. Thin-pool content expansion (+40 generators, 24 topics)**
+
+Per-grade breakdown:
+
+| Grade | Topics expanded | +gens |
+|-------|----------------|-------|
+| G2 | 2M2/2M3/2S1/2S2/2S3/2S4 | +15 |
+| G3 | 3M1/3M2/3M3/3M4/3M5/3S1/3S2/3D1 | +12 |
+| G4 | 4N2/4D1 | +4 |
+| G5 | 5N5/5D1/5A1/5A2 | +3 |
+| G6 | 6M1/6M3/6S1/6D1/6D2/6D3 | +6 |
+| **Total** | **24 topics** | **+40** |
+
+No topic has ≤3 generators after this work except 6D2/6D3 which sit at the Phase 1B baseline (intentional — chart-type questions in 6D3 are limited by the visual context, not by content gap).
+
+**2. Exam-builder variety cap**
+
+Replaced the `storyTypes`-only `usedGens` Set with a per-exam count Map and `GEN_CAP=2`. Applies to all five question types (mc/fill/calc/short/work) in both the main generation loop and the top-up loop. Each generator function fires at most twice per exam.
+
+**3. Question `_genKey` tagging**
+
+Each generated question now carries `q._genKey = '<topicId>:<gi>'` so tests can verify cap compliance. Surfaced 18 new buildExam tests (6 grades × 3 exam modes).
+
+**4. `who-ran-further` UX fix**
+
+`grade2.js:114` (2M1 d:3) was emitting the same `diff` in both A and B options (correct name + correct diff vs wrong name + same diff). The wrong-name option now uses `diff + ri(1,9)*10` — a plausible but incorrect distance — so each option has a unique `(name, distance)` pair.
+
+**5. Playwright e2e infrastructure**
+
+Filled the Phase 3A e2e test gap (previously `☐` in STATUS.md). `playwright.config.js` + `e2e/smoke.spec.js` with 3 smoke tests:
+- App boots without console errors
+- Home renders primary CTA
+- `buildExam` runs in browser context
+
+macOS 12 limitation: Playwright's bundled Chromium doesn't ship for macOS 12, so the config uses `channel: 'chrome'` to invoke system Chrome. Will work natively on macOS 13+ and in CI (Linux runners).
+
+**6. Lint cleanup (pre-existing debt)**
+
+Removed `_e1/_e2/_e3` unused catch params in `exam.js`. Fixed `endH=endH` self-assign in `grade2.js` cinema generator (now `endH=endH-12` to wrap afternoon times correctly, matching the activity end-time generator).
+
+### D12d. Hard Rules (All Preserved)
+
+| Rule | Compliance |
+|------|-----------|
+| No modifications to `core.js` or generator-signature changes | ✅ |
+| No renames of any existing topic ID | ✅ |
+| No new npm dependencies (except `@playwright/test` for e2e only) | ✅ |
+| Every generator has `s: [...]` step explanation | ✅ |
+| Every word problem with irrelevant data has `trap:` field | ✅ |
+| HK terminology preserved (厘米, 公斤, 升, 毫升) | ✅ |
+| D6 invariants (answer ≠ given value, integer division, positive answer) | ✅ |
+| arch:check 5 rules pass | ✅ |
+| Used existing imports only (`ri()`, `pk()`, `nm()`, etc.) | ✅ |
+
+### D12e. The Cap-vs-TopUp Trade-off
+
+With `GEN_CAP=2` enforced in the **top-up loop** too, very thin single-topic selections (e.g., G1 difficulty 1 with only 1 mc generator allowed) will under-fill the section. The trade-off chosen:
+
+- **Strict 2× cap** in both loops → section ratios may shift when a topic has 1–2 generators at the selected difficulty
+- Multi-topic exams always fill target counts within ±3 tolerance (verified: 586 → 630 unit tests across 6 grades × 3 modes)
+- Single-topic thin pools benefit most from the content expansion in D12c, not from weakening the cap
+
+Future improvement (deferred): if a thin pool is detected at runtime, fall back to allowing re-use rather than under-filling. Implementation deferred until data shows this matters.
+
+### D12f. Validation
+
+- **Unit tests:** 568 → 630 (+62 from new generators × 6-grade smoke coverage). All pass.
+- **E2E tests:** 3 new smoke tests added. All pass via system Chrome on macOS 12.
+- **`arch:check`:** ✅ all 5 rules pass (engine purity preserved)
+- **`content:check`:** ✅ all green
+- **BuildExam sample runs:** verified each thin topic now produces ≤2 questions per generator function per exam.
+
+### D12g. Lessons for the Next "Phase N+0.5B"
+
+The Phase 1B.5 trigger was a **silent UX failure** — the engine was "100% covered" on paper, but a real student got 7 near-identical questions in a row. Coverage metrics must include *variety*, not just *existence*.
+
+Two corrective measures ship:
+
+1. **`buildExam` cap-test** is now part of the test suite (`buildExam.test.js`). Any future change that weakens or bypasses the cap will fail CI.
+2. **Thin-pool audit** can be run on demand: `node -e "import('./src/engine/grades/grade*.js')..." | grep '<=3'`. Document as a one-liner in `docs/audits/` next time a "Phase 1B.N" is contemplated.
+
+### D12h. Cross-References
+
+- **Commits:** `f11368a` (cap foundation) · `eaa5280` (G2) · `fe8db52` (G3) · `d2fc2a8` (G4-G6) · `95204f9` (e2e) · `e815c09` (UX fix) · `abc271d` (lint)
+- **Code:** `src/engine/exam.js` (cap, `_genKey`), `src/engine/grades/grade{2,3,4,5,6}.js` (+40 generators), `grade2.js:114` (UX fix)
+- **Tests:** `e2e/smoke.spec.js`, `src/engine/__tests__/buildExam.test.js` (cap tests)
+- **Status:** `docs/STATUS.md` Phase 1B.5 section
+- **Todo:** `docs/TO-DO.md` (all today's items `[x]`)
+
+---
+
 # PART E — PRODUCT: FoodSwipe (Frozen)
 
 ## E1. Status: ❄️ FROZEN
@@ -1129,7 +1250,7 @@ The 53-subscriber figure may include founder salary or other ops costs — label
 
 | Layer | What | Cost | Status |
 |---|---|---|---|
-| Layer 1: Hardcode | 377 generators (329 + 48 Phase 1B), instant, offline | $0 | built |
+| Layer 1: Hardcode | 417 generators (329 + 48 Phase 1B + 40 Phase 1B.5), instant, offline | $0 | built |
 | Layer 2: AI (DeepSeek) | V3.2 for word problems (pending benchmark) | ~$0.14-0.28/M tokens | Phase 4B |
 | Layer 3: Question Bank | Supabase table, reusable, self-improving | $0 per serve | Schema in Phase 3C |
 
@@ -1381,7 +1502,7 @@ Mobile:      Capacitor (iOS + Android prepared — android/ ios/ frozen until 20
              appId: com.oneup24.mathsup (Gate 0 item — update capacitor.config.json before any App Store submission;
              appId is IMMUTABLE after first submission — cannot be changed without a new listing)
 Backend:     Supabase Cloud (PostgreSQL, Auth, Storage, RLS, Edge Functions)
-Engine:      src/engine/ (377 generators — 329 + 48 Phase 1B, rule-based, $0 cost)
+Engine:      src/engine/ (417 generators — 329 + 48 Phase 1B + 40 Phase 1B.5, rule-based, $0 cost)
 Deploy:      Vercel (live — see docs/STATUS.md for URL)
 VCS:         GitHub (oneup24/maths-up, public, 98 commits)
 Analytics:   PostHog (live, 18 events — see STATUS.md for event list)
@@ -2280,7 +2401,8 @@ Previous versions:
 ├── v4.0 (April 9, 2026) — Dev-focused roadmap, diagnostic milestones
 ├── v5.0 (April 17, 2026) — Full bible with IP, gamification, studio model
 ├── v6.0 (August 24, 2026) — Architecture doctrine, content layer, AI-as-Factory, risk matrix expansion
-└── v6.1 (September 9, 2026) — Phase 1B engine curriculum coverage completion (D11)
+├── v6.1 (September 9, 2026) — Phase 1B engine curriculum coverage completion (D11)
+└── v6.2 (September 10, 2026) — Phase 1B.5 thin-pool expansion + variety cap + e2e (D12)
 
 v5.1 Changes (from v5.0):
 ├── 🆕 quest_progress SQL schema added to Part I3 (Future Tables)
@@ -2427,6 +2549,56 @@ Single-issue version: **Phase 1B — Engine Curriculum Coverage Completion (D11)
 **Corrections / Stale Value Updates**
 - Generator count: 329 → **377** (USP #3 in D1; also Appendix D Claude Code notes)
 - Curriculum coverage: implicit 100% (v6.0 incorrect) → **explicit 100% verified by audit**
+
+---
+
+## v6.2 Changelog (September 10, 2026)
+
+Single-issue version: **Phase 1B.5 — Thin-Pool Expansion + Variety Cap + e2e (D12)**. Closes the "7 near-identical questions in a row" UX failure discovered when a real student used Phase 1B's coverage-complete engine.
+
+**GROUP A — New Phase**
+- 🆕 **Phase 1B.5** added to the schedule: second "scope-extension" phase, following the convention established by Phase 1B (D11b). Establishes that Phase N+0.5B is a recurring pattern, not a one-off.
+- 🆕 **D12. Phase 1B.5 — Thin-Pool Expansion + Variety Cap + e2e** section added with: problem statement (coverage ≠ variety), decision (content + code, not one or the other), what was built, hard rules, cap-vs-topup trade-off, validation, lessons.
+
+**GROUP B — Engine Code**
+- +40 generators across 24 thin topics: `grade2.js` +15 · `grade3.js` +12 · `grade4.js` +4 · `grade5.js` +3 · `grade6.js` +6
+- `src/engine/exam.js`: replaced `storyTypes`-only `usedGens` Set with a per-exam count Map and `GEN_CAP=2`. Cap now applies to all 5 question types (mc/fill/calc/short/work) in both main and top-up loops.
+- Each generated question tagged with `q._genKey = '<tid>:<gi>'` for testability and cap compliance verification.
+- `src/engine/grades/grade2.js:114` — `who-ran-further` MC UX fix: wrong-name option now shows `diff + ri(1,9)*10` so each option has a unique `(name, distance)` pair.
+
+**GROUP C — Tests**
+- +18 cap-enforcement tests in `src/engine/__tests__/buildExam.test.js` (6 grades × 3 exam modes).
+- 🆕 `e2e/smoke.spec.js` — 3 Playwright smoke tests: app boots without console errors, home renders, `buildExam` runs in browser context.
+- 🆕 `playwright.config.js` — uses system Chrome (`channel: 'chrome'`) due to macOS 12 limitation. Works natively on macOS 13+ and CI.
+- 🆕 npm scripts: `pnpm test:e2e`, `pnpm test:e2e:headed`.
+- Vitest now excludes `e2e/**` via `vite.config.js`.
+- eslint config updated with node globals for `playwright.config.js` and `e2e/`.
+
+**GROUP D — Cleanup**
+- Removed unused `_e1/_e2/_e3` catch params in `exam.js`.
+- Fixed `endH=endH` self-assign in `grade2.js` cinema generator (now `endH=endH-12`).
+- Removed unused `sh` var in `grade2.js:172` 2S1 d:3 generator.
+
+**GROUP E — Documentation**
+- `docs/STATUS.md` — added Phase 1B.5 section; bumped Last-updated to 2026-09-10.
+- `docs/TO-DO.md` — created Today's Tasks section (5 items: A thin pool, B e2e, C UX, D plan refresh, E lint); all marked `[x]` after today's session.
+
+**GROUP F — Architectural Hygiene Preserved**
+- ✅ Zero modifications to `core.js`
+- ✅ Zero renames of any existing topic ID
+- ✅ Only 1 new devDependency: `@playwright/test` (e2e only)
+- ✅ All existing generators unchanged in behaviour
+- ✅ `pnpm arch:check` passes
+- ✅ 630 unit tests + 3 e2e tests pass
+
+**GROUP G — Forward-Looking**
+- `buildExam` cap-test is now part of the suite; future changes that bypass the cap will fail CI.
+- "Thin-pool audit" one-liner should be added to `docs/audits/` next time a Phase N+0.5B is contemplated (per D12g).
+- macOS 12 e2e uses system Chrome — will work natively on macOS 13+ / Linux CI.
+
+**Corrections / Stale Value Updates**
+- Generator count: 377 → **417** (USP #3 in D1; also Appendix D Claude Code notes; Layer 1 in I1)
+- Engine capability: now enforces 2-reuse-per-generator cap across all types (was: unlimited for mc/fill/calc)
 
 ---
 
