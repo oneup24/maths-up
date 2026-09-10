@@ -138,6 +138,8 @@ export const grade5={
 ],
 '5N5':[
   ()=>{var n1=ri(2,6),d1=pk([3,5,7]),n2=ri(2,4),d2=pk([4,6,8]);return{d:1,tp:'calc',q:n1+'/'+d1+' ÷ '+n2+'/'+d2+' = ?',a:fS(n1*d2,d1*n2),s:['除法改乘倒數：÷ '+n2+'/'+d2+' → × '+d2+'/'+n2,n1+'/'+d1+' × '+d2+'/'+n2+' = '+n1*d2+'/'+d1*n2,'✅ 答案（最簡）：'+fS(n1*d2,d1*n2)],sc:2}},
+  // d:1 fraction ÷ integer fill
+  ()=>{var n=ri(2,5),d=pk([4,5,6,8]),k=ri(2,4);return{d:1,tp:'fill',q:n+'/'+d+' ÷ '+k+' = ____',a:fS(n,d*k),s:['÷'+k+' = × 1/'+k,'='+n+'/'+d+' × 1/'+k+' = '+n+'/'+(d*k)+' → '+fS(n,d*k)],sc:1}},
   ()=>{var total=ri(200,500),fN=ri(2,3),fD=pk([4,5,6]);var dDay=pk(['星期一','星期三','星期五']),dP=ri(3,8);var used=Math.round(total*fN/fD);return{d:2,tp:'work',q:dDay+'，'+dP+'位工人用一條'+total+'cm繩子，用去全長的'+fN+'/'+fD+'。剩多少cm？',a:String(total-used),trap:'日期和工人數',s:['🔍 日期和工人數無關','用去: '+used,'剩: '+(total-used)],sc:3}},
   ()=>{var whole=ri(3,6),fN=ri(1,3),fD=pk([4,5,6]);var imp=whole*fD+fN;var div=ri(2,4);return{d:3,tp:'calc',q:whole+'又'+fN+'/'+fD+' ÷ '+div+' = ?',a:fS(imp,fD*div),s:['先化假分數: '+imp+'/'+fD,'÷'+div+' = '+imp+'/'+(fD*div)],sc:3}}
 ],
@@ -267,6 +269,8 @@ export const grade5={
 
 '5D1':[
   ()=>{var a1=ri(150,300),a2=ri(100,250),b1=ri(120,280),b2=ri(130,260);var items=[{l:'男A',v:a1},{l:'女A',v:a2},{l:'男B',v:b1},{l:'女B',v:b2}];var totalA=a1+a2,totalB=b1+b2;return{d:2,tp:'short',q:'棒形圖：A校和B校共多少人？哪校較多？多多少？',fig:FIG.bars(items),a:(totalA+totalB)+','+(totalA>totalB?'A校':'B校')+','+Math.abs(totalA-totalB),s:['A: '+totalA,'B: '+totalB],sc:3}},
+  // d:1 which group tallest mc
+  ()=>{var items=[{l:'男A',v:ri(100,250)},{l:'女A',v:ri(80,200)},{l:'男B',v:ri(120,260)},{l:'女B',v:ri(90,220)}];var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);var mxIdx=items.findIndex(i=>i.l===mx.l);return{d:1,tp:'mc',q:'複合棒形圖中，哪一組人數最多？',fig:FIG.bars(items),isMC:true,opts:items.map((i,idx)=>({l:String.fromCharCode(65+idx),v:i.l,c:i.l===mx.l})),a:String.fromCharCode(65+mxIdx),s:['最高棒：'+mx.l+'（'+mx.v+'人）。'],sc:1}},
   ()=>{var items=[{l:'一月',v:ri(100,200)},{l:'二月',v:ri(80,180)},{l:'三月',v:ri(120,250)},{l:'四月',v:ri(90,200)}];var total=items.reduce((s,i)=>s+i.v,0);var avg=Math.round(total/4);return{d:3,tp:'short',q:'棒形圖顯示四個月銷量。平均銷量是多少？哪個月最接近平均值？',fig:FIG.bars(items),a:avg+','+items.reduce((c,i)=>Math.abs(i.v-avg)<Math.abs(c.v-avg)?i:c,items[0]).l,s:['平均: '+avg,'逐一比較差距'],sc:3}},
   // 兩校男女生總數比較 (d:3)
   ()=>{var a1=ri(150,300),a2=ri(100,250),b1=ri(120,280),b2=ri(130,260);var items=[{l:'男A',v:a1},{l:'女A',v:a2},{l:'男B',v:b1},{l:'女B',v:b2}];return{d:3,tp:'short',q:'複合棒形圖顯示 A 校和 B 校的男女生人數。兩校的男生總數比女生總數相差多少人？',fig:FIG.bars(items),a:String(Math.abs((a1+b1)-(a2+b2))),s:['男生總數：'+a1+' + '+b1+' = '+(a1+b1),'女生總數：'+a2+' + '+b2+' = '+(a2+b2),'相差：|'+(a1+b1)+' − '+(a2+b2)+'| = '+Math.abs((a1+b1)-(a2+b2))],sc:3}}
@@ -276,6 +280,8 @@ export const grade5={
 '5A1':[
   // d:1 substitution calc
   ()=>{var a=ri(2,5),x=ri(3,8),b=ri(2,15);var ans=a*x+b;return{d:1,tp:'calc',q:'若 x = '+x+'，求 '+a+'x + '+b+' 的值。',a:String(ans),s:['代入：'+a+' × '+x+' + '+b+' = '+(a*x)+' + '+b+' = '+ans],sc:1}},
+  // d:1 what does the variable represent mc
+  ()=>{var n=ri(3,9);return{d:1,tp:'mc',q:'一個蘋果售 $'+n+'。買 x 個蘋果共需多少元？',isMC:true,opts:[{l:'A',v:'$'+n+'x',c:true},{l:'B',v:'$'+n+'+x',c:false},{l:'C',v:'$x',c:false}],a:'A',s:['每個 $'+n+'，x 個 = $'+n+' × x = $'+n+'x。'],sc:1}},
   // d:2 fill — express total using variable then evaluate
   ()=>{var h=ri(2,5);var d=ri(2,5);return{d:2,tp:'fill',q:nm()+'每天溫習 y 小時。'+d+' 天共溫習 ____ 小時（用 y 表示）。若 y = '+h+'，共溫習 ____ 小時。',a:d+'y,'+(d*h),s:[d+' 天 = y × '+d+' = '+d+'y','當 y = '+h+'：'+d+' × '+h+' = '+(d*h)],sc:2}},
   // d:3 rectangle with variable
@@ -286,6 +292,8 @@ export const grade5={
 '5A2':[
   // d:1 solve x+A=B
   ()=>{var x=ri(10,30),A=ri(15,40);var B=x+A;return{d:1,tp:'calc',q:'解方程：x + '+A+' = '+B,a:String(x),s:['移項：x = '+B+' − '+A+' = '+x,'✅ 答案：x = '+x],sc:1}},
+  // d:1 solve x−A=B
+  ()=>{var A=ri(5,20),x=ri(15,30);var B=x-A;return{d:1,tp:'calc',q:'解方程：x − '+A+' = '+B,a:String(x),s:['移項：x = '+B+' + '+A+' = '+x,'✅ 答案：x = '+x],sc:1}},
   // d:2 solve Cx=D (D = C*x so integer answer)
   ()=>{var C=ri(3,8),x=ri(5,15);var D=C*x;return{d:2,tp:'calc',q:'解方程：'+C+'x = '+D,a:String(x),s:['兩邊除以 '+C+'：x = '+D+' ÷ '+C+' = '+x,'✅ 答案：x = '+x],sc:2}},
   // d:3 word problem with age trap

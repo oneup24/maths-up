@@ -91,6 +91,10 @@ export const grade4={
 ],
 '4N2':[
   ()=>{var dv=ri(12,30),q2=ri(15,35),r=ri(1,dv-1);var n=dv*q2+r;return{d:1,tp:'calc',q:n+' ÷ '+dv+' = ?',a:q2+'...'+r,s:[dv+' × '+q2+' = '+dv*q2,n+' − '+dv*q2+' = '+r+'（餘數）','✅ 答案：'+q2+' 餘 '+r],sc:2}},
+  // d:1 exact division fill
+  ()=>{var dv=ri(3,9),q2=ri(4,12);var n=dv*q2;return{d:1,tp:'fill',q:n+' ÷ '+dv+' = ____',a:String(q2),s:[dv+' × '+q2+' = '+n,'所以 '+n+' ÷ '+dv+' = '+q2],sc:1}},
+  // d:2 which-divides-evenly mc
+  ()=>{var n=pk([24,36,48,72]);var dv=ri(2,8);var full=Math.floor(n/dv),rem=n%dv;var ansLabel=rem===0?'C':'A';return{d:2,tp:'mc',q:n+' ÷ '+dv+' 餘數是多少？',isMC:true,opts:[{l:'A',v:rem,c:rem>0},{l:'B',v:rem+1,c:false},{l:'C',v:'無餘數',c:rem===0}],a:ansLabel,s:[dv+' × '+full+' = '+dv*full,n+' − '+dv*full+' = '+(rem===0?'0（無餘數）':rem)],sc:1}},
   ()=>{var total=ri(300,800),per=ri(12,25);var full=Math.floor(total/per),rem=total%per;var dW=ri(8,20),dC=pk(['紅色','藍色']);return{d:2,tp:'work',q:'工廠有'+dW+'名工人，生產了'+total+'件'+dC+'玩具。每箱盛'+per+'件，要用多少個箱？',a:String(rem>0?full+1:full),trap:'工人數和顏色',s:['🔍 均無關',total+'÷'+per+'='+full+'...'+rem,'需'+(full+1)+'箱'],sc:3}},
   ()=>{var plane=ri(250,500),ratio=ri(12,20);var car=Math.floor(plane/ratio);var budget=ri(plane+50,plane+200);var remain=budget-plane;var maxCar=Math.floor(remain/car);var dAge=ri(35,50);return{d:3,tp:'work',q:'一架模型飛機售'+plane+'元，是模型車的'+ratio+'倍。爸爸今年'+dAge+'歲，有'+budget+'元。買了飛機後，最多可買模型車多少輛？',a:String(maxCar),trap:'爸爸年齡',s:['🔍 年齡無關','車價: '+car,'餘錢: '+(budget-plane),'最多: '+maxCar+'輛'],sc:3}}
 ],
@@ -443,8 +447,12 @@ export const grade4={
 ],
 
 '4D1':[
+  // d:1 which bar tallest mc
+  ()=>{var items=[{l:'蘋果',v:ri(10,40)},{l:'橙',v:ri(10,40)},{l:'西瓜',v:ri(10,40)},{l:'葡萄',v:ri(10,40)}];while(new Set(items.map(i=>i.v)).size<items.length){items.forEach(i=>i.v=ri(10,40));}var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);var mxIdx=items.findIndex(i=>i.l===mx.l);return{d:1,tp:'mc',q:'棒形圖顯示水果銷量。哪種水果銷量最高？',fig:FIG.bars(items),isMC:true,opts:items.map((i,idx)=>({l:String.fromCharCode(65+idx),v:i.l,c:i.l===mx.l})),a:String.fromCharCode(65+mxIdx),s:['最高棒：'+mx.l+'（'+mx.v+'）。'],sc:1}},
   ()=>{var items=[{l:'中文',v:ri(40,90)},{l:'英文',v:ri(35,85)},{l:'數學',v:ri(45,95)},{l:'常識',v:ri(30,75)}];var total=items.reduce((s,i)=>s+i.v,0);var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);var dTestTime=ri(30,60);return{d:2,tp:'short',q:'棒形圖（測驗時間'+dTestTime+'分鐘）。四科合共多少分？最高分是哪科？',fig:FIG.bars(items),a:total+','+mx.l,trap:'測驗時間',s:['🔍 測驗時間無關','總: '+total,'最高: '+mx.l],sc:3}},
-  ()=>{var items=[{l:'A班',v:ri(30,45)},{l:'B班',v:ri(25,40)},{l:'C班',v:ri(35,50)}];var avg=Math.round(items.reduce((s,i)=>s+i.v,0)/items.length);return{d:3,tp:'short',q:'棒形圖顯示三班成績。平均分是多少？（四捨五入至整數）',fig:FIG.bars(items),a:String(avg),s:['三班總÷3='+avg],sc:3}}
+  ()=>{var items=[{l:'A班',v:ri(30,45)},{l:'B班',v:ri(25,40)},{l:'C班',v:ri(35,50)}];var avg=Math.round(items.reduce((s,i)=>s+i.v,0)/items.length);return{d:3,tp:'short',q:'棒形圖顯示三班成績。平均分是多少？（四捨五入至整數）',fig:FIG.bars(items),a:String(avg),s:['三班總÷3='+avg],sc:3}},
+  // d:2 difference between two bars
+  ()=>{var items=[{l:'一月',v:ri(20,60)},{l:'二月',v:ri(20,60)},{l:'三月',v:ri(20,60)},{l:'四月',v:ri(20,60)}];var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);var mn=items.reduce((m,i)=>i.v<m.v?i:m,items[0]);return{d:2,tp:'short',q:'棒形圖顯示四個月銷售量。最高和最低相差多少？',fig:FIG.bars(items),a:String(mx.v-mn.v),s:['最高：'+mx.l+'（'+mx.v+'），最低：'+mn.l+'（'+mn.v+'）。','相差：'+mx.v+' − '+mn.v+' = '+(mx.v-mn.v)+'。'],sc:2}}
 ]
 };
 

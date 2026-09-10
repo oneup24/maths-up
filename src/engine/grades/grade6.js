@@ -147,6 +147,10 @@ export const grade6={
 ],
 '6M1':[
   ()=>{var a=ri(25,70),b=ri(25,130-a);var c=180-a-b;return{d:1,tp:'short',q:'三角形兩角分別'+a+'°和'+b+'°，求第三角。',a:String(c),s:['180−'+a+'−'+b+'='+c],sc:2}},
+  // d:1 complementary angle fill
+  ()=>{var a=ri(15,75);var b=90-a;return{d:1,tp:'fill',q:'一個角是 '+a+'°，它的餘角（和它組成直角）是 ____°。',a:String(b),s:['餘角和 = 90° → '+a+'° + '+b+'° = 90°'],sc:1}},
+  // d:2 identify angle type (mc)
+  ()=>{var ang=pk([{n:'銳角',d:35},{n:'直角',d:90},{n:'鈍角',d:135}]);return{d:2,tp:'mc',q:'一個角是 '+ang.d+'°，它是甚麼角？',isMC:true,opts:[{l:'A',v:'銳角',c:ang.n==='銳角'},{l:'B',v:'直角',c:ang.n==='直角'},{l:'C',v:'鈍角',c:ang.n==='鈍角'}],a:ang.n==='銳角'?'A':(ang.n==='直角'?'B':'C'),s:['銳角 < 90°，直角 = 90°，鈍角 90°–180°。'+ang.d+'° 是 '+ang.n+'。'],sc:1}},
   ()=>{var n=pk([5,6,8]);var interior=(n-2)*180;var each=interior/n;var dPeri=ri(20,50)*n;return{d:2,tp:'work',q:'正'+n+'邊形周界'+dPeri+'cm。內角和多少度？每個內角多少度？',a:interior+','+each,trap:'周界',s:['🔍 周界無關','('+n+'−2)×180='+interior,'每個: '+each],sc:3}},
   ()=>{var a=ri(30,80);var b=180-a;return{d:3,tp:'fill',q:'一條直線上的兩個角，一個是'+a+'°，另一個是____°。這兩個角叫做____角。',a:b+',補',s:[a+'+'+b+'=180°，互為補角'],sc:2}}
 ],
@@ -174,6 +178,10 @@ export const grade6={
 ],
 '6M3':[
   ()=>{var r=ri(5,15);return{d:1,tp:'short',q:'半徑'+r+'cm，求圓周。(π=3.14)',fig:FIG.circ(r,'r'),a:(2*3.14*r).toFixed(2),s:['2×3.14×'+r],sc:2}},
+  // d:1 diameter from circumference (fill)
+  ()=>{var r=ri(5,12);var c=(2*3.14*r).toFixed(2);return{d:1,tp:'fill',q:'一個圓的圓周是 '+c+' cm。它的直徑約是 ____ cm。(π=3.14)',a:String(r*2),s:['直徑 = 圓周 ÷ π ÷ 2 = '+c+' ÷ 3.14 ÷ 2 = '+r,'兩倍半徑 = '+r+' × 2 = '+(r*2)],sc:1}},
+  // d:2 compare two circles (mc)
+  ()=>{var r1=ri(5,15),r2=ri(5,15);while(r1===r2)r2=ri(5,15);var c1=(2*3.14*r1).toFixed(2),c2=(2*3.14*r2).toFixed(2);return{d:2,tp:'mc',q:'圓 A 半徑 '+r1+' cm，圓 B 半徑 '+r2+' cm。哪個圓的圓周較長？(π=3.14)',isMC:true,opts:[{l:'A',v:'圓 A ('+c1+' cm)',c:r1>r2},{l:'B',v:'圓 B ('+c2+' cm)',c:r2>r1},{l:'C',v:'一樣長',c:false}],a:r1>r2?'A':'B',s:['圓周 = 2πr。半徑越大，圓周越長。'],sc:1}},
   ()=>{var r=ri(4,10);var semi=3.14*r+2*r;var dArea=(3.14*r*r/2).toFixed(2);return{d:3,tp:'work',fig:FIG.semiCirc(r),q:'半圓半徑'+r+'cm，面積約'+dArea+'cm²。求半圓周界。(π=3.14)',a:semi.toFixed(2),trap:'面積',s:['🔍 面積是干擾','弧長: '+(3.14*r).toFixed(2),'直徑: '+2*r,'周界: '+semi.toFixed(2)],sc:3}}
 ],
 '6M4':[
@@ -230,11 +238,17 @@ export const grade6={
 ],
 '6S1':[
   ()=>{var shapes=[{n:'正方形',a:'4'},{n:'等邊三角形',a:'3'},{n:'正六邊形',a:'6'}];var s=pk(shapes);return{d:1,tp:'fill',q:s.n+'有____條對稱軸。',a:s.a,s:['正n邊形有n條'],sc:1}},
+  // d:1 which shape has symmetry (mc)
+  ()=>{return{d:1,tp:'mc',q:'以下哪個圖形有線對稱？',isMC:true,opts:[{l:'A',v:'正方形',c:true},{l:'B',v:'不規則四邊形',c:false},{l:'C',v:'平行四邊形（非長方形）',c:false}],a:'A',s:['正方形有 4 條對稱軸。','不規則四邊形無對稱軸。','一般平行四邊形無對稱軸。'],sc:1}},
   ()=>({d:2,tp:'mc',q:'平行四邊形(非長方形)有多少條對稱軸？',isMC:true,opts:[{l:'A',v:'0條',c:true},{l:'B',v:'1條',c:false},{l:'C',v:'2條',c:false}],a:'A',s:['一般平行四邊形無對稱軸'],sc:2}),
   ()=>({d:3,tp:'mc',q:'以下哪個圖形既有旋轉對稱又有線對稱？',isMC:true,opts:[{l:'A',v:'等腰三角形',c:false},{l:'B',v:'正六邊形',c:true},{l:'C',v:'平行四邊形',c:false}],a:'B',s:['正六邊形有6條對稱軸和旋轉對稱'],sc:3})
 ],
 '6D1':[
   ()=>{var n=ri(4,7);var vals=[];for(var i=0;i<n;i++)vals.push(ri(50,98));var sum=vals.reduce((s,v)=>s+v,0);var avg=sum/n;return{d:1,tp:'calc',q:vals.join('、')+'的平均數 = ?',a:avg%1===0?String(avg):avg.toFixed(1),s:['總和：'+vals.join(' + ')+' = '+sum,'÷ 個數（'+n+'）：'+sum+' ÷ '+n+' = '+(avg%1===0?avg:avg.toFixed(1)),'✅ 答案：'+(avg%1===0?avg:avg.toFixed(1))],sc:2}},
+  // d:1 small-list avg fill
+  ()=>{var vals=[ri(60,95),ri(60,95),ri(60,95)];var sum=vals.reduce((s,v)=>s+v,0);var avg=Math.round(sum/3);return{d:1,tp:'fill',q:vals.join('、')+'的平均數（四捨五入至整數）= ____',a:String(avg),s:['總和：'+vals.join(' + ')+' = '+sum,sum+' ÷ 3 = '+(sum/3).toFixed(2)+' ≈ '+avg],sc:1}},
+  // d:2 range vs avg mc
+  ()=>{var vals=[ri(60,95),ri(60,95),ri(60,95),ri(60,95)];var mx=Math.max(...vals),mn=Math.min(...vals);return{d:2,tp:'mc',q:'數據 '+vals.join('、')+' 的「範圍」（最大值 − 最小值）是多少？',isMC:true,opts:[{l:'A',v:mx-mn,c:true},{l:'B',v:mx+mn,c:false},{l:'C',v:Math.round((mx+mn)/2),c:false}],a:'A',s:['範圍 = 最大值 − 最小值 = '+mx+' − '+mn+' = '+(mx-mn)],sc:1}},
   ()=>{var n=ri(4,6);var vals=[];for(var i=0;i<n;i++)vals.push(ri(60,95));var sum=vals.reduce((s,v)=>s+v,0);var avg=sum/n;var target=Math.ceil(avg)+ri(2,8);var need=target*(n+1)-sum;while(need>100){target--;need=target*(n+1)-sum;}var dAbsent=ri(1,3);return{d:3,tp:'work',q:'有'+dAbsent+'人缺席。現有'+n+'次成績：'+vals.join('、')+'。要令'+(n+1)+'次平均達'+target+'分，下次最少要多少分？',a:String(need),trap:'缺席人數',s:['🔍 缺席無關','現總: '+sum,'目標總: '+target*(n+1),'需: '+need],sc:3}},
   /* _addQ Phase 2 — find next score for target avg (line 1025) */
   ()=>{
@@ -254,6 +268,8 @@ export const grade6={
 ],
 '6D2':[
   ()=>{var labels=['一月','二月','三月','四月','五月'];var n=ri(4,5);var data=[];for(var i=0;i<n;i++)data.push({l:labels[i],v:ri(15,55)});var mx=data.reduce((m,d)=>d.v>m.v?d:m,data[0]);var mn=data.reduce((m,d)=>d.v<m.v?d:m,data[0]);return{d:2,tp:'short',q:'折線圖：最高與最低相差多少？最高是哪月？',fig:FIG.line(data),a:(mx.v-mn.v)+','+mx.l,s:['最高: '+mx.l,'差: '+(mx.v-mn.v)],sc:3}},
+  // d:1 which month highest (mc)
+  ()=>{var labels=['一月','二月','三月','四月','五月'];var data=[];for(var i=0;i<5;i++)data.push({l:labels[i],v:ri(15,55)});var mx=data.reduce((m,d)=>d.v>m.v?d:m,data[0]);var mxIdx=data.findIndex(d=>d.l===mx.l);return{d:1,tp:'mc',q:'折線圖顯示五個月數據。哪個月的數值最高？',fig:FIG.line(data),isMC:true,opts:data.map((d,i)=>({l:String.fromCharCode(65+i),v:d.l,c:d.l===mx.l})),a:String.fromCharCode(65+mxIdx),s:['最高點：'+mx.l+'（'+mx.v+'）。'],sc:1}},
   ()=>{var labels=['週一','週二','週三','週四','週五'];var data=labels.map(l=>({l:l,v:ri(15,50)}));var total=data.reduce((s,d)=>s+d.v,0);var dRain=ri(1,3);return{d:3,tp:'work',q:'折線圖，該週有'+dRain+'天下雨。五天總和及平均數？',fig:FIG.line(data),a:total+','+(total/5%1===0?String(total/5):(total/5).toFixed(1)),trap:'下雨天數',s:['🔍 下雨天數無關','總: '+total,'平均: '+(total/5).toFixed(1)],sc:3}}
 ],
 '6D3':[
@@ -261,6 +277,8 @@ export const grade6={
     return{d:1,tp:'mc',q:'哪種統計圖最能顯示各部分佔整體比例？',isMC:true,fig:FIG.pie(slices),
       opts:[{l:'A',v:'折線圖',c:false},{l:'B',v:'棒形圖',c:false},{l:'C',v:'圓形圖',c:true}],
       a:'C',s:['圓形圖顯示比例'],sc:1}},
+  // d:1 which slice is largest (mc)
+  ()=>{const slices=[{l:'語文',pct:35},{l:'數學',pct:25},{l:'常識',pct:20},{l:'音樂',pct:15},{l:'體育',pct:5}];var mx=slices.reduce((m,s)=>s.pct>m.pct?s:m,slices[0]);var mxIdx=slices.findIndex(s=>s.l===mx.l);return{d:1,tp:'mc',q:'圓形圖顯示學習時間分配。哪一科佔比最大？',fig:FIG.pie(slices),isMC:true,opts:slices.map((s,i)=>({l:String.fromCharCode(65+i),v:s.l,c:s.l===mx.l})),a:String.fromCharCode(65+mxIdx),s:['最大塊：'+mx.l+'（'+mx.pct+'%）。'],sc:1}},
   ()=>{var total=pk([300,400,500,600]);var p1=pk([15,20,25,30]),p2=pk([20,25,30,35]);var p3=100-p1-p2;var dDate=pk(['上月','本月','上學期']);return{d:3,tp:'work',q:dDate+'調查，圓形圖：A佔'+p1+'%、B佔'+p2+'%、C佔其餘。共'+total+'人：A多少人？C多少人？C比A多多少人？',a:(total*p1/100)+','+(total*p3/100)+','+(total*p3/100-total*p1/100),trap:'調查時間',s:['🔍 時間無關','C%: '+p3+'%'],sc:3}}
 ],
 
