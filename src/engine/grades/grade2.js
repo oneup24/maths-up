@@ -169,7 +169,7 @@ export const grade2={
   // d:2 cylinder properties fill (fixed)
   ()=>{return{d:2,tp:'fill',q:'圓柱體有 ____ 個平面和 ____ 個曲面。',a:'2,1',s:['圓柱體有 2 個圓形平面（上下底），1 個曲面（側面）。'],sc:1}},
   // d:3 cube vs cuboid face comparison (mc)
-  ()=>{var sh=pk(['正方體','長方體']);var correct='正方體的 6 個面都是正方形；長方體的 6 個面都是長方形（不一定每個都是正方形）';return{d:3,tp:'mc',q:'正方體和長方體的面數、棱數、頂點數都一樣。它們最大的分別是？',isMC:true,opts:[{l:'A',v:correct,c:true},{l:'B',v:'面數不同',c:false},{l:'C',v:'棱數不同',c:false}],a:'A',s:['面數都是 6，棱數都是 12，頂點數都是 8。','分別在於「每個面是否都是正方形」：正方體全部正方形；長方體全部長方形。'],sc:2}},
+  ()=>{return{d:3,tp:'mc',q:'正方體和長方體的面數、棱數、頂點數都一樣。它們最大的分別是？',isMC:true,opts:[{l:'A',v:'正方體的 6 個面都是正方形；長方體的 6 個面都是長方形（不一定每個都是正方形）',c:true},{l:'B',v:'面數不同',c:false},{l:'C',v:'棱數不同',c:false}],a:'A',s:['面數都是 6，棱數都是 12，頂點數都是 8。','分別在於「每個面是否都是正方形」：正方體全部正方形；長方體全部長方形。'],sc:2}},
   // d:3 identify shape from faces/edges/vertices description
   ()=>{return{d:3,tp:'work',q:'有一個立體圖形，它有 5 個頂點、8 條棱、5 個面。這是什麼形狀？它有幾個三角形的面？',a:'四棱錐,4',s:['5頂點、8棱、5面 → 四棱錐（底為正方形，4個三角側面）','四棱錐的 5 個面中，4 個是三角形。'],sc:3}}
 ],

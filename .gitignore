@@ -36,3 +36,8 @@ dist-ssr
 .claude/
 __pycache__/
 .vercel
+
+# Playwright
+test-results/
+playwright-report/
+.playwright/
