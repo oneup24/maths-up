@@ -35,3 +35,26 @@
 ## UI/UX
 
 - [x] **ScoreReport design tokens** — apply `parent-report.DESIGN.md` token discipline to the results/score screen. Remove all `backdrop-blur`, match the white canvas + hairline border style already applied to Home + Exam. Update `docs/STATUS.md` in the same commit.
+
+---
+
+## 📋 Today's Tasks (2026-09-10)
+
+> Five tasks agreed with founder for the 2026-09-10 session. Update `docs/STATUS.md` and re-run `npm test` per item.
+
+- [ ] **A. Expand thin generator pools** — follow-on to 2M1 expansion. Target topics with ≤3 generators: `2S1/2S2/2S3/2S4`, `2M2`, `2M3`, `3M1/3M2/3M3/3M4/3M5`, `3S1`, `3S2`, `4N2`, `4D1`, `5N5`, `5A1`, `5A2`, `5D1`, `6M1`, `6M3`, `6S1`, `6D1/6D2/6D3`. Add 2–4 new templates per topic, focused on d:1/d:2 since those are the most-used difficulties. ~1–2 hr/topic. Verify variety with the new `buildExam` cap-test.
+
+- [ ] **B. e2e tests (Playwright)** — fill Phase 3A gap. Setup `@playwright/test`, write smoke tests: home loads, login flow, exam start → answer → submit, score report renders, print/PDF flow. ~half-day. Target: `npm run test:e2e` runs in CI.
+
+- [ ] **C. UX fix: who-ran-further MC** — `grade2.js:114` currently emits the same `diff` in both A and B options (correct name vs wrong name + same distance). Change B to a plausible wrong distance (e.g., `diff + ri(1,9)*10`) so each option has a unique `(name, distance)` pair. ~5 min.
+
+- [ ] **D. Update MASTER_PLAN.md for Phase 1B** — add a new section to the phases roadmap reflecting the 48 new generators + Phase 1B doctrine. Mirror STATUS.md §"Phase 1B" entries. ~30 min.
+
+- [ ] **E. Lint/cleanup** — fix pre-existing `_e1/_e2/_e3` unused-vars in `exam.js` (rename to `__e` or remove), fix `endH=endH` self-assign in `grade2.js:138` (the cinema generator). ~10 min.
+
+### Recommended execution order
+1. **E first** (10 min — clears noise, makes later lint clean)
+2. **C next** (5 min — quick UX win)
+3. **A** (bulk of the day — pick 3–4 highest-priority topics first; can split across sessions)
+4. **B** (after A is stable so the e2e tests reflect final UX)
+5. **D** (last — captures all the day's work in the master plan)
