@@ -132,6 +132,10 @@ export const grade2={
 '2M2':[
   // d:1 clock face fill
   ()=>{var h=ri(1,12);var min=pk([0,5,10,15,20,25,30,35,40,45,50,55]);return{d:1,tp:'fill',q:'分針指着 '+((min/5)||12)+'，時針指着 '+h+'。現在是 ____ 時 ____ 分。',a:h+','+min,s:['時針：'+h,'分針：'+min+' 分（每個數字代表 5 分鐘）','時間：'+h+' 時 '+min+' 分'],sc:1}},
+  // d:1 hours → minutes conversion (fill)
+  ()=>{var h=ri(2,5);return{d:1,tp:'fill',q:h+' 小時 = ____ 分鐘',a:String(h*60),s:['1 小時 = 60 分鐘',h+' × 60 = '+(h*60)+' 分鐘'],sc:1}},
+  // d:1 minutes → hours+minutes conversion (fill)
+  ()=>{var total=ri(70,300);var h=Math.floor(total/60),m=total%60;return{d:1,tp:'fill',q:total+' 分鐘 = ____ 小時 ____ 分鐘',a:h+','+m,s:['1 小時 = 60 分鐘',total+' ÷ 60 = '+h+' 餘 '+m],sc:2}},
   // d:2 activity end-time with student-count trap
   ()=>{var h=ri(8,10),m=pk([0,10,20,30,40,50]),dur=pk([15,20,25,30,45]);var endM=m+dur;var endH=h+Math.floor(endM/60);endM=endM%60;if(endH>12)endH=endH-12;var dStu=ri(20,35);return{d:2,tp:'work',q:'課外活動有 '+dStu+' 位同學參加，於上午 '+h+' 時 '+m+' 分開始，活動歷時 '+dur+' 分鐘。活動何時結束？(用 12 小時制作答)',a:endH+'時'+endM+'分',trap:'學生人數（'+dStu+'位）',s:['🔍 學生人數與時間無關。',h+' 時 '+m+' 分 + '+dur+' 分鐘','分鐘：'+m+' + '+dur+' = '+(m+dur),'結束：'+endH+' 時 '+endM+' 分'],sc:2}},
   // d:3 cinema end-time with ticket price trap
@@ -142,6 +146,12 @@ export const grade2={
 '2M3':[
   // d:1 coins total
   ()=>{var n10=ri(1,3),n5=ri(1,3),n2=ri(1,4),n1=ri(1,5);var total=n10*10+n5*5+n2*2+n1*1;return{d:1,tp:'calc',q:'錢包裏有 '+n10+' 個 $10 硬幣、'+n5+' 個 $5 硬幣、'+n2+' 個 $2 硬幣和 '+n1+' 個 $1 硬幣。共有多少元？',a:String(total),s:['$10 × '+n10+' = $'+(n10*10),'$5 × '+n5+' = $'+(n5*5),'$2 × '+n2+' = $'+(n2*2),'$1 × '+n1+' = $'+(n1*1),'合計：$'+total],sc:1}},
+  // d:1 single coin × N fill
+  ()=>{var coin=pk([2,5,10]);var n=ri(2,9);return{d:1,tp:'fill',q:n+' 個 $'+coin+' 硬幣合共 $ ____',a:String(coin*n),s:[n+' × $'+coin+' = $'+(coin*n)],sc:1}},
+  // d:2 which combination equals $X (mc)
+  ()=>{var target=pk([20,30,40,50]);return{d:2,tp:'mc',q:'以下哪一組硬幣合共 $'+target+'？',isMC:true,opts:[{l:'A',v:'$10 + $'+(target-10),c:false},{l:'B',v:'$'+target,c:true},{l:'C',v:'$10 + $'+(target+10),c:false}],a:'B',s:['$'+target+' 直接等於 $'+target],sc:1}},
+  // d:2 simple change calculation (calc)
+  ()=>{var cost=ri(15,40);var pay=pk([50,100].filter(p=>p>cost));if(!pay)pay=50;return{d:2,tp:'calc',q:'買了 $'+cost+' 的文具，付了 $'+pay+'。應找回多少元？',a:String(pay-cost),s:['找回：$'+pay+' − $'+cost+' = $'+(pay-cost)],sc:1}},
   // d:2 two-item change with distance trap
   ()=>{var p1=ri(8,25),p2=ri(5,20);var total=p1+p2;var pay=pk([50,100].filter(p=>p>total));if(!pay)pay=100;var change=pay-total;var dDist=ri(100,500);return{d:2,tp:'work',q:nm()+'走 '+dDist+' 米到文具店。買了一把 $'+p1+' 的尺和一盒 $'+p2+' 的鉛筆。他付了 $'+pay+'。應找回多少元？',a:String(change),trap:'到文具店的距離（'+dDist+'米）',s:['🔍 距離與金錢無關。','總花費：$'+p1+' + $'+p2+' = $'+total,'找回：$'+pay+' − $'+total+' = $'+change],sc:2}},
   // d:3 去尾法 how-many-can-buy
@@ -152,8 +162,14 @@ export const grade2={
 '2S1':[
   // d:1 cube faces/edges/vertices fill (fixed answer)
   ()=>{return{d:1,tp:'fill',q:'正方體有 ____ 個面，____ 條棱，____ 個頂點。',a:'6,12,8',s:['正方體有 6 個面、12 條棱、8 個頂點。'],sc:1}},
+  // d:1 identify shape by description (mc)
+  ()=>{var shapes=[{n:'正方體',d:'6 個面，每個面都是正方形'},{n:'長方體',d:'6 個面，每個面都是長方形'},{n:'圓柱體',d:'2 個圓形平面和 1 個曲面'}];var sh=pk(shapes);return{d:1,tp:'mc',q:'一個立體有 '+sh.d+'。這是甚麼立體？',isMC:true,opts:[{l:'A',v:'正方體',c:sh.n==='正方體'},{l:'B',v:'長方體',c:sh.n==='長方體'},{l:'C',v:'圓柱體',c:sh.n==='圓柱體'}],a:sh.n==='正方體'?'A':(sh.n==='長方體'?'B':'C'),s:['按描述判斷：'+sh.d+' → '+sh.n],sc:1}},
   // d:2 which-shape-has-no-vertex with toy-count trap
   ()=>{var dToy=ri(3,8);return{d:2,tp:'mc',q:'以下哪個立體圖形沒有頂點？(圖書館裏有 '+dToy+' 個正方體積木)',isMC:true,opts:[{l:'A',v:'球體',c:true},{l:'B',v:'正方體',c:false},{l:'C',v:'三棱柱',c:false}],a:'A',trap:'正方體積木數量（'+dToy+'個）',s:['🔍 正方體積木的數量與答案無關。','球體由一條曲面圍成，沒有棱，也沒有頂點。'],sc:2}},
+  // d:2 cylinder properties fill (fixed)
+  ()=>{return{d:2,tp:'fill',q:'圓柱體有 ____ 個平面和 ____ 個曲面。',a:'2,1',s:['圓柱體有 2 個圓形平面（上下底），1 個曲面（側面）。'],sc:1}},
+  // d:3 cube vs cuboid face comparison (mc)
+  ()=>{var sh=pk(['正方體','長方體']);var correct='正方體的 6 個面都是正方形；長方體的 6 個面都是長方形（不一定每個都是正方形）';return{d:3,tp:'mc',q:'正方體和長方體的面數、棱數、頂點數都一樣。它們最大的分別是？',isMC:true,opts:[{l:'A',v:correct,c:true},{l:'B',v:'面數不同',c:false},{l:'C',v:'棱數不同',c:false}],a:'A',s:['面數都是 6，棱數都是 12，頂點數都是 8。','分別在於「每個面是否都是正方形」：正方體全部正方形；長方體全部長方形。'],sc:2}},
   // d:3 identify shape from faces/edges/vertices description
   ()=>{return{d:3,tp:'work',q:'有一個立體圖形，它有 5 個頂點、8 條棱、5 個面。這是什麼形狀？它有幾個三角形的面？',a:'四棱錐,4',s:['5頂點、8棱、5面 → 四棱錐（底為正方形，4個三角側面）','四棱錐的 5 個面中，4 個是三角形。'],sc:3}}
 ],
@@ -162,8 +178,14 @@ export const grade2={
 '2S2':[
   // d:1 mc identify right/acute/obtuse angle
   ()=>{var angle=pk([{n:'直角',d:90,c:0},{n:'銳角',d:45,c:1},{n:'鈍角',d:120,c:2}]);return{d:1,tp:'mc',q:'一個角是 '+angle.d+' 度，這是甚麼角？',isMC:true,opts:[{l:'A',v:'直角',c:angle.c===0},{l:'B',v:'銳角',c:angle.c===1},{l:'C',v:'鈍角',c:angle.c===2}],a:angle.c===0?'A':angle.c===1?'B':'C',s:[angle.d+' 度是'+angle.n+'。','直角 = 90°，銳角 < 90°，鈍角 > 90° 且 < 180°'],sc:1}},
+  // d:1 right angle = 90° fill (fixed)
+  ()=>{return{d:1,tp:'fill',q:'一個直角是 ____ 度。',a:'90',s:['直角 = 90°。'],sc:1}},
+  // d:2 clock hands angle type (mc)
+  ()=>{var h=pk([3,9,6]);var angleType=(h===3||h===9)?'直角':'平角';return{d:2,tp:'mc',q:'鐘面顯示 '+h+' 點整，時針和分針成甚麼角？',isMC:true,opts:[{l:'A',v:'直角',c:angleType==='直角'},{l:'B',v:'平角',c:angleType==='平角'},{l:'C',v:'銳角',c:false}],a:angleType==='直角'?'A':'B',s:[h+'點鐘時分針指 12，時針指 '+h+'。','3點和9點：時針與分針成 90° 直角。','6點鐘：時針與分針成 180° 平角。'],sc:2}},
   // d:2 fill right-angles in shapes (fixed)
   ()=>{return{d:2,tp:'fill',q:'長方形有 ____ 個直角；三角形最多有 ____ 個直角。',a:'4,1',s:['長方形 4 個角都是直角 → 4 個。','三角形最多只有 1 個直角。'],sc:2}},
+  // d:3 triangle angle sum (work)
+  ()=>{var a=ri(40,80);var b=ri(30,a-10);var c=180-a-b;return{d:3,tp:'work',q:'三角形三隻內角的和是 180°。已知一個三角形的兩個角是 '+a+'° 和 '+b+'°，第三個角是多少度？',a:String(c),s:['三角形內角和 = 180°','180° − '+a+'° − '+b+'° = '+c+'°'],sc:2}},
   // d:3 mc quadrilateral one-pair-parallel no-right-angle
   ()=>{var dColor=pk(['紅色','藍色','綠色']);return{d:3,tp:'mc',q:nm()+'畫了一個'+dColor+'的四邊形，它只有一組對邊平行，而且沒有任何直角。這是什麼形狀？',isMC:true,opts:[{l:'A',v:'長方形',c:false},{l:'B',v:'梯形',c:true},{l:'C',v:'正方形',c:false}],a:'B',trap:'圖形顏色（'+dColor+'）',s:['🔍 顏色與形狀判斷無關。','只有一組對邊平行 + 沒有直角 = 梯形'],sc:3}}
 ],
@@ -172,8 +194,12 @@ export const grade2={
 '2S3':[
   // d:1 sun rises/sets direction fill
   ()=>{return{d:1,tp:'fill',q:'太陽從 ____ 方升起，從 ____ 方落下。',a:'東,西',s:['太陽從東方升起，從西方落下。'],sc:1}},
+  // d:1 facing direction → left side (mc)
+  ()=>{var facing=[{d:'北',left:'西',right:'東'},{d:'南',left:'東',right:'西'},{d:'東',left:'北',right:'南'},{d:'西',left:'南',right:'北'}];var f=pk(facing);return{d:1,tp:'mc',q:nm()+'面對'+f.d+'方，他左手邊是哪個方向？',isMC:true,opts:[{l:'A',v:f.left,c:true},{l:'B',v:f.right,c:false},{l:'C',v:f.d,c:false}],a:'A',s:['面對'+f.d+'方，左手是'+f.left+'方（右手是'+f.right+'方）。'],sc:1}},
   // d:2 grid relative-position fill with distance trap
   ()=>{var dDist=ri(100,500);return{d:2,tp:'fill',q:'在一張地圖上，學校在公園的南方（兩地相距 '+dDist+' 米），圖書館在學校的西方。圖書館在公園的 ____ 方。',a:'西南方',trap:'兩地距離（'+dDist+'米）',s:['🔍 距離與方向無關。','先看學校在公園的南方，再看圖書館在學校的西方','圖書館在公園的西南方。'],sc:2}},
+  // d:2 two-step direction combine (short)
+  ()=>{var pairs=[{a:'北',b:'東',c:'東北'},{a:'北',b:'西',c:'西北'},{a:'南',b:'東',c:'東南'},{a:'南',b:'西',c:'西南'}];var p=pk(pairs);return{d:2,tp:'short',q:nm()+'先向'+p.a+'走一段路，再向'+p.b+'走一段路。最終位置在出發點的哪個方向？',a:p.c+'方',s:['先'+p.a+'再'+p.b+'，兩段方向合成 → '+p.c+'方。'],sc:2}},
   // d:3 map reasoning with 8-direction compass
   ()=>{return{d:3,tp:'work',q:'地圖上，學校 A 在郵局 B 的北方 4 km 處，圖書館 C 在郵局 B 的東方 3 km 處。'+nm()+'從學校 A 經郵局 B 走到圖書館 C。\n(1) 第二段路（B→C）向哪個方向？\n(2) 從 A 直望 C，是哪個方向？',a:'東,東南方',s:['(1) B→C：郵局在 B，向東走到 C → 東方。','(2) A 在 B 北 4 km，C 在 B 東 3 km，從 A 看 C 位於東南方向。'],sc:3}}
 ],
@@ -182,10 +208,14 @@ export const grade2={
 '2S4':[
   // d:1 square properties fill (fixed)
   ()=>{return{d:1,tp:'fill',q:'正方形有 ____ 條等長的邊和 ____ 個直角。',a:'4,4',s:['正方形 4 條邊等長，4 個角都是直角。'],sc:1}},
+  // d:1 which is a quadrilateral (mc)
+  ()=>{return{d:1,tp:'mc',q:'以下哪一個圖形是四邊形？',isMC:true,opts:[{l:'A',v:'正方形',c:true},{l:'B',v:'三角形',c:false},{l:'C',v:'圓形',c:false}],a:'A',s:['四邊形有 4 條邊和 4 個角。','正方形是四邊形；三角形有 3 條邊；圓形沒有直邊。'],sc:1}},
   // d:2 mc correct-statement with student-count trap
   ()=>{var dStu=ri(20,30);return{d:2,tp:'mc',q:'以下哪個說法是正確的？('+dStu+' 位同學討論四邊形)',isMC:true,opts:[{l:'A',v:'所有正方形都是長方形',c:true},{l:'B',v:'所有長方形都是正方形',c:false},{l:'C',v:'菱形一定有 4 個直角',c:false}],a:'A',trap:'學生人數（'+dStu+'位）',s:['🔍 學生人數與答案無關。','正方形是特殊的長方形（邊長相等）。','長方形不一定四邊等長，所以不一定是正方形。','菱形只要求四邊等長，不一定有直角。'],sc:2}},
   // d:3 dynamic shape from property description
-  ()=>{var combos=pk([{eq:4,rt:4,n:'正方形'},{eq:2,rt:4,n:'長方形'},{eq:4,rt:0,n:'菱形'},{eq:2,rt:0,n:'平行四邊形'}]);return{d:3,tp:'mc',q:'一個四邊形有 '+combos.eq+' 條等長的邊和 '+combos.rt+' 個直角。這是什麼形狀？',isMC:true,opts:[{l:'A',v:'正方形',c:combos.n==='正方形'},{l:'B',v:'長方形',c:combos.n==='長方形'},{l:'C',v:'菱形',c:combos.n==='菱形'},{l:'D',v:'平行四邊形',c:combos.n==='平行四邊形'}],a:combos.n==='正方形'?'A':combos.n==='長方形'?'B':combos.n==='菱形'?'C':'D',s:[combos.eq+'條等邊 + '+combos.rt+'個直角 = '+combos.n],sc:3}}
+  ()=>{var combos=pk([{eq:4,rt:4,n:'正方形'},{eq:2,rt:4,n:'長方形'},{eq:4,rt:0,n:'菱形'},{eq:2,rt:0,n:'平行四邊形'}]);return{d:3,tp:'mc',q:'一個四邊形有 '+combos.eq+' 條等長的邊和 '+combos.rt+' 個直角。這是什麼形狀？',isMC:true,opts:[{l:'A',v:'正方形',c:combos.n==='正方形'},{l:'B',v:'長方形',c:combos.n==='長方形'},{l:'C',v:'菱形',c:combos.n==='菱形'},{l:'D',v:'平行四邊形',c:combos.n==='平行四邊形'}],a:combos.n==='正方形'?'A':combos.n==='長方形'?'B':combos.n==='菱形'?'C':'D',s:[combos.eq+'條等邊 + '+combos.rt+'個直角 = '+combos.n],sc:3}},
+  // d:3 classify shape from property description (short)
+  ()=>{var shapes=[{n:'正方形',p:'4 條邊等長、4 個直角'},{n:'長方形',p:'對邊等長、4 個直角'},{n:'平行四邊形',p:'對邊等長、沒有直角'},{n:'梯形',p:'只有一組對邊平行'}];var sh=pk(shapes);return{d:3,tp:'short',q:'一個四邊形的特徵是：'+sh.p+'。這是甚麼形狀？',a:sh.n,s:['按特性判斷：'+sh.p+' → '+sh.n],sc:2}}
 ]
 };
 
