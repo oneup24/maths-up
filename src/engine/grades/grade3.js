@@ -160,6 +160,10 @@ export const grade3={
 
 '3D1':[
   ()=>{var items=[{l:'足球',v:ri(15,35)},{l:'籃球',v:ri(10,30)},{l:'排球',v:ri(12,28)},{l:'乒乓球',v:ri(20,40)}];var total=items.reduce((s,i)=>s+i.v,0);var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);var mn=items.reduce((m,i)=>i.v<m.v?i:m,items[0]);return{d:2,tp:'short',q:'根據棒形圖，四種球共有多少個？最多比最少多多少個？',fig:FIG.bars(items),a:total+','+(mx.v-mn.v),s:['總和: '+total,'差: '+(mx.v-mn.v)],sc:3}},
+  // d:1 which bar is tallest (mc)
+  ()=>{var items=[{l:'蘋果',v:ri(10,40)},{l:'橙',v:ri(10,40)},{l:'香蕉',v:ri(10,40)},{l:'葡萄',v:ri(10,40)}];while(new Set(items.map(i=>i.v)).size<items.length){items.forEach(i=>i.v=ri(10,40));}var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);return{d:1,tp:'mc',q:'棒形圖顯示同學喜愛的水果人數。哪種水果最受歡迎？',fig:FIG.bars(items),isMC:true,opts:items.map((i,idx)=>({l:String.fromCharCode(65+idx),v:i.l,c:i.l===mx.l})),a:items.findIndex(i=>i.l===mx.l)>=0?String.fromCharCode(65+items.findIndex(i=>i.l===mx.l)):'A',s:['最高棒：'+mx.l+'（'+mx.v+' 人）。'],sc:1}},
+  // d:1 which bar is shortest (mc)
+  ()=>{var items=[{l:'中文',v:ri(20,50)},{l:'英文',v:ri(20,50)},{l:'數學',v:ri(20,50)},{l:'常識',v:ri(20,50)}];while(new Set(items.map(i=>i.v)).size<items.length){items.forEach(i=>i.v=ri(20,50));}var mn=items.reduce((m,i)=>i.v<m.v?i:m,items[0]);var mnIdx=items.findIndex(i=>i.l===mn.l);return{d:1,tp:'mc',q:'棒形圖顯示各科成績。哪科成績最低？',fig:FIG.bars(items),isMC:true,opts:items.map((i,idx)=>({l:String.fromCharCode(65+idx),v:i.l,c:i.l===mn.l})),a:String.fromCharCode(65+mnIdx),s:['最低棒：'+mn.l+'（'+mn.v+' 分）。'],sc:1}},
   ()=>{var items=[{l:'一月',v:ri(20,50)},{l:'二月',v:ri(15,45)},{l:'三月',v:ri(25,60)}];var sum=items.reduce((s,i)=>s+i.v,0),avg=Math.round(sum/items.length);return{d:3,tp:'short',q:'棒形圖顯示三個月銷量。三個月平均銷量是多少？',fig:FIG.bars(items),a:String(avg),s:['三個月總和：'+items[0].v+' + '+items[1].v+' + '+items[2].v+' = '+sum,sum+' ÷ 3 ≈ '+avg,'✅ 答案：'+avg],sc:3}},
   // d:2 — 雪糕 bar chart with 3 flavors
   ()=>{var items=[{l:'朱古力',v:ri(25,45)},{l:'雲呢拿',v:ri(10,30)},{l:'士多啤梨',v:ri(15,35)}];var mx=items.reduce((m,i)=>i.v>m.v?i:m,items[0]);var mn=items.reduce((m,i)=>i.v<m.v?i:m,items[0]);return{d:2,tp:'short',q:'棒形圖顯示雪糕店各款口味的銷量。最受歡迎的口味比最不受歡迎的多賣出多少杯？',fig:FIG.bars(items),a:String(mx.v-mn.v),s:['最多：'+mx.v+' 杯，最少：'+mn.v+' 杯','相差：'+mx.v+' − '+mn.v+' = '+(mx.v-mn.v)+' 杯'],sc:2}}
@@ -195,8 +199,14 @@ export const grade3={
 '3M1':[
   // d:1 km+m to m
   ()=>{var km=ri(1,5),m=ri(100,900,100),km2=ri(1,4),m2=ri(100,800,100);return{d:1,tp:'calc',q:km+'公里'+m+'米 + '+km2+'公里'+m2+'米 = ____ 米',a:String(km*1000+m+km2*1000+m2),s:[km+'公里 = '+km*1000+'米',km2+'公里 = '+km2*1000+'米','合計：'+km*1000+' + '+m+' + '+km2*1000+' + '+m2+' = '+(km*1000+m+km2*1000+m2)+'米'],sc:2}},
+  // d:1 km → m conversion (fill)
+  ()=>{var km=ri(2,9);return{d:1,tp:'fill',q:km+' 公里 = ____ 米',a:String(km*1000),s:['1 公里 = 1000 米',km+' × 1000 = '+(km*1000)+' 米'],sc:1}},
+  // d:1 m → km+m conversion (fill)
+  ()=>{var total=ri(1200,8500);var km=Math.floor(total/1000),m=total%1000;return{d:1,tp:'fill',q:total+' 米 = ____ 公里 ____ 米',a:km+','+m,s:['1 公里 = 1000 米',total+' ÷ 1000 = '+km+' 餘 '+m],sc:2}},
   // d:2 hiking-distance with bus-fare trap
   ()=>{var A=ri(2,5),B=ri(1,3);var dFare=ri(8,25);return{d:2,tp:'work',q:nm()+'由甲村步行 '+A+' 公里到乙村，再走 '+B+' 公里到丙村。巴士車費每程 $'+dFare+'（她沒有乘車）。甲村到丙村合共多少公里？',a:String(A+B),trap:'巴士車費（$'+dFare+'）',s:['🔍 她沒有乘車，車費是干擾資訊。','總距離：'+A+' + '+B+' = '+(A+B)+' 公里'],sc:2}},
+  // d:2 km+m subtraction
+  ()=>{var km1=ri(3,8),m1=ri(200,800,100);var km2=ri(1,km1-1),m2=ri(100,900,100);var d1=km1*1000+m1,d2=km2*1000+m2;if(d1<=d2){km1+=1;d1=km1*1000+m1;}var diff=d1-d2;return{d:2,tp:'calc',q:km1+'公里'+m1+'米 − '+km2+'公里'+m2+'米 = ____ 米',a:String(diff),s:['化為米：'+km1+'公里'+m1+'米 = '+d1+' 米',km2+'公里'+m2+'米 = '+d2+' 米','相減：'+d1+' − '+d2+' = '+diff+' 米'],sc:2}},
   // d:3 unit-chain fill
   ()=>{var km=ri(2,5),m=ri(200,800,100);var total_m=km*1000+m;return{d:3,tp:'fill',q:km+'公里'+m+'米 = ____ 米 = ____ 厘米',a:total_m+','+(total_m*100),s:[km+'×1000 + '+m+' = '+total_m+' 米',total_m+' × 100 = '+(total_m*100)+' 厘米'],sc:3}}
 ],
@@ -205,6 +215,8 @@ export const grade3={
 '3M2':[
   // d:1 p.m. to 24h
   ()=>{var H=ri(1,11),M=pk([0,15,20,30,45]);return{d:1,tp:'fill',q:'下午 '+H+' 時 '+M+' 分 = 24 小時制的 ____ 時 ____ 分',a:(H+12)+','+M,s:['下午 H 時 = 24 小時制的 (H+12) 時','答案是 '+(H+12)+' 時 '+M+' 分'],sc:1}},
+  // d:1 24h to p.m. fill
+  ()=>{var H=ri(13,23),M=pk([0,15,30,45]);var pmH=H-12;return{d:1,tp:'fill',q:'24 小時制的 '+H+' 時 = 12 小時制的下午 ____ 時',a:String(pmH),s:['24 小時制 ≥ 13 時 = 下午 (H-12) 時',H+' − 12 = '+pmH+' → 下午 '+pmH+' 時'],sc:1}},
   // d:2 train arrival with ticket-price trap
   ()=>{var h=ri(9,11),m=pk([0,10,20,30,40]);var A=ri(1,4),B=pk([0,10,15,20,30]);var dur=A*60+B;var endM=m+dur;var endH=h+Math.floor(endM/60);endM=endM%60;if(endH<10)endH='0'+endH;if(endM<10)endM='0'+endM;var dPrice=ri(15,45);return{d:2,tp:'work',q:'一班列車於 '+h+':'+m+' 開出，車程 '+A+' 小時 '+B+' 分。車票每張 $'+dPrice+'。到達時間是 24 小時制的幾時幾分？',a:endH+':'+endM,trap:'車票價錢（$'+dPrice+'）',s:['🔍 車票價錢與時間無關。',h+':'+m+' + '+(A*60+B)+' 分鐘','分鐘：'+m+' + '+B+' = '+(m+B)+'，進位 '+A+' 小時 → '+A+'h'+(m+B)+'m','結束：'+endH+':'+endM],sc:2}},
   // d:3 elapsed-time work problem
@@ -215,6 +227,10 @@ export const grade3={
 '3M3':[
   // d:1 L+mL to mL
   ()=>{var A=ri(1,5),B=ri(100,900,100);return{d:1,tp:'calc',q:A+'升'+B+'毫升 = ____ 毫升',a:String(A*1000+B),s:[A+'升 = '+(A*1000)+' 毫升',A*1000+' + '+B+' = '+(A*1000+B)+' 毫升'],sc:1}},
+  // d:1 L → mL fill (no remainder)
+  ()=>{var L=ri(2,8);return{d:1,tp:'fill',q:L+' 升 = ____ 毫升',a:String(L*1000),s:['1 升 = 1000 毫升',L+' × 1000 = '+(L*1000)+' 毫升'],sc:1}},
+  // d:2 mL → L+mL conversion (fill)
+  ()=>{var total=ri(1200,7500);var L=Math.floor(total/1000),ml=total%1000;return{d:1,tp:'fill',q:total+' 毫升 = ____ 升 ____ 毫升',a:L+','+ml,s:['1 升 = 1000 毫升',total+' ÷ 1000 = '+L+' 餘 '+ml],sc:2}},
   // d:2 bottle drink with bottle-color trap
   ()=>{var l=ri(1,3),ml=ri(200,800,100),pour=ri(150,400);var dColor=pk(['紅色','透明','藍色']);return{d:2,tp:'work',q:'一個'+dColor+'水樽內有 '+l+' 升 '+ml+' 毫升果汁。'+nm()+'喝了 '+pour+' 毫升後，水樽內還剩下多少毫升？',a:String(l*1000+ml-pour),trap:'水樽顏色（'+dColor+'）',s:['🔍 水樽顏色是無關資訊。',l+'升'+ml+'毫升 = '+(l*1000+ml)+' 毫升','剩下：'+(l*1000+ml)+' − '+pour+' = '+(l*1000+ml-pour)+' 毫升'],sc:2}},
   // d:3 juice-machine short answer
@@ -225,6 +241,8 @@ export const grade3={
 '3M4':[
   // d:1 calendar facts fill
   ()=>{return{d:1,tp:'fill',q:'一年有 ____ 個月；一星期有 ____ 天；2月通常有 ____ 天。',a:'12,7,28',s:['一年有 12 個月。','一星期有 7 天。','2月通常有 28 天（閏年 29 天）。'],sc:1}},
+  // d:1 days-in-month fill (random month)
+  ()=>{var m=pk([1,3,4,5,7,8,10,12]);var days=31;return{d:1,tp:'fill',q:m+' 月有 ____ 天。',a:String(days),s:[m+' 月是大月，有 '+days+' 天。'],sc:1}},
   // d:2 date-arithmetic with student-count trap
   ()=>{var days=['星期一','星期二','星期三','星期四','星期五','星期六','星期日'];var dStu=ri(20,30);var dStart=pk([1,2,3,5,6,7,8]);var dWeeks=ri(2,4);var dTotal=dStart+dWeeks*7;var targetDay=days[(dTotal-1)%7];return{d:2,tp:'work',q:'學校有 '+dStu+' 位學生。專題研習於每月 '+dStart+' 日展開，截止日是 '+dWeeks+' 週後。截止日是每月 ____ 日，是 ____。',a:dTotal+','+targetDay,trap:'學生人數（'+dStu+'位）',s:['🔍 學生人數與日期無關。',dWeeks+' 週 = '+dWeeks+' × 7 = '+(dWeeks*7)+' 天',dStart+' + '+(dWeeks*7)+' = '+dTotal,days[(dStart-1)%7]+' 起算，'+dWeeks+' 週後是 '+targetDay],sc:2}},
   // d:3 leap-year MC
@@ -235,6 +253,8 @@ export const grade3={
 '3M5':[
   // d:1 kg+g to g
   ()=>{var A=ri(1,4),B=ri(100,900,100),C=ri(1,3),D=ri(100,900,100);return{d:1,tp:'calc',q:A+'公斤'+B+'克 + '+C+'公斤'+D+'克 = ____ 克',a:String(A*1000+B+C*1000+D),s:[A+'kg'+B+'g = '+(A*1000+B)+' 克',C+'kg'+D+'g = '+(C*1000+D)+' 克','合計：'+(A*1000+B)+' + '+(C*1000+D)+' = '+(A*1000+B+C*1000+D)+' 克'],sc:2}},
+  // d:1 g → kg+g conversion (fill)
+  ()=>{var total=ri(1200,8500);var kg=Math.floor(total/1000),g=total%1000;return{d:1,tp:'fill',q:total+' 克 = ____ 公斤 ____ 克',a:kg+','+g,s:['1 公斤 = 1000 克',total+' ÷ 1000 = '+kg+' 餘 '+g],sc:2}},
   // d:2 watermelon+apple with price-per-kg trap
   ()=>{var P=ri(2,5),Q=pk([200,500]);var R=ri(150,400);var dPrice=ri(20,40);return{d:2,tp:'work',q:'西瓜重 '+P+' 公斤 '+Q+' 克，蘋果重 '+R+' 克。西瓜每公斤售 $'+dPrice+'。西瓜和蘋果共重多少克？',a:String(P*1000+Q+R),trap:'西瓜每公斤價錢（$'+dPrice+'）',s:['🔍 價錢與重量無關。','西瓜：'+P+'kg'+Q+'g = '+(P*1000+Q)+' 克','合計：'+(P*1000+Q)+' + '+R+' = '+(P*1000+Q+R)+' 克'],sc:2}},
   // d:3 unit conversion fill
@@ -245,6 +265,8 @@ export const grade3={
 '3S1':[
   // d:1 mc which-shape-must-have-two-pairs-parallel
   ()=>{return{d:1,tp:'mc',q:'以下哪個四邊形必定有兩組對邊平行？',isMC:true,opts:[{l:'A',v:'平行四邊形',c:true},{l:'B',v:'梯形',c:false},{l:'C',v:'不規則四邊形',c:false}],a:'A',s:['平行四邊形定義：有兩組對邊分別平行。','梯形只有一組對邊平行。','不規則四邊形沒有平行的對邊。'],sc:1}},
+  // d:1 quadrilateral property fill (fixed)
+  ()=>{return{d:1,tp:'fill',q:'平行四邊形有 ____ 組平行的對邊；梯形有 ____ 組平行的對邊。',a:'2,1',s:['平行四邊形：兩組對邊分別平行 → 2 組。','梯形：只有一組對邊平行 → 1 組。'],sc:1}},
   // d:2 parallelogram perimeter with area trap
   ()=>{var a=ri(6,12),b=ri(4,9);if(a===b)b+=1;var area=a*b;return{d:2,tp:'calc',q:'平行四邊形相鄰兩邊分別是 '+a+' cm 和 '+b+' cm，面積是 '+area+' cm²。它的周界是多少？',a:String(2*(a+b)),trap:'面積（'+area+' cm²）',s:['🔍 計算周界不需要面積，面積是干擾資訊。','周界 = 2 × ('+a+' + '+b+') = '+2*(a+b)+' cm'],sc:2}},
   // d:3 rhombus word problem
@@ -255,6 +277,8 @@ export const grade3={
 '3S2':[
   // d:1 angle sum fill
   ()=>{var A=ri(30,60),B=ri(40,80);if(A+B>=180){A=40;B=70;}return{d:1,tp:'fill',q:'三角形三個內角之和是 ____ 度。如果兩個角是 '+A+'° 和 '+B+'°，第三個角是 ____ 度。',a:'180,'+(180-A-B),s:['三角形內角和 = 180°。','第三角 = 180 − '+A+' − '+B+' = '+(180-A-B)+'°'],sc:1}},
+  // d:1 triangle-side-count fill (fixed)
+  ()=>{return{d:1,tp:'fill',q:'三角形有 ____ 條邊和 ____ 個角。',a:'3,3',s:['三角形有 3 條邊和 3 個內角。'],sc:1}},
   // d:2 mc identify triangle type from angles
   ()=>{var A=ri(30,60);var dStu=ri(20,30);return{d:2,tp:'mc',q:'一個三角形有一個角是 90°，另一個是 '+A+'°。班上有 '+dStu+' 位同學。這是哪種三角形？',isMC:true,opts:[{l:'A',v:'直角三角形',c:true},{l:'B',v:'鈍角三角形',c:false},{l:'C',v:'銳角三角形',c:false}],a:'A',trap:'學生人數（'+dStu+'位）',s:['🔍 學生人數與題目無關。','已有一個 90° 角 → 直角三角形。','第三角 = 90 − '+A+' = '+(90-A)+'°，小於 90°。'],sc:2}},
   // d:3 triangle-inequality
