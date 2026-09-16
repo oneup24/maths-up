@@ -272,7 +272,7 @@ export default function App(){
     <>
       <QuestsModal isOpen={showQuests} onClose={()=>setShowQuests(false)} lang={lang}/>
       <SubmitModal isOpen={showSubmit} onClose={()=>setShowSubmit(false)} onConfirm={markExam} answeredQs={answeredQs} totalQs={totalQs} L={L}/>
-      <PrintModal isOpen={showPrint} onClose={()=>setShowPrint(false)} studentName={studentName} onNameChange={setStudentName} printAns={printAns} setPrintAns={setPrintAns} onPrint={()=>{printExam(sections,grade,printAns,studentName,difficulty);setShowPrint(false)}} L={L}/>
+      <PrintModal isOpen={showPrint} onClose={()=>setShowPrint(false)} studentName={studentName} onNameChange={setStudentName} printAns={printAns} setPrintAns={setPrintAns} onPrint={()=>{printExam(sections,grade,printAns,studentName,difficulty,{topicSummary,totScore,grandTotal,pct});setShowPrint(false)}} L={L}/>
       <SignUpPromptModal isOpen={showSignUpPrompt} onClose={()=>setShowSignUpPrompt(false)} onSignUp={()=>{setShowSignUpPrompt(false);setSkippedLogin(false);track('guest_signup_prompt_clicked');}} lang={lang}/>
       <PinModal isOpen={showPinModal} onClose={()=>{setShowPinModal(false);setPendingRevealKey(null);setPendingRevealType(null);}} onSuccess={onPinSuccess} lang={lang}/>
       <div className="lg:flex min-h-screen bg-white">
