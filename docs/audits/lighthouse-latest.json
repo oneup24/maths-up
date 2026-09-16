@@ -1,0 +1,82 @@
+{
+  "url": "http://localhost:5175/",
+  "timestamp": "2026-09-16T04:56:02.973Z",
+  "lighthouse_version": "13.4.1",
+  "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/150.0.0.0 Safari/537.36",
+  "scores": {
+    "performance": 31,
+    "accessibility": 97,
+    "best-practices": 96,
+    "seo": 92
+  },
+  "metrics": {
+    "first_contentful_paint": "21.4 s",
+    "largest_contentful_paint": "51.0 s",
+    "total_blocking_time": "1,180 ms",
+    "cumulative_layout_shift": "0",
+    "speed_index": "28.7 s",
+    "interactive": "51.0 s"
+  },
+  "passed_audits": 62,
+  "failed_audits": 21,
+  "top_failures": [
+    {
+      "id": "first-contentful-paint",
+      "title": "First Contentful Paint",
+      "score": 0,
+      "displayValue": "21.4 s"
+    },
+    {
+      "id": "largest-contentful-paint",
+      "title": "Largest Contentful Paint",
+      "score": 0,
+      "displayValue": "51.0 s"
+    },
+    {
+      "id": "speed-index",
+      "title": "Speed Index",
+      "score": 0,
+      "displayValue": "28.7 s"
+    },
+    {
+      "id": "errors-in-console",
+      "title": "Browser errors were logged to the console",
+      "score": 0
+    },
+    {
+      "id": "interactive",
+      "title": "Time to Interactive",
+      "score": 0,
+      "displayValue": "51.0 s"
+    },
+    {
+      "id": "mainthread-work-breakdown",
+      "title": "Minimize main-thread work",
+      "score": 0,
+      "displayValue": "7.8 s"
+    },
+    {
+      "id": "bootup-time",
+      "title": "Reduce JavaScript execution time",
+      "score": 0,
+      "displayValue": "4.0 s"
+    },
+    {
+      "id": "landmark-one-main",
+      "title": "Document does not have a main landmark.",
+      "score": 0
+    },
+    {
+      "id": "unminified-javascript",
+      "title": "Minify JavaScript",
+      "score": 0,
+      "displayValue": "Est savings of 2,801 KiB"
+    },
+    {
+      "id": "unused-javascript",
+      "title": "Reduce unused JavaScript",
+      "score": 0,
+      "displayValue": "Est savings of 2,561 KiB"
+    }
+  ]
+}
