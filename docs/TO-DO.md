@@ -80,7 +80,7 @@
 
 - [x] **I. Author `content/topic_map.csv` (Fractions chain)** — **DONE 2026-09-16**. 5 rows: 2N5 → 3N5 → 4N6 → 5N2 → 5N3. Registered topic_ids in `ID_REGISTRY.json`. Extended `content-check.js` v0.1 with topic_map validation (cols + FK + cycle). Added 8 vitest tests. 638 unit + 6 e2e + content:check + arch:check pass. Commit `7a10e39`.
 
-- [ ] **J. 3-page PDF (student + answers + parent report)** — Phase 3E deliverable. Current PDF is single-format. Need: page 1 student paper, page 2 answer key, page 3 parent report. ~3–4 hr.
+- [x] **J. 3-page PDF (student + answers + parent report)** — **DONE 2026-09-16**. Both `printExam()` (browser HTML) and `ExportPDFButton` (jsPDF download) now produce 3 explicit pages: Page 1 student paper, Page 2 answer key + steps, Page 3 parent report (topic performance weakest-first + actionable advice with colour-coded indicators). Per MASTER_PLAN.md §D10. 638 unit + 6 e2e tests pass. Commit `2ead35e`.
 
 - [x] **K. Audit other "same answer twice" MC templates** — **DONE 2026-09-15**. Stress-tested all 86 topic pools × 50 runs each (≈22k invocations). No multi-correct bugs found. The who-ran-further template (Task C, 2026-09-10) was the only known instance. Commit `731fe45`.
 
@@ -103,4 +103,7 @@
 - ✅ I → done (topic_map.csv for Phase 3E)
 - ✅ L → done (Lighthouse infrastructure + baseline audit)
 
-### All Day 2+3 non-J tasks complete (G/H/K/F/I/L)
+### Progress log (2026-09-16)
+- ✅ J → done (3-page PDF: student paper + answer key + parent report)
+
+### 🎉 All Day 2+3 tasks complete (G/H/K/F/I/L/J) — Phase 3A gaps filled

@@ -30,6 +30,7 @@
 | **Day 2 I: topic_map.csv (Fractions chain)** (2026-09-16) | ✅ | 5 rows: 2N5 → 3N5 → 4N6 → 5N2 → 5N3. Registered in `ID_REGISTRY.json`. `content-check.js` extended with FK + cycle validation. 8 new vitest tests. Unblocks Phase 3E Topic Quest v1. Commit `7a10e39`. |
 | **content:check v0.1** | ✅ | Extended with topic_map.csv column/FK/cycle validation. |
 | **Day 2+3 L: Lighthouse audit** | ✅ | `scripts/lighthouse-audit.mjs` + first audit in `docs/audits/LIGHTHOUSE_AUDIT.md`. Baseline: P47 A97 BP96 SEO92 (mobile, dev mode). Real issues: missing `<main>` landmark, console errors. Commit `a1f45c9`. |
+| **Day 2+3 J: 3-page PDF** (2026-09-16) | ✅ | Both `printExam()` and `ExportPDFButton` now produce Page 1 (student paper), Page 2 (answer key + steps), Page 3 (parent report with weakest-first topic performance + actionable advice). Per MASTER_PLAN.md §D10. Commit `2ead35e`. |
 
 ---
 
