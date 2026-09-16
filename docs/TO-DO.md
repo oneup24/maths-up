@@ -72,17 +72,17 @@
 
 > Continuation of engine/UX cleanup + start Phase 3E content prep. All self-contained; no founder decision required.
 
-- [ ] **F. Expand e2e tests** — extend the 3 smoke tests to cover actual user flows: grade/topic selection → exam start → answer MC and fill → submit → score report renders. Add `data-testid` attributes on key buttons (start exam, submit, mc option, fill input) for stable selectors. Target: 6–10 e2e tests covering happy path. ~2–3 hr.
+- [x] **F. Expand e2e tests** — **DONE 2026-09-15**. Added 5 `data-testid` attributes (start-exam, topic-{id}, generate-exam, mc-option-{si-qi-L}, submit-exam, score-report). New `e2e/flows.spec.js` with 3 tests: topic toggle, full happy path, post-submit data-correct verification. workers=1 for stability. 6 e2e tests pass. Commit `731fe45`.
 
-- [ ] **G. Stray file cleanup** — remove `app.json` (root, stale capacitor config) and `src/questions.js.save` (orphan file). Both flagged as ☐ in STATUS.md Phase 3A. Verify no imports reference them before deleting. ~10 min.
+- [x] **G. Stray file cleanup** — **DONE 2026-09-15**. Deleted `app.json` (root, stale Expo config) and `src/questions.js.save` (orphan, 41 bytes of stray shell commands). No code references. Commit `731fe45`.
 
-- [ ] **H. Stale value cleanup in STATUS.md** — generator count says 329 in audit table (line 176), should be **417**; PostHog event count says 12, actual is 18; several other audit rows need refresh. ~20 min.
+- [x] **H. Stale value cleanup in STATUS.md** — **DONE 2026-09-15**. Generator count 329/377 → **496** (per-grade breakdown). Commit count 98 → **148**. capacitor appId updated. Commit `731fe45`.
 
 - [ ] **I. Author `content/topic_map.csv` (Fractions P1→P4)** — unblocks Phase 3E Topic Quest v1. Schema in MASTER_PLAN.md §I5h. Need columns: topic_id, parent_topic_id, strand, quest_station_name_zh, quest_station_order, etc. ~1–2 hr.
 
 - [ ] **J. 3-page PDF (student + answers + parent report)** — Phase 3E deliverable. Current PDF is single-format. Need: page 1 student paper, page 2 answer key, page 3 parent report. ~3–4 hr.
 
-- [ ] **K. Audit other "same answer twice" MC templates** — scan `grade*.js` for MC patterns where both A and B share the correct answer (similar to today's task C). Quick scan + fix any found. ~1 hr.
+- [x] **K. Audit other "same answer twice" MC templates** — **DONE 2026-09-15**. Stress-tested all 86 topic pools × 50 runs each (≈22k invocations). No multi-correct bugs found. The who-ran-further template (Task C, 2026-09-10) was the only known instance. Commit `731fe45`.
 
 - [ ] **L. Lighthouse + performance audit** — fill Phase 3A gap. Run lighthouse against dev build, capture baseline metrics (FCP, LCP, TTI, accessibility score). Document in STATUS.md. ~1 hr.
 
@@ -96,4 +96,10 @@
 7. **L** (1 hr — final check; do after F so app is more stable)
 
 ### Progress log (2026-09-15)
-- ⏳ G → start first (quick orphan cleanup)
+- ✅ G → done (orphan cleanup)
+- ✅ H → done (STATUS.md accuracy)
+- ✅ K → done (no MC multi-correct bugs found)
+- ✅ F → done (6 e2e tests total — 3 smoke + 3 flow)
+- ⏳ I → next (topic_map.csv for Phase 3E)
+- ⏳ J → big lift, defer to Day 3
+- ⏳ L → after I (1 hr Lighthouse audit)

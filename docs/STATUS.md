@@ -23,6 +23,10 @@
 | **who-ran-further MC: unique (name, distance) per option** | ✅ | `src/engine/grades/grade2.js` d:3 — wrong-name option now shows `diff + ri(1,9)*10` instead of correct diff. Commit `e815c09`. |
 | **Lint cleanup** | ✅ | `exam.js` — removed `_e1/_e2/_e3` unused catch params; `grade2.js` — fixed `endH=endH` self-assign in cinema generator (now `endH=endH-12`). Commit `abc271d`. |
 | **MASTER_PLAN refreshed to v6.2** | ✅ | New D12 section (~150 lines) + v6.2 changelog (~70 lines) + TOC/USP/Stack updates. Bumps engine count to 417 (377 + 40 Phase 1B.5). |
+| **Day 2 G: stray file cleanup** (2026-09-15) | ✅ | Deleted `app.json` (stale Expo config) and `src/questions.js.save` (orphan). Commit `731fe45`. |
+| **Day 2 H: STATUS.md accuracy** | ✅ | Generator count 329/377 → 496; commit count 98 → 148; capacitor appId updated. |
+| **Day 2 K: MC multi-correct audit** | ✅ | Stress-tested all 86 topic pools × 50 runs. No multi-correct bugs found beyond the who-ran-further case already fixed (2026-09-10). |
+| **Day 2 F: e2e flow coverage** | ✅ | 5 `data-testid` attributes added; `e2e/flows.spec.js` adds 3 tests (topic toggle, happy path, post-submit data-correct verification). 6 e2e tests total pass. |
 
 ---
 
