@@ -1,7 +1,48 @@
 {
   "_comment": "Permanent record of all IDs used in content/*.csv. IDs are immutable once live — never rename or reuse a registered ID. A renamed ID is a broken foreign key in responses.",
-  "_version": "2026-08-25.1",
-  "topic_ids": [],
+  "_version": "2026-09-16.1",
+  "topic_ids": [
+    {
+      "id": "2N5",
+      "registered_at": "2026-09-16",
+      "source": "content/topic_map.csv",
+      "topic_name_zh": "2N5 分數的初步認識",
+      "grade": 2,
+      "strand": "數"
+    },
+    {
+      "id": "3N5",
+      "registered_at": "2026-09-16",
+      "source": "content/topic_map.csv",
+      "topic_name_zh": "3N5 分數(一)",
+      "grade": 3,
+      "strand": "數"
+    },
+    {
+      "id": "4N6",
+      "registered_at": "2026-09-16",
+      "source": "content/topic_map.csv",
+      "topic_name_zh": "4N6 分數(二)",
+      "grade": 4,
+      "strand": "數"
+    },
+    {
+      "id": "5N2",
+      "registered_at": "2026-09-16",
+      "source": "content/topic_map.csv",
+      "topic_name_zh": "5N2 分數(三)異分母",
+      "grade": 5,
+      "strand": "數"
+    },
+    {
+      "id": "5N3",
+      "registered_at": "2026-09-16",
+      "source": "content/topic_map.csv",
+      "topic_name_zh": "5N3 分數(四)乘法",
+      "grade": 5,
+      "strand": "數"
+    }
+  ],
   "skill_ids": [],
   "trap_ids": [],
   "misconception_codes": [],
