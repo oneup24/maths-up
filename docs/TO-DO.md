@@ -78,7 +78,7 @@
 
 - [x] **H. Stale value cleanup in STATUS.md** — **DONE 2026-09-15**. Generator count 329/377 → **496** (per-grade breakdown). Commit count 98 → **148**. capacitor appId updated. Commit `731fe45`.
 
-- [ ] **I. Author `content/topic_map.csv` (Fractions P1→P4)** — unblocks Phase 3E Topic Quest v1. Schema in MASTER_PLAN.md §I5h. Need columns: topic_id, parent_topic_id, strand, quest_station_name_zh, quest_station_order, etc. ~1–2 hr.
+- [x] **I. Author `content/topic_map.csv` (Fractions chain)** — **DONE 2026-09-16**. 5 rows: 2N5 → 3N5 → 4N6 → 5N2 → 5N3. Registered topic_ids in `ID_REGISTRY.json`. Extended `content-check.js` v0.1 with topic_map validation (cols + FK + cycle). Added 8 vitest tests. 638 unit + 6 e2e + content:check + arch:check pass. Commit `7a10e39`.
 
 - [ ] **J. 3-page PDF (student + answers + parent report)** — Phase 3E deliverable. Current PDF is single-format. Need: page 1 student paper, page 2 answer key, page 3 parent report. ~3–4 hr.
 
@@ -100,6 +100,6 @@
 - ✅ H → done (STATUS.md accuracy)
 - ✅ K → done (no MC multi-correct bugs found)
 - ✅ F → done (6 e2e tests total — 3 smoke + 3 flow)
-- ⏳ I → next (topic_map.csv for Phase 3E)
+- ✅ I → done (topic_map.csv for Phase 3E)
+- ⏳ L → next (1 hr Lighthouse audit)
 - ⏳ J → big lift, defer to Day 3
-- ⏳ L → after I (1 hr Lighthouse audit)

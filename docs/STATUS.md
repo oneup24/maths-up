@@ -27,6 +27,8 @@
 | **Day 2 H: STATUS.md accuracy** | ✅ | Generator count 329/377 → 496; commit count 98 → 148; capacitor appId updated. |
 | **Day 2 K: MC multi-correct audit** | ✅ | Stress-tested all 86 topic pools × 50 runs. No multi-correct bugs found beyond the who-ran-further case already fixed (2026-09-10). |
 | **Day 2 F: e2e flow coverage** | ✅ | 5 `data-testid` attributes added; `e2e/flows.spec.js` adds 3 tests (topic toggle, happy path, post-submit data-correct verification). 6 e2e tests total pass. |
+| **Day 2 I: topic_map.csv (Fractions chain)** (2026-09-16) | ✅ | 5 rows: 2N5 → 3N5 → 4N6 → 5N2 → 5N3. Registered in `ID_REGISTRY.json`. `content-check.js` extended with FK + cycle validation. 8 new vitest tests. Unblocks Phase 3E Topic Quest v1. Commit `7a10e39`. |
+| **content:check v0.1** | ✅ | Extended with topic_map.csv column/FK/cycle validation. |
 
 ---
 
