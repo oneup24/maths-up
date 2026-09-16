@@ -89,6 +89,7 @@ export default function HomeDashboard({
           <motion.button
             whileTap={{ scale: 0.97 }}
             onClick={onStartExam}
+            data-testid="start-exam"
             className="w-full py-5 rounded-2xl text-white font-black text-xl mb-4 transition-opacity duration-150 active:opacity-85"
             style={{ background: gradeHex }}
           >

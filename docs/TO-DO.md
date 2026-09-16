@@ -65,3 +65,35 @@
 - ✅ D → done (MASTER_PLAN v6.2 + D12 + changelog)
 
 ### All 5 today's tasks complete (A/B/C/D/E)
+
+---
+
+## 📋 Day 2 Tasks (2026-09-15)
+
+> Continuation of engine/UX cleanup + start Phase 3E content prep. All self-contained; no founder decision required.
+
+- [ ] **F. Expand e2e tests** — extend the 3 smoke tests to cover actual user flows: grade/topic selection → exam start → answer MC and fill → submit → score report renders. Add `data-testid` attributes on key buttons (start exam, submit, mc option, fill input) for stable selectors. Target: 6–10 e2e tests covering happy path. ~2–3 hr.
+
+- [ ] **G. Stray file cleanup** — remove `app.json` (root, stale capacitor config) and `src/questions.js.save` (orphan file). Both flagged as ☐ in STATUS.md Phase 3A. Verify no imports reference them before deleting. ~10 min.
+
+- [ ] **H. Stale value cleanup in STATUS.md** — generator count says 329 in audit table (line 176), should be **417**; PostHog event count says 12, actual is 18; several other audit rows need refresh. ~20 min.
+
+- [ ] **I. Author `content/topic_map.csv` (Fractions P1→P4)** — unblocks Phase 3E Topic Quest v1. Schema in MASTER_PLAN.md §I5h. Need columns: topic_id, parent_topic_id, strand, quest_station_name_zh, quest_station_order, etc. ~1–2 hr.
+
+- [ ] **J. 3-page PDF (student + answers + parent report)** — Phase 3E deliverable. Current PDF is single-format. Need: page 1 student paper, page 2 answer key, page 3 parent report. ~3–4 hr.
+
+- [ ] **K. Audit other "same answer twice" MC templates** — scan `grade*.js` for MC patterns where both A and B share the correct answer (similar to today's task C). Quick scan + fix any found. ~1 hr.
+
+- [ ] **L. Lighthouse + performance audit** — fill Phase 3A gap. Run lighthouse against dev build, capture baseline metrics (FCP, LCP, TTI, accessibility score). Document in STATUS.md. ~1 hr.
+
+### Recommended execution order
+1. **G first** (10 min — quick visible cleanup, frees root/src from orphans)
+2. **H next** (20 min — doc accuracy, low risk)
+3. **K** (1 hr — finish UX consistency started yesterday)
+4. **F** (2–3 hr — biggest impact; needs `data-testid` attributes in components)
+5. **I** (1–2 hr — start Phase 3E prep; can be split)
+6. **J** (3–4 hr — bigger lift, can defer to Day 3)
+7. **L** (1 hr — final check; do after F so app is more stable)
+
+### Progress log (2026-09-15)
+- ⏳ G → start first (quick orphan cleanup)

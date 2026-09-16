@@ -46,7 +46,7 @@ See `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md` for full audit history.
 
 | Item | Status | Evidence |
 |------|--------|----------|
-| 377 procedural generators (P1-P6) [was 329, +48 in Phase 1B] | ✅ | `rg -c '\(\)=>\{' src/engine/grades/*.js` |
+| 496 procedural generators (P1-P6 + Phase 1B + 1B.5) [was 329 → 377 → 417 → 496] | ✅ | `node -e "import('./src/engine/grades/grade*.js')..."` (counts generators in pool arrays across 86 topics; 79 in config TOPICS + 7 legacy merged) |
 | HK EDB curriculum topics (100% coverage) | ✅ | `src/engine/grades/*.js` (all 79 official units covered) |
 | 5 question types, 3 difficulties | ✅ | `grep 'SECT_RATIOS\|DIFF_INFO' src/engine/config.js` |
 | Answer checker (chkAns) | ✅ | `src/engine/core.js:1` |
@@ -173,8 +173,8 @@ See `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md` for full audit history.
 
 | Claim | Plan value | Actual (code-verified) |
 |-------|-----------|----------------------|
-| Generator count | "600+" | 329 (`rg -c '\(\)=>\{' src/engine/grades/*.js`) |
-| Commit count | "26" (v5.1) | 98 (`git rev-list --count HEAD`) |
+| Generator count | "600+" | **496** (across 86 grade topic pools: G1 80, G2 91, G3 91, G4 92, G5 76, G6 66 — 79 live in `config.js` TOPICS + 7 legacy merged; 329 pre-Phase 1B) |
+| Commit count | "26" (v5.1) | **148** (`git rev-list --count HEAD` as of 2026-09-15) |
 | GitHub repo | oneup24/maths-exam | oneup24/maths-up |
 | PostHog event count | 12 | 18 |
 | event names | exam_start / exam_complete | quiz_start / quiz_complete |
@@ -182,5 +182,5 @@ See `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md` for full audit history.
 | Section ratios | calc 28%, fill 18%, MC 12%, short 22%, work 20% | mc 15%, fill 20%, calc 20%, short 15%, work 30% |
 | Difficulty labels | Basic / Standard / Challenge | 基礎鞏固 / 呈分實戰 / 奧數拔尖 |
 | Google OAuth | "Supabase email + Google OAuth" | Email only — no OAuth in codebase |
-| capacitor appId | not stated | com.mathexam.app (stale — update at Gate 0) |
+| capacitor appId | not stated | com.oneup24.mathsup (Gate 0 update — `capacitor.config.json`) |
 | Deployed URL | maths-exam.vercel.app | Unknown — not in repo; founder knows |

@@ -109,6 +109,7 @@ export default function SettingsView({grade,difficulty,setDifficulty,selTopics,t
 
           {/* Generate — desktop */}
           <motion.button whileTap={{scale:.97}} onClick={generate} disabled={selTopics.size===0}
+            data-testid="generate-exam"
             className="hidden lg:block w-full py-4 rounded-2xl font-bold text-lg text-white transition-opacity duration-150"
             style={{background:selTopics.size>0?gradeHex:'#e8e8e8',color:selTopics.size>0?'#fff':'#bbb'}}
           >
@@ -136,6 +137,8 @@ export default function SettingsView({grade,difficulty,setDifficulty,selTopics,t
                 var sel = selTopics.has(t.id);
                 return(
                   <button key={t.id} onClick={()=>toggleTopic(t.id)}
+                    data-testid={`topic-${t.id}`}
+                    data-selected={sel ? 'true' : 'false'}
                     className="relative p-2.5 rounded-xl border-2 text-left transition-all duration-150 active:opacity-70"
                     style={sel
                       ? {background:soft.bg,borderColor:gradeHex,color:soft.text}

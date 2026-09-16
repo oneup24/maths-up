@@ -10,6 +10,7 @@ export default function FloatingSubmit({isMarked,answeredQs,totalQs,onSubmit,L})
       initial={{y:20,opacity:0}}
       animate={{y:0,opacity:1}}
       onClick={onSubmit}
+      data-testid="submit-exam"
       style={{bottom:'calc(1.25rem + env(safe-area-inset-bottom, 0px))', background:'#111'}}
       className="fixed left-1/2 -translate-x-1/2 px-8 py-3.5 text-white font-bold text-base rounded-xl shadow-lg z-40 flex items-center gap-2 active:opacity-80 transition-opacity duration-150"
     >

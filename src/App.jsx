@@ -369,6 +369,8 @@ export default function App(){
                                       var cls=isMarked?(o.l===q.a?'border-emerald-400 bg-emerald-50 font-bold text-emerald-700':isSel&&o.l!==q.a?'border-red-400 bg-red-50 text-red-700 line-through':'border-gray-200 bg-gray-50 text-gray-400'):(isSel?'font-bold cursor-pointer':'border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer');
                                       return(
                                         <motion.button key={o.l} whileTap={isMarked?{}:{scale:0.97}} onClick={()=>{if(!isMarked)setMcSel(p=>({...p,[k]:o.l}))}} disabled={isMarked}
+                                          data-testid={`mc-option-${si}-${qi}-${o.l}`}
+                                          data-correct={isMarked && o.l===q.a ? 'true' : 'false'}
                                           className={"text-sm px-3 py-3 rounded-xl border-2 text-left flex items-center gap-2 transition-all duration-200 "+cls}
                                           style={!isMarked&&isSel?{borderColor:gcHex,background:gcSoftBg,color:gcHex}:{}}>
                                           <span className={"w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold "+(isMarked&&o.l===q.a?'bg-emerald-500 border-emerald-500 text-white':'border-gray-300 text-gray-400')}
