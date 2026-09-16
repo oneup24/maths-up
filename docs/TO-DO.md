@@ -84,7 +84,7 @@
 
 - [x] **K. Audit other "same answer twice" MC templates** — **DONE 2026-09-15**. Stress-tested all 86 topic pools × 50 runs each (≈22k invocations). No multi-correct bugs found. The who-ran-further template (Task C, 2026-09-10) was the only known instance. Commit `731fe45`.
 
-- [ ] **L. Lighthouse + performance audit** — fill Phase 3A gap. Run lighthouse against dev build, capture baseline metrics (FCP, LCP, TTI, accessibility score). Document in STATUS.md. ~1 hr.
+- [x] **L. Lighthouse + performance audit** — **DONE 2026-09-16**. Script `scripts/lighthouse-audit.mjs` + first audit (`docs/audits/LIGHTHOUSE_AUDIT.md`). Baseline: P47 A97 BP96 SEO92 (mobile, dev mode). Real issues found: missing `<main>` landmark, console errors logged. Followups documented. Commit `a1f45c9`.
 
 ### Recommended execution order
 1. **G first** (10 min — quick visible cleanup, frees root/src from orphans)
@@ -101,5 +101,6 @@
 - ✅ K → done (no MC multi-correct bugs found)
 - ✅ F → done (6 e2e tests total — 3 smoke + 3 flow)
 - ✅ I → done (topic_map.csv for Phase 3E)
-- ⏳ L → next (1 hr Lighthouse audit)
-- ⏳ J → big lift, defer to Day 3
+- ✅ L → done (Lighthouse infrastructure + baseline audit)
+
+### All Day 2+3 non-J tasks complete (G/H/K/F/I/L)
