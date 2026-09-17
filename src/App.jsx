@@ -277,7 +277,7 @@ export default function App(){
       <PinModal isOpen={showPinModal} onClose={()=>{setShowPinModal(false);setPendingRevealKey(null);setPendingRevealType(null);}} onSuccess={onPinSuccess} lang={lang}/>
       <div className="lg:flex min-h-screen bg-white">
         <Sidebar activeTab={sidebarActiveTab} onTab={handleTab} lang={lang} user={user} onSignOut={async()=>{await signOut();setSkippedLogin(false);}}/>
-        <div className="flex-1 min-w-0">
+        <main className="flex-1 min-w-0" role="main">
 
           {/* ── Profile ── */}
           {view==='profile'&&(
@@ -468,7 +468,7 @@ export default function App(){
             </motion.div>
           )}
 
-        </div>
+        </main>
       </div>
       {(view==='home'||view==='profile')&&<BottomTabBar activeTab={sidebarActiveTab} onTab={handleTab} lang={lang}/>}
     </>

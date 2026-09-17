@@ -1,30 +1,30 @@
 {
   "url": "http://localhost:5175/",
-  "timestamp": "2026-09-17T05:42:07.925Z",
+  "timestamp": "2026-09-17T06:02:14.971Z",
   "lighthouse_version": "13.4.1",
   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/150.0.0.0 Safari/537.36",
   "scores": {
-    "performance": 27,
-    "accessibility": 97,
+    "performance": 29,
+    "accessibility": 100,
     "best-practices": 100,
     "seo": 92
   },
   "metrics": {
-    "first_contentful_paint": "21.5 s",
+    "first_contentful_paint": "21.3 s",
     "largest_contentful_paint": "52.4 s",
-    "total_blocking_time": "2,090 ms",
+    "total_blocking_time": "1,480 ms",
     "cumulative_layout_shift": "0",
-    "speed_index": "27.3 s",
-    "interactive": "52.4 s"
+    "speed_index": "27.1 s",
+    "interactive": "52.5 s"
   },
-  "passed_audits": 63,
-  "failed_audits": 21,
+  "passed_audits": 67,
+  "failed_audits": 20,
   "top_failures": [
     {
       "id": "first-contentful-paint",
       "title": "First Contentful Paint",
       "score": 0,
-      "displayValue": "21.5 s"
+      "displayValue": "21.3 s"
     },
     {
       "id": "largest-contentful-paint",
@@ -36,36 +36,25 @@
       "id": "speed-index",
       "title": "Speed Index",
       "score": 0,
-      "displayValue": "27.3 s"
-    },
-    {
-      "id": "max-potential-fid",
-      "title": "Max Potential First Input Delay",
-      "score": 0,
-      "displayValue": "1,490 ms"
+      "displayValue": "27.1 s"
     },
     {
       "id": "interactive",
       "title": "Time to Interactive",
       "score": 0,
-      "displayValue": "52.4 s"
+      "displayValue": "52.5 s"
     },
     {
       "id": "mainthread-work-breakdown",
       "title": "Minimize main-thread work",
       "score": 0,
-      "displayValue": "9.0 s"
+      "displayValue": "8.4 s"
     },
     {
       "id": "bootup-time",
       "title": "Reduce JavaScript execution time",
       "score": 0,
-      "displayValue": "4.0 s"
-    },
-    {
-      "id": "landmark-one-main",
-      "title": "Document does not have a main landmark.",
-      "score": 0
+      "displayValue": "4.3 s"
     },
     {
       "id": "unminified-javascript",
@@ -78,6 +67,18 @@
       "title": "Reduce unused JavaScript",
       "score": 0,
       "displayValue": "Est savings of 2,537 KiB"
+    },
+    {
+      "id": "robots-txt",
+      "title": "robots.txt is not valid",
+      "score": 0,
+      "displayValue": "44 errors found"
+    },
+    {
+      "id": "bf-cache",
+      "title": "Page prevented back/forward cache restoration",
+      "score": 0,
+      "displayValue": "1 failure reason"
     }
   ]
 }

@@ -246,11 +246,11 @@ export default function Login({ onAuth, lang = 'zh' }) {
   }
 
   return (
-    <div className="min-h-screen flex">
+    <main className="min-h-screen flex" role="main">
       <LeftPanel zh={zh} />
       <div className="flex-1 flex items-center justify-center p-8" style={{ background: '#ffffff' }}>
         {content}
       </div>
-    </div>
+    </main>
   );
 }

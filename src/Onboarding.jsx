@@ -116,7 +116,7 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
   var cardPt=step===3?'pt-16':step===1?'pt-0':step===5&&authMode?'pt-8':'pt-20';
 
   return(
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center p-5">
+    <main className="min-h-screen bg-white flex flex-col items-center justify-center p-5" role="main">
 
       {/* Top progress bar — steps 1-5 */}
       {step>=1&&step<=5&&(
@@ -394,6 +394,6 @@ export default function Onboarding({onComplete,lang:initialLang,signUp,signIn}){
       {/* Progress dots — indigo on white bg */}
       <OnboardingProgress current={step}/>
 
-    </div>
+    </main>
   );
 }

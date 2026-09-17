@@ -9,14 +9,14 @@
 **Latest summary:** `docs/audits/lighthouse-latest.json`  
 **Raw reports:** `docs/audits/lighthouse-{timestamp}.json`
 
-## Scores
+## Scores (after fixes — 2026-09-17)
 
 | Category | Score | Notes |
 |----------|------:|-------|
-| Performance | 47 | Dev mode (unminified source) — expected low. Re-run on production build for real number. |
-| Accessibility | 97 | Excellent. One fail: missing `<main>` landmark. |
-| Best Practices | 96 | One fail: console errors logged. |
-| SEO | 92 | Solid. |
+| Performance | 29–47 | Dev mode (unminified source) — expected low. Re-run on production build for real number. Variance between runs is dev-mode noise. |
+| Accessibility | **100** | Fixed: `<main>` landmark added to Onboarding, Login, and home/exam wrapper in App.jsx (was 97). |
+| Best Practices | **100** | Fixed: malformed Sentry DSN corrected in `.env.local` (was 96/98). |
+| SEO | 92 | Solid. `robots.txt` has 44 errors (dev mode — not configured for Lighthouse robots audit). |
 
 ## Core Web Vitals (mobile, simulated, dev mode)
 
@@ -33,8 +33,13 @@
 
 ## Real issues found (not dev-mode artefacts)
 
-1. **`landmark-one-main` (a11y: 0/1)** — Document does not have a `<main>` landmark. Lighthouse first hits the Onboarding view which uses generic `<div>` containers. Fix: add `<main>` to Onboarding (or wrap conditional renders).
-2. ~~**`errors-in-console` (best-practices: 0/1)**~~ — **FIXED 2026-09-17**. Single error was a malformed Sentry DSN in `.env.local` (`b0o45...` missing `@o`). Fixed to `b0@o45...`. Added warning in `.env.local.example`. After fix: errors-in-console passes.
+1. ~~**`landmark-one-main` (a11y: 0/1)**~~ — **FIXED 2026-09-17**. Added `<main role="main">` to:
+   - `src/Onboarding.jsx` (Lighthouse first hits this view)
+   - `src/pages/Login.jsx`
+   - `src/App.jsx` home/exam wrapper
+   After fix: Accessibility 97 → **100**.
+
+2. ~~**`errors-in-console` (best-practices: 0/1)**~~ — **FIXED 2026-09-17**. Single error was a malformed Sentry DSN in `.env.local` (`b0o45...` missing `@o`). Fixed to `b0@o45...`. Added warning in `.env.local.example`. After fix: Best Practices 96 → **100**.
 3. **`unminified-javascript` (perf, dev-only)** — 2,821 KiB savings if minified. Expected in dev; production build handles this.
 4. **`unused-javascript` (perf, dev-only)** — 2,537 KiB savings. Investigate bundle composition.
 
@@ -66,9 +71,16 @@ pnpm lighthouse:audit
 node scripts/lighthouse-audit.mjs http://localhost:5175/
 ```
 
+## Next steps
+
+- [ ] Re-run against `pnpm preview` for production numbers (perf scores are dev-mode artefacts)
+- [ ] Fix `robots.txt` (currently fails with 44 errors — affects SEO 92 → ?)
+- [ ] Investigate `bf-cache` failure (back/forward cache restoration blocked)
+
 ## Prior audits
 
 | Date | URL | Scores (P/A/BP/SEO) | Notes |
 |------|-----|---------------------|-------|
 | 2026-09-16 | dev server / | 47/97/96/92 | First run. Accessibility 97 (1 fail: missing `<main>` landmark — first view is Onboarding). Best Practices 96 (1 fail: console errors — malformed Sentry DSN). Performance 47 reflects unminified dev source. |
-| 2026-09-17 | dev server / | ~47/97/~98/92 | Sentry DSN fixed in `.env.local`. `errors-in-console` now passes. Accessibility still missing `<main>` (open). |
+| 2026-09-17a | dev server / | ~47/97/~98/92 | Sentry DSN fixed in `.env.local`. `errors-in-console` now passes. Accessibility still missing `<main>` (open). |
+| 2026-09-17b | dev server / | 29–47/**100**/**100**/92 | `<main>` landmark added to Onboarding, Login, and App.jsx home wrapper. Accessibility 97 → 100. Best Practices 98 → 100. Both real Lighthouse issues closed. |
