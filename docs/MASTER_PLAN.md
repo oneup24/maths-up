@@ -389,7 +389,7 @@ GBA + SEA (5-10x multiplier): HKD 25-50M/yr long-term
 |---|---|---|
 | 1 | **Trap Item Training (干擾項訓練)** — irrelevant data in word problems that tests reading comprehension. No competitor does this. | Engine built; structured engine v1 in Phase 4B |
 | 2 | **Per-Topic Diagnostic (📊 各單元表現)** — color-coded breakdown sorted worst-first. What tutors charge $300-500/hr for. | Live |
-| 3 | **Infinite Non-Repeating Generation** — 417 procedural generators (P1-P6 + Phase 1B + 1B.5) covering 100% of official HK EDB curriculum (79/79 learning units), every quiz unique. `buildExam` enforces a 2-reuse-per-generator cap across all types. | Live (Phase 1B 2026-09-09: 329 → 377, Phase 1B.5 2026-09-10: 377 → 417) |
+| 3 | **Infinite Non-Repeating Generation** — 496 procedural generators (P1-P6 + Phase 1B + 1B.5) covering 100% of official HK EDB curriculum (79/79 learning units), every quiz unique. `buildExam` enforces a 2-reuse-per-generator cap across all types. | Live (Phase 1B 2026-09-09: 329 → 377, Phase 1B.5 2026-09-10: 377 → 417, Day 3 2026-09-15: 417 → 496) |
 | 4 | **Physical-Digital Hybrid** — PDF export for printing + digital tracking | Live |
 | 5 | **Cognitive Fingerprinting** — topic_breakdown JSONB builds student weakness maps over time | Collecting data |
 
@@ -621,6 +621,8 @@ Topic Quest is the MOST NATURAL UI EXPRESSION of prerequisite chains.
 **Phase 1B (2026-09-09):** Engine curriculum coverage gap discovered and closed — 16 missing official HK EDB learning units added (P2 度量 + 圖形與空間, P3 度量 + 圖形與空間, P5 代數). Engine totals: 329 → 377 generators. Curriculum coverage: 80% → 100% (79/79). See **D11** for full context.
 
 **Phase 1B.5 (2026-09-10):** Coverage was complete on paper, but students hit a second problem: thin topic pools + unlimited generator reuse in `exam.js` produced 7 visually-identical questions in a row. Two complementary fixes shipped: (a) +40 generators across 24 thin topics (377 → 417), and (b) `buildExam` now caps each generator at 2 uses per exam across all 5 question types. Also: Playwright e2e infrastructure (3 smoke tests), `who-ran-further` MC UX fix, lint cleanup. See **D12** for full context.
+
+**Day 3 (2026-09-15):** Continued engine/UX cleanup. Audit work found additional generator additions beyond Phase 1B.5 (40 more) — the engine reached **496** total functions across 86 grade topic pools (79 live in `config.js` TOPICS + 7 legacy merged). Other deliverables: orphan file cleanup, STATUS.md accuracy refresh, e2e flow coverage (6 tests total), `topic_map.csv` (Fractions P2→P5 chain), Lighthouse infrastructure + baseline audit (mobile, dev mode).
 
 ### Phase 2: Auth + Cloud
 
@@ -1068,6 +1070,8 @@ Per-grade breakdown:
 | G6 | 6M1/6M3/6S1/6D1/6D2/6D3 | +6 |
 | **Total** | **24 topics** | **+40** |
 
+*Note: the generator total at the time of this phase was tracked as 417. Day 3 (2026-09-15) audit found **79 additional** functions in grade files beyond the originally-claimed 417 — current total is **496** across 86 topic pools.*
+
 No topic has ≤3 generators after this work except 6D2/6D3 which sit at the Phase 1B baseline (intentional — chart-type questions in 6D3 are limited by the visual context, not by content gap).
 
 **2. Exam-builder variety cap**
@@ -1250,7 +1254,7 @@ The 53-subscriber figure may include founder salary or other ops costs — label
 
 | Layer | What | Cost | Status |
 |---|---|---|---|
-| Layer 1: Hardcode | 417 generators (329 + 48 Phase 1B + 40 Phase 1B.5), instant, offline | $0 | built |
+| Layer 1: Hardcode | 496 generators (329 + 48 Phase 1B + 40 Phase 1B.5 + 79 Day 3 audit-found), instant, offline | $0 | built |
 | Layer 2: AI (DeepSeek) | V3.2 for word problems (pending benchmark) | ~$0.14-0.28/M tokens | Phase 4B |
 | Layer 3: Question Bank | Supabase table, reusable, self-improving | $0 per serve | Schema in Phase 3C |
 
@@ -1502,7 +1506,7 @@ Mobile:      Capacitor (iOS + Android prepared — android/ ios/ frozen until 20
              appId: com.oneup24.mathsup (Gate 0 item — update capacitor.config.json before any App Store submission;
              appId is IMMUTABLE after first submission — cannot be changed without a new listing)
 Backend:     Supabase Cloud (PostgreSQL, Auth, Storage, RLS, Edge Functions)
-Engine:      src/engine/ (417 generators — 329 + 48 Phase 1B + 40 Phase 1B.5, rule-based, $0 cost)
+Engine:      src/engine/ (496 generators — 329 + 48 Phase 1B + 40 Phase 1B.5 + 79 Day 3 audit-found, rule-based, $0 cost)
 Deploy:      Vercel (live — see docs/STATUS.md for URL)
 VCS:         GitHub (oneup24/maths-up, public, 98 commits)
 Analytics:   PostHog (live, 18 events — see STATUS.md for event list)
@@ -2597,7 +2601,7 @@ Single-issue version: **Phase 1B.5 — Thin-Pool Expansion + Variety Cap + e2e (
 - macOS 12 e2e uses system Chrome — will work natively on macOS 13+ / Linux CI.
 
 **Corrections / Stale Value Updates**
-- Generator count: 377 → **417** (USP #3 in D1; also Appendix D Claude Code notes; Layer 1 in I1)
+- Generator count: 377 → **417** → **496** (Day 3 audit found 79 additional in grade files; USP #3 in D1; also Appendix D Claude Code notes; Layer 1 in I1)
 - Engine capability: now enforces 2-reuse-per-generator cap across all types (was: unlimited for mc/fill/calc)
 
 ---

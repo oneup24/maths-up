@@ -33,15 +33,16 @@
 
 ## Real issues found (not dev-mode artefacts)
 
-1. **`landmark-one-main` (a11y: 0/1)** — Document does not have a `<main>` landmark. App.jsx uses generic `<div>` containers. Add `<main>` around the primary content area.
-2. **`errors-in-console` (best-practices: 0/1)** — Browser errors logged to console. Investigate; capture & categorize.
-3. **`unminified-javascript` (perf, dev-only)** — 2,801 KiB savings if minified. Expected in dev; production build handles this.
-4. **`unused-javascript` (perf, dev-only)** — 2,568 KiB savings. Investigate bundle composition.
+1. **`landmark-one-main` (a11y: 0/1)** — Document does not have a `<main>` landmark. Lighthouse first hits the Onboarding view which uses generic `<div>` containers. Fix: add `<main>` to Onboarding (or wrap conditional renders).
+2. ~~**`errors-in-console` (best-practices: 0/1)**~~ — **FIXED 2026-09-17**. Single error was a malformed Sentry DSN in `.env.local` (`b0o45...` missing `@o`). Fixed to `b0@o45...`. Added warning in `.env.local.example`. After fix: errors-in-console passes.
+3. **`unminified-javascript` (perf, dev-only)** — 2,821 KiB savings if minified. Expected in dev; production build handles this.
+4. **`unused-javascript` (perf, dev-only)** — 2,537 KiB savings. Investigate bundle composition.
 
-## Failures breakdown
+## Failures breakdown (after Sentry fix)
 
 - 63 passed / 21 failed audits
-- Top 10 failures (by score): FCP, LCP, Speed Index, errors-in-console, TTI, mainthread-work-breakdown, bootup-time, landmark-one-main, unminified-javascript, unused-javascript
+- Top failures (by score): FCP, LCP, Speed Index, max-potential-fid, TTI, mainthread-work-breakdown, bootup-time, landmark-one-main, unminified-javascript, unused-javascript
+- `errors-in-console` no longer in top failures (was previously)
 
 ## Followups (not blockers for soft launch)
 
@@ -69,4 +70,5 @@ node scripts/lighthouse-audit.mjs http://localhost:5175/
 
 | Date | URL | Scores (P/A/BP/SEO) | Notes |
 |------|-----|---------------------|-------|
-| 2026-09-16 | dev server / | 47/97/96/92 | First run. Accessibility 97 (1 fail: missing `<main>` landmark — first view is Onboarding). Best Practices 96 (1 fail: console errors). Performance 47 reflects unminified dev source — not representative of production. |
+| 2026-09-16 | dev server / | 47/97/96/92 | First run. Accessibility 97 (1 fail: missing `<main>` landmark — first view is Onboarding). Best Practices 96 (1 fail: console errors — malformed Sentry DSN). Performance 47 reflects unminified dev source. |
+| 2026-09-17 | dev server / | ~47/97/~98/92 | Sentry DSN fixed in `.env.local`. `errors-in-console` now passes. Accessibility still missing `<main>` (open). |
