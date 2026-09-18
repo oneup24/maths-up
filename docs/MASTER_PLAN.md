@@ -1498,6 +1498,84 @@ founder breaks production.
 
 ---
 
+### I0h. `docs/TOPIC.md` is the canonical topic source — FROZEN against engine override 🆕
+
+**Status:** Rule formalized **2026-09-18** after cross-check found 14
+divergences between engine `config.js` and the official EDB curriculum.
+See `docs/TOPIC.md` §"引擎 vs EDB 對照表" for the live divergence list.
+
+**Rule:** `docs/TOPIC.md` is the **single source of truth** for all topic
+IDs, names, and 範疇 assignments used by the engine. The engine MUST be a
+strict subset (or 1:1 mapping) of TOPIC.md — **no combining, no extras,
+no ID-borrowing**.
+
+#### Prohibited engine patterns
+
+| Bad pattern | Engine example (must fix) | Why it's banned |
+|-------------|---------------------------|-----------------|
+| **Combine** two EDB topics into one engine ID | `4N78` (merges `4N7 小數(一)` + `4N8 小數(二)`); `6N34` (merges `6N3 百分數(一)` + `6N4 百分數(二)`) | Loses per-topic granularity in `topic_breakdown`; child errors in one sub-skill are attributed to the wrong topic |
+| **Add** topic not in TOPIC.md | Engine has `3N6 認識小數` — EDB has no `3N6` | Foreign-key breaks for any future school-data integration |
+| **Borrow** an ID for unrelated content | Engine `2N5` = "分數的初步認識" (EDB `2N5` = "加法和減法(三)"); engine `6N2` = "分數與小數互換" (EDB `6N2` = "小數(五)") | School side and Maths-Up side use the same ID with **different meanings** — corrupts diagnostic history |
+| **Re-ordinal** (wrong number) | Engine `4S3` = "方向和位置**二**" (EDB = "**三**"); engine `5S2` = "立體圖形**二**" (EDB = "**三**") | Same ID, different content; teachers/parents can't reconcile |
+| **Truncate or paraphrase** official name | Engine `6D4` = "統計的應用" (EDB = "統計的應用**及誤用**") | Loses curriculum intent (EDB deliberately includes "misuse") |
+| **Semantic substitution** | Engine `6M5` = "圓面積" (EDB `6M5` = "面積(三)" — circle area is a sub-skill) | Wrong topic scope |
+
+#### Allowed engine customizations
+
+Some engine customizations are **acceptable** but must be **explicitly documented
+in TOPIC.md** as "engine extension":
+
+| Customization | Engine example | Required annotation in TOPIC.md |
+|---------------|----------------|----------------------------------|
+| Operation hint in parentheses | `5N3 分數(四)乘法` (EDB: `分數(四)`) | Add column or note: "engine adds 乘法 hint" |
+| Synonym name | `5N1 大數` (EDB: `多位數`) | Add note: "engine synonym — not in EDB" |
+| Cosmetic name variant | `6D4 統計的應用` (EDB: `統計的應用及誤用`) | **BANNED — must match EDB verbatim** |
+
+#### Engine topic set: exactly the 79 core 學習單位
+
+The engine MUST have **exactly** the 79 official core 學習單位 (核心 N/M/S/D/A)
+listed in TOPIC.md, no more, no fewer.
+
+- ✅ **Allowed:** Exactly 79 engine topics, all 1:1 with TOPIC.md.
+- ❌ **Forbidden:** Engine has 3N6 (extra), 4N78 (merged), 6N34 (merged), or any
+  other divergence.
+
+#### Workflow for changes
+
+1. **Update TOPIC.md first.** Any new topic, rename, or 範疇 reassignment starts
+   in TOPIC.md.
+2. **Then update engine `config.js`** to match.
+3. **Then update `content/ID_REGISTRY.json`** if a new ID is registered.
+4. **Never the reverse.** Engine is downstream of TOPIC.md, not upstream.
+
+#### Migration path for current violations (engine drift)
+
+The 14 known divergences (cross-check 2026-09-18) must be resolved in this
+order:
+
+1. **High priority — ID borrow** (3 cases). Pick new IDs for the borrowed
+   content; migrate any `responses` rows via `topic_breakdown` JSONB mapping.
+2. **Medium priority — Merged topics** (2 cases). Split `4N78` → `4N7`+`4N8`,
+   and `6N34` → `6N3`+`6N4`. Distribute generator functions accordingly.
+3. **Low priority — Wrong ordinal / name variant** (3 cases). Just edit
+   `config.js` strings; no ID migration needed since the ID itself is correct.
+4. **Decision needed — Engine extensions** (6 cases). For each, decide:
+   keep with explicit TOPIC.md annotation, or revert to EDB verbatim.
+
+See `docs/TOPIC.md` §"引擎 vs EDB 對照表" for the full 14-item list and
+`docs/TO-DO.md` for the actionable breakdown.
+
+#### Enforcement
+
+- **Manual review:** Quarterly. The founder runs a diff between `config.js`
+  `TOPICS` and TOPIC.md; any divergence is a §I0h violation.
+- **Mechanical (future, not yet built):** A vitest test that imports
+  `config.js` `TOPICS`, walks every entry, and asserts:
+  - `id` ∈ TOPIC.md listed IDs
+  - `nm` matches TOPIC.md name (modulo allowed customizations, declared in TOPIC.md)
+
+---
+
 ## I1. Stack
 
 ```

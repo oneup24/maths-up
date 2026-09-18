@@ -1,5 +1,5 @@
 # STATUS.md — Maths-Up Execution Status
-**Last updated:** 2026-09-10 (Today's session: thin-pool expansion + exam variety cap; +40 generators; 630 tests pass)
+**Last updated:** 2026-09-18 (TOPIC.md cross-checked vs 4 EDB official PDFs; §I0h formalized)
 **Rule:** Any agent completing a task MUST update this file in the same commit.
 **Legend:** ✅ verified in code (evidence required) · ⚠️ NEEDS FOUNDER · ☐ not found/not started
 
@@ -56,6 +56,7 @@ See `docs/audits/TOPIC_ENGINE_COVERAGE_AUDIT.md` for full audit history.
 |------|--------|----------|
 | 496 procedural generators (P1-P6 + Phase 1B + 1B.5) [was 329 → 377 → 417 → 496] | ✅ | `node -e "import('./src/engine/grades/grade*.js')..."` (counts generators in pool arrays across 86 topics; 79 in config TOPICS + 7 legacy merged) |
 | HK EDB curriculum topics (100% coverage) | ✅ | `src/engine/grades/*.js` (all 79 official units covered) |
+| **§I0h TOPIC.md canonical rule** (2026-09-18) | ⚠️ **NON-COMPLIANT** | Rule formalized in MASTER_PLAN.md. **14 divergences** found between engine `config.js` and TOPIC.md — see `docs/TOPIC.md` §"引擎 vs EDB 對照表". Resolution tracked in `docs/TO-DO.md`. |
 | 5 question types, 3 difficulties | ✅ | `grep 'SECT_RATIOS\|DIFF_INFO' src/engine/config.js` |
 | Answer checker (chkAns) | ✅ | `src/engine/core.js:1` |
 | Trap items, SVG figures | ✅ | `src/engine/grades/*.js` |

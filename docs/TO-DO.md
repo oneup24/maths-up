@@ -107,3 +107,51 @@
 - ✅ J → done (3-page PDF: student paper + answer key + parent report)
 
 ### 🎉 All Day 2+3 tasks complete (G/H/K/F/I/L/J) — Phase 3A gaps filled
+
+---
+
+## 📋 Rule: §I0h — TOPIC.md is canonical (formalized 2026-09-18)
+
+**Rule:** `docs/TOPIC.md` is the single source of truth for topic IDs, names, and 範疇. The engine MUST be a strict subset of TOPIC.md — no combining, no extras, no ID-borrowing.
+
+**Current compliance:** 14 divergences found (see TOPIC.md §"引擎 vs EDB 對照表"). All need resolution.
+
+### 🔴 HIGH — ID borrow (3 cases) — schema-breaking
+
+- [ ] **2N5 ID borrow** — Engine `2N5` = "分數的初步認識", but EDB `2N5` = "加法和減法(三)". Choose new ID for fractions intro (suggest: absorb into `3N5` 分數(一), or create new `2N5b`). Migrate any `topic_breakdown` rows.
+- [ ] **6N2 ID borrow** — Engine `6N2` = "分數與小數互換", but EDB `6N2` = "小數(五)". Choose new ID for frac↔dec conversion. Migrate rows.
+- [ ] **3N6 extra topic** — Engine has `3N6 認識小數`, but EDB P3 has only 3N1–3N5. Either delete engine topic (and migrate generators to 3N5/4N7) or update TOPIC.md to flag it as "engine extension".
+
+### 🟠 MEDIUM — Merged topics (2 cases) — granular data loss
+
+- [ ] **Split 4N78 → 4N7 + 4N8** — Distribute current 4N78 generators into two pools matching EDB 小數(一)/(二) split.
+- [ ] **Split 6N34 → 6N3 + 6N4** — Distribute current 6N34 generators into two pools matching EDB 百分數(一)/(二) split.
+
+### 🟡 LOW — Wrong ordinal / name variant (2 cases) — string fixes only
+
+- [ ] **4S3 ordinal fix** — Engine "方向和位置(二)" → "方向和位置(三)" (EDB).
+- [ ] **5S2 ordinal fix** — Engine "立體圖形(二)" → "立體圖形(三)" (EDB).
+
+### ℹ️ ENGINE EXTENSIONS (6 cases) — decide keep or revert
+
+For each, either revert to EDB verbatim, or add a "engine extension" annotation in TOPIC.md:
+
+- [ ] **5N1 name** — Engine "大數" vs EDB "多位數". Decide: rename or annotate.
+- [ ] **5N3 operation hint** — Engine "分數(四)乘法" vs EDB "分數(四)". Decide: drop "乘法" or annotate as hint.
+- [ ] **5N4 operation hint** — Engine "小數(三)乘法" vs EDB "小數(三)". Decide: drop or annotate.
+- [ ] **5N5 operation hint** — Engine "分數(五)除法" vs EDB "分數(五)". Decide: drop or annotate.
+- [ ] **6N1 operation hint** — Engine "小數(四)除法" vs EDB "小數(四)". Decide: drop or annotate.
+- [ ] **6D4 truncation** — Engine "統計的應用" vs EDB "統計的應用**及誤用**". **Recommend revert** (loses curriculum intent).
+
+### 🔴 HIGH — Semantic divergence (1 case) — wrong topic scope
+
+- [ ] **6M5 semantics** — Engine "圓面積" (circle area only) vs EDB "面積(三)" (all area III topics). **Recommend rename to "面積(三)"** and ensure generators cover rectangle/trapezoid/circle, not only circle.
+
+### Enforcement (future)
+
+- [ ] **Add vitest test** — `src/engine/__tests__/topicRule.test.js`: imports `config.js` TOPICS, asserts all IDs are in TOPIC.md and names match (modulo declared extensions).
+
+### Progress log (2026-09-18)
+
+- ✅ Master Plan §I0h formalized — TOPIC.md canonical rule documented
+- ⏳ 14 divergences pending resolution (start with 🔴 ID-borrow cases)
