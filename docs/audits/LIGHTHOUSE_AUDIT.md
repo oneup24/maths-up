@@ -1,13 +1,77 @@
-# Lighthouse Audit — 2026-09-16
+# Lighthouse Audit — 2026-09-17
 
 **Tool:** Lighthouse 13.4.1  
 **Browser:** Headless Chrome 150 (macOS 12)  
-**URL:** http://localhost:5175/ (Vite dev server)  
 **Form factor:** Mobile (default)  
 **Throttling:** Simulated (default)  
 **Script:** `pnpm lighthouse:audit`  
 **Latest summary:** `docs/audits/lighthouse-latest.json`  
 **Raw reports:** `docs/audits/lighthouse-{timestamp}.json`
+
+## Production Build Baseline (2026-09-17)
+
+Built with `pnpm build`, served via `pnpm preview` on port 4175.
+
+### Scores
+
+| Category | Score |
+|----------|------:|
+| Performance | 39 |
+| Accessibility | **100** |
+| Best Practices | **100** |
+| SEO | 92 |
+
+### Core Web Vitals (mobile, simulated)
+
+| Metric | Value | Target | Verdict |
+|--------|------:|--------|---------|
+| FCP | 3.7 s | ≤ 1.8 s | ⚠️ Borderline (acceptable for SPA) |
+| LCP | 14.1 s | ≤ 2.5 s | ❌ Slow — needs work |
+| TBT | 1,110 ms | ≤ 200 ms | ❌ Main thread blocked |
+| CLS | 0 | ≤ 0.1 | ✅ Perfect |
+| SI | 6.5 s | ≤ 3.4 s | ❌ Slow |
+| TTI | 14.1 s | ≤ 3.8 s | ❌ Slow |
+
+### Bundle analysis
+
+Total main bundle: 698 KB (gzip 224 KB). Major chunks:
+- `index-BdmgduJK.js` — 698 KB (app code)
+- `vendor-supabase-C1O-LcLB.js` — 188 KB
+- `vendor-react-adNNY7oV.js` — 182 KB
+- `vendor-posthog-CwUQoJpK.js` — 178 KB
+- `html2canvas-CQioh8bo.js` — 200 KB (used for PDF export)
+- `vendor-motion-CN4dsgdW.js` — 132 KB (framer-motion)
+- `vendor-sentry-TpWLy5B_.js` — 83 KB
+
+### Top remaining issues (production)
+
+1. **LCP 14.1s** — Largest content paint is the slowest metric. Investigation needed: which element is LCP? (Likely the Curlboo mascot SVG or splash image.)
+2. **TBT 1.1s** — Main thread blocked. 4.3s bootup-time. Likely PostHog + Sentry initialization. Consider deferring.
+3. **`unused-javascript` 349 KB savings** — Much better than dev mode (2.5 MB). Library code that's not tree-shaken. Could be addressed with route-level code-splitting.
+4. **`valid-source-maps`** — Missing source maps in production deploy. Add `build.sourcemap = true` in vite.config.js.
+5. **`robots.txt`** — 48 errors. Vite preview doesn't ship a robots.txt; production deploy should include one.
+6. **`cache-insight`** — Cache lifetimes. Add `Cache-Control: public, max-age=...` headers in Vercel config.
+
+### How to reproduce production audit
+
+```bash
+pnpm build
+pnpm preview --port 4175 &  # separate terminal
+node scripts/lighthouse-audit.mjs http://localhost:4175/
+```
+
+---
+
+## Dev Mode Baseline (2026-09-17)
+
+For reference — dev mode runs (vite dev server, unminified source). Scores are noisy due to dev mode artefacts; use production baseline above for real metrics.
+
+| Category | Dev Score |
+|----------|----------:|
+| Performance | 29–47 (high variance) |
+| Accessibility | **100** (after `<main>` fix) |
+| Best Practices | **100** (after Sentry DSN fix) |
+| SEO | 92 |
 
 ## Scores (after fixes — 2026-09-17)
 

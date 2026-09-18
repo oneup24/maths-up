@@ -1,54 +1,36 @@
 {
-  "url": "http://localhost:5175/",
-  "timestamp": "2026-09-17T06:02:14.971Z",
+  "url": "http://localhost:4175/",
+  "timestamp": "2026-09-17T06:40:03.581Z",
   "lighthouse_version": "13.4.1",
   "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/150.0.0.0 Safari/537.36",
   "scores": {
-    "performance": 29,
+    "performance": 39,
     "accessibility": 100,
     "best-practices": 100,
     "seo": 92
   },
   "metrics": {
-    "first_contentful_paint": "21.3 s",
-    "largest_contentful_paint": "52.4 s",
-    "total_blocking_time": "1,480 ms",
+    "first_contentful_paint": "3.7 s",
+    "largest_contentful_paint": "14.1 s",
+    "total_blocking_time": "1,110 ms",
     "cumulative_layout_shift": "0",
-    "speed_index": "27.1 s",
-    "interactive": "52.5 s"
+    "speed_index": "6.5 s",
+    "interactive": "14.1 s"
   },
-  "passed_audits": 67,
-  "failed_audits": 20,
+  "passed_audits": 68,
+  "failed_audits": 18,
   "top_failures": [
-    {
-      "id": "first-contentful-paint",
-      "title": "First Contentful Paint",
-      "score": 0,
-      "displayValue": "21.3 s"
-    },
     {
       "id": "largest-contentful-paint",
       "title": "Largest Contentful Paint",
       "score": 0,
-      "displayValue": "52.4 s"
-    },
-    {
-      "id": "speed-index",
-      "title": "Speed Index",
-      "score": 0,
-      "displayValue": "27.1 s"
-    },
-    {
-      "id": "interactive",
-      "title": "Time to Interactive",
-      "score": 0,
-      "displayValue": "52.5 s"
+      "displayValue": "14.1 s"
     },
     {
       "id": "mainthread-work-breakdown",
       "title": "Minimize main-thread work",
       "score": 0,
-      "displayValue": "8.4 s"
+      "displayValue": "7.6 s"
     },
     {
       "id": "bootup-time",
@@ -57,28 +39,42 @@
       "displayValue": "4.3 s"
     },
     {
-      "id": "unminified-javascript",
-      "title": "Minify JavaScript",
-      "score": 0,
-      "displayValue": "Est savings of 2,821 KiB"
+      "id": "valid-source-maps",
+      "title": "Missing source maps for large first-party JavaScript",
+      "score": 0
     },
     {
       "id": "unused-javascript",
       "title": "Reduce unused JavaScript",
       "score": 0,
-      "displayValue": "Est savings of 2,537 KiB"
+      "displayValue": "Est savings of 349 KiB"
     },
     {
       "id": "robots-txt",
       "title": "robots.txt is not valid",
       "score": 0,
-      "displayValue": "44 errors found"
+      "displayValue": "48 errors found"
     },
     {
-      "id": "bf-cache",
-      "title": "Page prevented back/forward cache restoration",
+      "id": "cache-insight",
+      "title": "Use efficient cache lifetimes",
       "score": 0,
-      "displayValue": "1 failure reason"
+      "displayValue": "Est savings of 77 KiB"
+    },
+    {
+      "id": "forced-reflow-insight",
+      "title": "Forced reflow",
+      "score": 0
+    },
+    {
+      "id": "lcp-breakdown-insight",
+      "title": "LCP breakdown",
+      "score": 0
+    },
+    {
+      "id": "lcp-discovery-insight",
+      "title": "LCP request discovery",
+      "score": 0
     }
   ]
 }
